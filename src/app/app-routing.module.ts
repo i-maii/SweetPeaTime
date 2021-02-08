@@ -1,15 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { MainNavComponent } from './main-nav/main-nav.component';
+import { SalesorderComponent } from './salesorder/salesorder.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: MainNavComponent,
-    children: [
-      {path: 'app', loadChildren: './component/component-module#ComponentModule'}
-    ]
+    component: DashboardComponent
+  },
+  {
+    path: 'salesorder',
+    component: SalesorderComponent
   }
 ];
 

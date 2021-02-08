@@ -20,9 +20,9 @@
 .mat-nav-list .mat-list-item {
   color: white;
 }
-/* .hidden {
-  display: none;
-} */
+.hidden {
+  display: visible;
+}
 /* 
 @media (min-width: 768px) {
   .sidenav {
