@@ -13,13 +13,17 @@ import { MatListModule } from '@angular/material/list';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SalesorderComponent } from './salesorder/salesorder.component';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatTableModule } from '@angular/material/table';
+import { CreateSalesorderComponent } from './create-salesorder/create-salesorder.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainNavComponent,
     DashboardComponent,
-    SalesorderComponent
+    SalesorderComponent,
+    CreateSalesorderComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +34,9 @@ import { SalesorderComponent } from './salesorder/salesorder.component';
     MatSidenavModule,
     MatIconModule,
     MatListModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatGridListModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent]
