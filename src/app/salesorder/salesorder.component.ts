@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
 
 export interface PeriodicElement {
   name: string;
@@ -18,6 +19,10 @@ const ELEMENT_DATA: PeriodicElement[] = [
   {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
   {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
   {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
+  {position: 11, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
+  {position: 12, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
+  {position: 11, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
+  {position: 12, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
 ];
 
 
@@ -38,6 +43,12 @@ export class SalesorderComponent implements OnInit {
   columnsToDisplay: string[] = this.displayedColumns.slice();
   data: PeriodicElement[] = ELEMENT_DATA;
   numberOfOrder: number = 5;
+  dataSource = new MatTableDataSource(ELEMENT_DATA);
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 
   // addColumn() {
   //   const randomColumn = Math.floor(Math.random() * this.displayedColumns.length);

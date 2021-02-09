@@ -9,8 +9,6 @@ import { map, shareReplay } from 'rxjs/operators';
   styleUrls: ['./main-nav.component.css']
 })
 export class MainNavComponent {
-  
-  tabName = "";
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -19,8 +17,4 @@ export class MainNavComponent {
     );
 
   constructor(private breakpointObserver: BreakpointObserver) {}
-
-  setTabName(value: string){
-    this.tabName = value;
-  }
 }

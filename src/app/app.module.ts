@@ -16,6 +16,7 @@ import { SalesorderComponent } from './salesorder/salesorder.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTableModule } from '@angular/material/table';
 import { CreateSalesorderComponent } from './create-salesorder/create-salesorder.component';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { CreateSalesorderComponent } from './create-salesorder/create-salesorder
     MatListModule,
     BrowserAnimationsModule,
     MatGridListModule,
-    MatTableModule
+    MatTableModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]
