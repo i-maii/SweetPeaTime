@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Injectable, OnInit, Output } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 
 export interface PeriodicElement {
@@ -31,6 +31,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
   templateUrl: './salesorder.component.html',
   styleUrls: ['./salesorder.component.css']
 })
+
 export class SalesorderComponent implements OnInit {
 
   constructor() { }
@@ -50,27 +51,4 @@ export class SalesorderComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  // addColumn() {
-  //   const randomColumn = Math.floor(Math.random() * this.displayedColumns.length);
-  //   this.columnsToDisplay.push(this.displayedColumns[randomColumn]);
-  // }
-
-  // removeColumn() {
-  //   if (this.columnsToDisplay.length) {
-  //     this.columnsToDisplay.pop();
-  //   }
-  // }
-
-  // shuffle() {
-  //   let currentIndex = this.columnsToDisplay.length;
-  //   while (0 !== currentIndex) {
-  //     let randomIndex = Math.floor(Math.random() * currentIndex);
-  //     currentIndex -= 1;
-
-  //     // Swap
-  //     let temp = this.columnsToDisplay[currentIndex];
-  //     this.columnsToDisplay[currentIndex] = this.columnsToDisplay[randomIndex];
-  //     this.columnsToDisplay[randomIndex] = temp;
-  //   }
-  // }
 }

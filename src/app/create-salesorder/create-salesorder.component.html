@@ -1,1 +1,176 @@
-<p>create-salesorder works!</p>
+<mat-grid-list cols="12" rowHeight="100px">
+    <mat-grid-tile colspan="2">สร้างออเดอร์ ({{numberOfOrder}}) </mat-grid-tile>
+</mat-grid-list>
+
+<form [formGroup]="salesOrderForm" (ngSubmit)="onSubmit()">
+    <mat-grid-list cols="6" rowHeight="100px">
+        <mat-grid-tile></mat-grid-tile>
+        <mat-grid-tile colspan="4" rowspan="5" class="create-content">
+            <form class="create-form">
+                <table class="create-form-full-width" cellspacing="0">
+                    <span>ข้อมูลผู้สั่ง</span>
+                    <tr>
+                        <td>
+                            <mat-form-field class="create-form-full-width">
+                                <mat-label>ชื่อ</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="create-form-full-width">
+                                <mat-label>นามสกุล</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="create-form-full-width">
+                                <mat-label>เบอร์โทรศัพท์</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field appearance="fill" class="date-picker-form-fill">
+                                <mat-label>วันที่สั่ง</mat-label>
+                                <input matInput [matDatepicker]="datepicker1">
+                                <mat-datepicker-toggle matSuffix [for]="datepicker1"></mat-datepicker-toggle>
+                                <mat-datepicker #datepicker1>
+                                    <mat-datepicker-actions>
+                                        <button mat-button matDatepickerCancel>Cancel</button>
+                                        <button mat-raised-button color="primary" matDatepickerApply>Apply</button>
+                                    </mat-datepicker-actions>
+                                </mat-datepicker>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                </table>
+
+                <table class="create-form-full-width" cellspacing="0">
+                    <span>ข้อมูลผู้รับ</span>
+                    <tr>
+                        <td>
+                            <mat-form-field class="create-form-full-width">
+                                <mat-label>ชื่อ</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="create-form-full-width">
+                                <mat-label>นามสกุล</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="create-form-full-width">
+                                <mat-label>เบอร์โทรศัพท์</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="create-form-full-width">
+                                <mat-label>ที่อยู่ผู้รับ</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field appearance="fill" class="date-picker-form-fill">
+                                <mat-label>วันที่รับ</mat-label>
+                                <input matInput [matDatepicker]="datepicker2">
+                                <mat-datepicker-toggle matSuffix [for]="datepicker2"></mat-datepicker-toggle>
+                                <mat-datepicker #datepicker2>
+                                    <mat-datepicker-actions>
+                                        <button mat-button matDatepickerCancel>Cancel</button>
+                                        <button mat-raised-button color="primary" matDatepickerApply>Apply</button>
+                                    </mat-datepicker-actions>
+                                </mat-datepicker>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                </table>
+
+                <table class="create-form-full-width" cellspacing="0">
+                    <span>รายละเอียดออเดอร์</span>
+                    <tr>
+                        <td>
+                            <mat-form-field appearance="fill">
+                                <mat-label>สูตรดอกไม้</mat-label>
+                                <mat-select [(ngModel)]="selectedValue" name="flowerFormula">
+                                    <mat-option *ngFor="let flowerFormula of flowerFormulas"
+                                        [value]="flowerFormula.value">
+                                        {{flowerFormula.viewValue}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                        </td>
+                        <td>
+                            <mat-form-field appearance="fill">
+                                <mat-label>จำนวน</mat-label>
+                                <mat-select [(ngModel)]="selectedValue" name="flowerAvaliable">
+                                    <mat-option *ngFor="let flowerAvaliable of flowerAvaliables"
+                                        [value]="flowerAvaliable.value">
+                                        {{flowerAvaliable.viewValue}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="create-form-full-width">
+                                <mat-label>สามารถใช้ได้ถึง</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                </table>
+
+                <table class="create-form-full-width" cellspacing="0">
+                    <tr>
+                        <td>
+                            <mat-form-field class="create-form-full-width">
+                                <mat-label>ราคาช่อดอกไม้</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="create-form-full-width">
+                                <mat-label>ราคาค่าส่ง</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="create-form-full-width">
+                                <mat-label>ราคาค่ารวม</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                </table>
+
+                <table class="create-form-full-width" cellspacing="0">
+                    <tr>
+                        <td>
+                            <mat-form-field class="create-form-full-width">
+                                <mat-label>ช่างจัดดอกไม้</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="create-form-full-width">
+                                <mat-label>โน๊ต</mat-label>
+                                <input matInput>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </mat-grid-tile>
+        <mat-grid-tile></mat-grid-tile>
+        <mat-grid-tile colspan="5"></mat-grid-tile>
+        <mat-grid-tile>
+            <div class="button-row">
+                <button mat-raised-button color="primary" type="submit">
+                    สร้างออเดอร์
+                </button>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+</form>

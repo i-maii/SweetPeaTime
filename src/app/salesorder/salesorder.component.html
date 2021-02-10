@@ -1,16 +1,19 @@
 <mat-grid-list cols="12" rowHeight="100px">
-    <mat-grid-tile colspan="2">ข้อมูลออเดอร์</mat-grid-tile>
+    <mat-grid-tile colspan="2">ข้อมูลออเดอร์ ({{numberOfOrder}}) </mat-grid-tile>
     <mat-grid-tile colspan="8"></mat-grid-tile>
     <mat-grid-tile colspan="2">
-        <div class="example-button-row">
-            <button mat-raised-button color="primary" routerLinkActive="active" routerLink="/createSalesorder">
+        <div class="button-row">
+            <button mat-raised-button 
+                color="primary" 
+                routerLinkActive="active" 
+                routerLink="/createSalesorder">
                 สร้างออเดอร์
             </button>
         </div>
     </mat-grid-tile>
 </mat-grid-list>
 
-<mat-grid-list cols="6" rowHeight="100px">
+<mat-grid-list cols="6" rowHeight="100px" class="create-table">
     <mat-grid-tile></mat-grid-tile>
     <mat-grid-tile>
         <mat-form-field>
