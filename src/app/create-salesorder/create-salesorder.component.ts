@@ -30,12 +30,12 @@ export class CreateSalesorderComponent implements OnInit {
     receiverAddress: new FormControl(),
     receiveDate: new FormControl(),
     flowerFormular: new FormControl(),
+    flowerAvaliable: new FormControl(),
+    dateAvaliable: new FormControl(),
     flowerPrice: new FormControl(),
     deliveryFee: new FormControl(),
     totalPrice: new FormControl(),
     forist: new FormControl(),
-    total: new FormControl(),
-    dateAvaliable: new FormControl(),
     note: new FormControl()
   });
 
@@ -65,6 +65,7 @@ export class CreateSalesorderComponent implements OnInit {
   ];
 
   onSubmit(): void {
+    console.warn(this.salesOrderForm.value);  
     this.salesOrderForm.reset();
   }
 
