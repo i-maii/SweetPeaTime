@@ -13,13 +13,15 @@ import { MatListModule } from '@angular/material/list';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SalesorderComponent } from './salesorder/salesorder.component';
+import { SearchflowerComponent } from './searchflower/searchflower.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainNavComponent,
     DashboardComponent,
-    SalesorderComponent
+    SalesorderComponent,
+    SearchflowerComponent
   ],
   imports: [
     BrowserModule,
