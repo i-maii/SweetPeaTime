@@ -12,13 +12,25 @@ import { MatListModule } from '@angular/material/list';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SalesorderComponent } from './salesorder/salesorder.component';
-
+import { LoginComponent } from './login/login.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthGuard } from './_helpers/auth.guard';
+import { MatFormFieldModule } from '@angular/material/form-field'
+import { AuthService } from './_services/auth.service';
+import { HomeLayoutComponent } from './layouts/home-layout.component';
+import { LoginLayoutComponent } from './layouts/login-layout.component';
 @NgModule({
   declarations: [
     AppComponent,
     MainNavComponent,
     DashboardComponent,
-    SalesorderComponent
+    SalesorderComponent,
+    LoginComponent,
+    HomeLayoutComponent,
+    LoginLayoutComponent
   ],
   imports: [
     BrowserModule,
@@ -29,9 +41,15 @@ import { SalesorderComponent } from './salesorder/salesorder.component';
     MatSidenavModule,
     MatIconModule,
     MatListModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatCardModule,
+    MatInputModule,
+    MatGridListModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule
   ],
-  providers: [],
+  providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
