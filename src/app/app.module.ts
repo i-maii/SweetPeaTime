@@ -22,6 +22,14 @@ import { MatFormFieldModule } from '@angular/material/form-field'
 import { AuthService } from './_services/auth.service';
 import { HomeLayoutComponent } from './layouts/home-layout.component';
 import { LoginLayoutComponent } from './layouts/login-layout.component';
+import { MatTableModule } from '@angular/material/table';
+import { CreateSalesorderComponent } from './create-salesorder/create-salesorder.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { HttpClientModule } from '@angular/common/http';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,7 +38,8 @@ import { LoginLayoutComponent } from './layouts/login-layout.component';
     SalesorderComponent,
     LoginComponent,
     HomeLayoutComponent,
-    LoginLayoutComponent
+    LoginLayoutComponent,
+    CreateSalesorderComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +56,13 @@ import { LoginLayoutComponent } from './layouts/login-layout.component';
     MatGridListModule,
     FormsModule,
     ReactiveFormsModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatTableModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    HttpClientModule
   ],
   providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent]
