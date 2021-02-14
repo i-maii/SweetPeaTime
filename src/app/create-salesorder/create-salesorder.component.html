@@ -105,7 +105,7 @@
                             <mat-form-field appearance="fill">
                                 <mat-label>จำนวน</mat-label>
                                 <mat-select [(ngModel)]="selectedValue" type="text" formControlName="flowerAvaliable">
-                                    <mat-option *ngFor="let flowerAvaliable of flowerAvaliables"
+                                    <mat-option *ngFor="let flowerAvailable of flowerAvailables"
                                         [value]="flowerAvaliable.value">
                                         {{flowerAvaliable.viewValue}}
                                     </mat-option>

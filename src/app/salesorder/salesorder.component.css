@@ -21,3 +21,9 @@ button {
     display: table-cell;
     width: 490px;
 }
+
+.scroll-bar {
+    overflow-x: scroll; 
+    height: 100%; 
+    width: 100%;
+}

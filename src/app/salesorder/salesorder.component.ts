@@ -1,14 +1,9 @@
+import { SelectionModel } from '@angular/cdk/collections';
 import { Component, EventEmitter, Injectable, OnInit, Output } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { SalesOrderElement } from '../interface/sales-order-element'
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
+const ELEMENT_DATA: SalesOrderElement[] = [
   {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
   {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
   {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
@@ -20,9 +15,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
   {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
   {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
   {position: 11, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 12, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-  {position: 11, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 12, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
+  {position: 12, name: 'Neon', weight: 20.1797, symbol: 'Ne'}
 ];
 
 
@@ -37,18 +30,48 @@ export class SalesorderComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    
+
   }
   
-  displayedColumns: string[] = ['name', 'weight', 'symbol', 'position'];
-  columnsToDisplay: string[] = this.displayedColumns.slice();
-  data: PeriodicElement[] = ELEMENT_DATA;
   numberOfOrder: number = 5;
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
+
+  displayedColumns: string[] = ['select', 'position', 'name', 'weight', 'symbol'];
+  dataSource = new MatTableDataSource<SalesOrderElement>(ELEMENT_DATA);
+  selection = new SelectionModel<SalesOrderElement>(true, []);
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+        this.selection.clear() :
+        this.dataSource.data.forEach(row => {
+          // console.log(row)
+          this.selection.select(row)
+        });
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: SalesOrderElement): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+  }
+
+  printRow(row: SalesOrderElement, check: boolean): void {
+    if(this.selection.isSelected(row) === false){
+      console.log(row);
+    }
+  }
+  
 }

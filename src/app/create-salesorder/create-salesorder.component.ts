@@ -1,15 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-
-interface FlowerAvaliable {
-  value: string;
-  viewValue: string;
-}
-
-interface FlowerFormula {
-  value: string;
-  viewValue: string;
-}
+import { FlowerAvailable } from '../interface/flower-available'
+import { FlowerFormula } from '../interface/flower-formula'
 
 @Component({
   selector: 'create-salesorder',
@@ -52,7 +44,7 @@ export class CreateSalesorderComponent implements OnInit {
 
   selectedValue: string | undefined;
 
-  flowerAvaliables: FlowerAvaliable[] = [
+  flowerAvailables: FlowerAvailable[] = [
     {value: '1', viewValue: '1'},
     {value: '2', viewValue: '2'},
     {value: '3', viewValue: '3'}
