@@ -1,0 +1,259 @@
+<p></p>
+<div class="tmpcontainer" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" >
+<mat-card class="promotion-card">
+  <mat-card-title>โปรโมชั่น 10/02/2021</mat-card-title>
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    
+    <!-- flowername Column -->
+    <ng-container matColumnDef="flowername">
+      <th mat-header-cell *matHeaderCellDef> ชื่อดอกไม้ </th>
+      <td mat-cell *matCellDef="let element"> {{element.flowername}} </td>
+    </ng-container>
+    
+    <!-- size Column -->
+    <ng-container matColumnDef="size">
+      <th mat-header-cell *matHeaderCellDef> ขนาด </th>
+      <td mat-cell *matCellDef="let element"> {{element.size}} </td>
+    </ng-container>
+    
+    <!-- unit Column -->
+    <ng-container matColumnDef="unit">
+      <th mat-header-cell *matHeaderCellDef> จำนวนช่อ </th>
+      <td mat-cell *matCellDef="let element"> {{element.unit}} </td>
+    </ng-container>
+    
+    <!-- profit Column -->
+    <ng-container matColumnDef="profit">
+      <th mat-header-cell *matHeaderCellDef> กำไร </th>
+      <td mat-cell *matCellDef="let element"> {{element.profit}} </td>
+    </ng-container>
+
+    <!-- total profit Column -->
+    <ng-container matColumnDef="totalprofit">
+        <th mat-header-cell *matHeaderCellDef> กำไรรวม </th>
+        <td mat-cell *matCellDef="let element"> {{element.totalprofit}} </td>
+    </ng-container>
+
+    <!-- price Column -->
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef> ราคาขาย </th>
+      <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+    </ng-container>
+
+    <!-- location Column -->
+    <ng-container matColumnDef="location">
+      <th mat-header-cell *matHeaderCellDef> สถานที่ </th>
+      <td mat-cell *matCellDef="let element"> {{element.location}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="imageUrl">
+      <th mat-header-cell *matHeaderCellDef> รูปภาพ </th>
+      <td mat-cell *matCellDef="let element"> <img class="flower" mat-card-image [src]="element.imageUrl" /> </td>
+    </ng-container>
+    
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <p></p>
+  <div class = " example " >  
+    <button mat-button (click)="openDialog()" mat-raised-button color="primary">เพิ่มดอกไม้ปัจจุบัน</button>  
+  </div> 
+</mat-card>
+<p></p>
+  <!--
+  <section>
+    <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+      <div class="example-box" *ngFor="let movie of movies" cdkDrag>
+        {{movie.flower}}
+        <img *cdkDragPreview [src]="movie.poster" [alt]="movie.flower">
+      </div>
+    </div>
+  </section>
+  -->
+  <!-------------------------------------------------------------------------->
+  <mat-card class="current-card">
+    <mat-card-title>โปรโมชั่นปัจจุบัน</mat-card-title>
+    <mat-card-subtitle>เลือกโปรโมชั่นได้สูงสุด 4 โปรโมชั่น</mat-card-subtitle>
+
+    <!-- <div fxLayout="row wrap"> -->
+    <!--<div  class="container" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center" >-->
+      
+      <!-- src="https://material.angular.io/assets/img/examples/shiba2.jpg" -->
+    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.2%" >
+      <!--Promotion 1-->
+      <mat-card class="example-card">
+        <mat-card-content>กุหลาบขาว เดซี่</mat-card-content>
+        <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="กุหลาบขาว + เดซี่">
+        <mat-card-content>
+          <p>ขนาด : S</p> 
+          <p>จำนวนช่อ : 2</p>
+          <p>ราคาขาย : 550 </p>
+          <p>กำไร : 550</p>
+          <p>กำไรรวม : 1100</p>
+          <p>สถานที่   : ซงหนิงหนิง</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-mini-fab color="primary">
+            <mat-icon>facebook</mat-icon>
+          </button>
+          <button mat-mini-fab color="warn">
+            IG
+          </button>
+          <button mat-mini-fab color="basic">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+      <p></p>
+      <!--Promotion 2-->
+      <mat-card class="example-card">
+        <mat-card-content>ทานตะวัน เดซี่ ยูคาใบกลม</mat-card-content>
+        <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="กุหลาบขาว + เดซี่">
+        <mat-card-content>
+          <p>ขนาด : S</p> 
+          <p>จำนวนช่อ : 2</p>
+          <p>ราคาขาย : 550 </p>
+          <p>กำไร : 550</p>
+          <p>กำไรรวม : 1100</p>
+          <p>สถานที่   : ซงหนิงหนิง</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-mini-fab color="primary">
+            <mat-icon>facebook</mat-icon>
+          </button>
+          <button mat-mini-fab color="warn">
+            IG
+          </button>
+          <button mat-mini-fab color="basic">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+
+      <!--Promotion 3-->
+      <mat-card class="example-card">
+        <mat-card-content>สแตติสสีม่วงหยก แคสเปียร์</mat-card-content>     
+        <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="กุหลาบขาว + เดซี่">
+        <mat-card-content>
+          <p>ขนาด : S</p> 
+          <p>จำนวนช่อ : 2</p>
+          <p>ราคาขาย : 550 </p>
+          <p>กำไร : 550</p>
+          <p>กำไรรวม : 1100</p>
+          <p>สถานที่   : ซงหนิงหนิง</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-mini-fab color="primary">
+            <mat-icon>facebook</mat-icon>
+          </button>
+          <button mat-mini-fab color="warn">
+            IG
+          </button>
+          <button mat-mini-fab color="basic">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+
+      <!--Promotion 4-->
+      <mat-card class="example-card">
+        <mat-card-content>สแตติสม่วงเข้ม</mat-card-content> 
+        <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="กุหลาบขาว + เดซี่">
+        <mat-card-content>
+          <p>ขนาด : S</p> 
+          <p>จำนวนช่อ : 2</p>
+          <p>ราคาขาย : 550 </p>
+          <p>กำไร : 550</p>
+          <p>กำไรรวม : 1100</p>
+          <p>สถานที่   : ซงหนิงหนิง</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-mini-fab color="primary">
+            <mat-icon>facebook</mat-icon>
+          </button>
+          <button mat-mini-fab color="warn">
+            IG
+          </button>
+          <button mat-mini-fab color="basic">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+
+    </div>
+    <p></p>
+    <button mat-flat-button color="primary">
+      <mat-icon>save</mat-icon> บันทึก & แชร์
+    </button>
+  </mat-card>
+
+</div>
+<p></p>
+<!---->
+<div>
+<mat-card class="pro-current-card">
+  <mat-card-title>โปรโมชั่นปัจจุบัน</mat-card-title>
+  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.2%" >
+    <!--Promotion Current 1-->
+    <mat-card class="promotion-current-card">
+      <mat-card-content>กุหลาบแดง แคสเปียร์</mat-card-content>
+      <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="กุหลาบขาว + เดซี่">
+      <mat-card-content>
+        <p>แคสเปียร์ 300 กรัม</p> 
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-mini-fab color="primary">
+          <mat-icon>add</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+    <p></p>
+    <!--Promotion Current 2-->
+    <mat-card class="promotion-current-card">
+      <mat-card-content>สุ่ยขาว</mat-card-content>
+      <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="กุหลาบขาว + เดซี่">
+      <mat-card-content>
+        <p>สุ่ยขาว 250 กร้ม</p> 
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-mini-fab color="primary">
+          <mat-icon>add</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <!--Promotion Current 3-->
+    <mat-card class="promotion-current-card">
+      <mat-card-content>กุหลาบขาว ยูคาลิปตัส</mat-card-content>
+      <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="กุหลาบขาว + เดซี่">
+      <mat-card-content>
+        <p>ยูคาลิปตัส 3 ก้าน</p> 
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-mini-fab color="primary">
+          <mat-icon>add</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <!--Promotion Current 4-->
+    <mat-card class="promotion-current-card">
+      <mat-card-content>ทานตะวัน ยูคาลิปตัส</mat-card-content>
+      <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="กุหลาบขาว + เดซี่">
+      <mat-card-content>
+        <p>ยูคาลิปตัส 2 ก้าน</p> 
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-mini-fab color="primary">
+          <mat-icon>add</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+  </div>
+</mat-card>
+</div>
+
+<!-- <button mat-button (click)="openDialog()">Open dialog</button> -->
+
