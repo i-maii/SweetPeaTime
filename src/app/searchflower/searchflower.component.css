@@ -5,11 +5,25 @@
   flex-direction: column;
   align-items: flex-start;
 }
+
+.searchResult .table {
+  max-width: 900px;
+  width: 100%;
+  margin: 20px auto;
+}
+
 .mat-table {
   max-width: 900px;
   width: 100%;
   margin: 20px auto;
   }
+
+  .mat-paginator {
+    max-width: 900px;
+    width: 100%;
+    margin: 20px auto;
+    }
+
   body {
     font-family: Roboto, Arial, sans-serif;
     margin: 0;
@@ -29,9 +43,18 @@
   }
   
   .mat-form-field {
-    margin: 10px auto;
+    margin: 0px auto;
+  }
+
+  .mat-form-field + .mat-form-field {
+    margin-left: 8px;
   }
 
   .mat-input {
     margin: 10px auto;
+  }
+
+  .mat-stroked-button {
+    margin-left: 110px;
+    
   }

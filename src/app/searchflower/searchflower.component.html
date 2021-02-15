@@ -1,10 +1,10 @@
-<p>searchflower works!</p>
+<p></p>
 <br>
 <br>
 <br>
 <!--<form class="searchform"> -->
 
-    <mat-card>Customer Information
+<!--    <mat-card>Customer Information
     <br>
     <br>
     <mat-form-field appearance="fill">
@@ -21,26 +21,11 @@
   <mat-datepicker #recievedDate></mat-datepicker> 
 </mat-form-field>
 </mat-card>
-<br>
+<br>-->
 
-<mat-card>Reciever Information
-    <br>
-    <mat-form-field appearance="fill">
-    <mat-label>Name</mat-label>
-    <input matInput value="เวส กิบบินส์">
-</mat-form-field>
-<mat-form-field appearance="fill">
-    <mat-label>Phone</mat-label>
-    <input matInput value="089-999-9999">
-</mat-form-field>
-<mat-form-field appearance="fill">
-    <mat-label>Address</mat-label>
-    <input matInput value="11/22 เขตสัมพันธวงศ์ กทม">
-</mat-form-field>
-    <br>
-</mat-card>
+
 <br>
-<mat-card> Order Information
+<mat-card> ค้นหาข้อมูลช่อดอกไม้
     <br>
     <br>
     <mat-form-field appearance="fill">
@@ -51,42 +36,83 @@
         </mat-select>
       </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <!--<mat-form-field appearance="fill">
         <mat-label>Formula</mat-label>
         <mat-select>
           <mat-option value="one">กุหลาบขาว จีน ยูคาลิปตัส size S</mat-option>
           <mat-option value="two">กุหลาบแดง จีน ยูคาลิปตัส size M</mat-option>
         </mat-select>
       </mat-form-field>
+-->
+    <mat-form-field appearance="fill">
+      <mat-label>Available Date</mat-label>
+      <input matInput [matDatepicker]="availableDate">
+      <mat-datepicker-toggle matSuffix [for]="availableDate"></mat-datepicker-toggle>
+    <mat-datepicker #availableDate></mat-datepicker>
+  </mat-form-field>
 
-
-    <mat-label>Available Date</mat-label>
-    <input matInput value="16/01/2021">
-    <mat-label>Total Available</mat-label>
-    <input matInput value="1">
-    <br>
-    <br>
-    <mat-label>Quantity</mat-label>
-    <input matInput value="1">
-    <mat-label>Price</mat-label>
-    <input matInput value="550 Baht">
-    <mat-label>Delivery Fee</mat-label>
-    <input matInput value="150 Baht">
-    <mat-label>Total Price</mat-label>
-    <input matInput value="600 Baht">
-    <br>
-    <br>
+  <mat-form-field appearance="fill">
     <mat-label>Florist</mat-label>
     <input matInput value="Florist 1">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Total Available</mat-label>
+    <input matInput value="4">
+  </mat-form-field>
+
     <br>
+    <br>
+
+   <!-- <mat-form-field appearance="fill">
+      <mat-label>Quantity</mat-label>
+      <input matInput value="1">
+  </mat-form-field>-->
+
+  <mat-form-field appearance="fill">
+    <mat-label>Price</mat-label>
+    <input matInput value="550">
+</mat-form-field>
 </mat-card>
-<br>
-    <button type="button">Search</button>
+<mat-card>Reciever Information
+  <br>
+  <mat-form-field appearance="fill">
+  <mat-label>Name</mat-label>
+  <input matInput value="เวส กิบบินส์">
+</mat-form-field>
+<mat-form-field appearance="fill">
+  <mat-label>Phone</mat-label>
+  <input matInput value="089-999-9999">
+</mat-form-field>
+<mat-form-field appearance="fill">
+  <mat-label>Address</mat-label>
+  <input matInput value="11/22 เขตสัมพันธวงศ์ กทม">
+</mat-form-field>
+  <br>
+</mat-card>
+<button mat-stroked-button>Search</button>
+<mat-card>
+ <mat-form-field appearance="fill">
+    <mat-label>Delivery Fee</mat-label>
+    <input matInput value="150">
+  </mat-form-field>
+<mat-form-field appearance="fill">
+  <mat-label>Total Price</mat-label>
+  <input matInput value="700">
+</mat-form-field>
+</mat-card>
 <!--</form> -->
 
-<div class="mat-elevation-z8">
+
     <table mat-table [dataSource]="dataSource">
-  
+  <mat-form-field appearance="fill">
+    <mat-label>Delivery Fee</mat-label>
+    <input matInput value="150">
+  </mat-form-field>
+<mat-form-field appearance="fill">
+  <mat-label>Total Price</mat-label>
+  <input matInput value="700">
+</mat-form-field>
       <!-- Position Column -->
       <ng-container matColumnDef="position">
         <th mat-header-cell *matHeaderCellDef> No. </th>
@@ -94,26 +120,30 @@
       </ng-container>
   
       <!-- Name Column -->
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      <ng-container matColumnDef="Fomular">
+        <th mat-header-cell *matHeaderCellDef> Fomular </th>
+        <td mat-cell *matCellDef="let element"> {{element.Fomular}} </td>
       </ng-container>
   
       <!-- Weight Column -->
-      <ng-container matColumnDef="weight">
-        <th mat-header-cell *matHeaderCellDef> Weight </th>
-        <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+      <ng-container matColumnDef="Quantity">
+        <th mat-header-cell *matHeaderCellDef> Quantity </th>
+        <td mat-cell *matCellDef="let element"> {{element.Quantity}} </td>
       </ng-container>
   
       <!-- Symbol Column -->
-      <ng-container matColumnDef="symbol">
-        <th mat-header-cell *matHeaderCellDef> Symbol </th>
-        <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+      <ng-container matColumnDef="Florist">
+        <th mat-header-cell *matHeaderCellDef> Florist </th>
+        <td mat-cell *matCellDef="let element"> {{element.Florist}} </td>
       </ng-container>
   
+      <ng-container matColumnDef="Price">
+        <th mat-header-cell *matHeaderCellDef> Price</th>
+        <td mat-cell *matCellDef="let element"> {{element.Price}} </td>
+      </ng-container>
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
   
     <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-  </div>
