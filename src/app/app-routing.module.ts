@@ -16,6 +16,10 @@ const routes: Routes = [
   {
     path: 'createSalesorder',
     component: CreateSalesorderComponent
+  },
+  {
+    path: 'createSalesorder',
+    component: CreateSalesorderComponent
   }
 ];
 

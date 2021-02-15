@@ -23,6 +23,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { HttpClientModule } from '@angular/common/http';
+import { EditSalesorderComponent } from './edit-salesorder/edit-salesorder.component';
+
 
 @NgModule({
   declarations: [
@@ -30,7 +32,8 @@ import { HttpClientModule } from '@angular/common/http';
     MainNavComponent,
     DashboardComponent,
     SalesorderComponent,
-    CreateSalesorderComponent
+    CreateSalesorderComponent,
+    EditSalesorderComponent
   ],
   imports: [
     BrowserModule,
