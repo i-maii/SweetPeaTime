@@ -30,10 +30,6 @@ export class CreateSalesorderComponent implements OnInit {
     forist: new FormControl(),
     note: new FormControl()
   });
-
-  // myGroup = new FormGroup({
-  //   firstName: new FormControl()
-  // });
   
   constructor() { }
 

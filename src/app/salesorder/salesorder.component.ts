@@ -35,7 +35,7 @@ export class SalesorderComponent implements OnInit {
   
   numberOfOrder: number = 5;
 
-  displayedColumns: string[] = ['select', 'position', 'name', 'weight', 'symbol'];
+  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol','select'];
   dataSource = new MatTableDataSource<SalesOrderElement>(ELEMENT_DATA);
   selection = new SelectionModel<SalesOrderElement>(true, []);
 
