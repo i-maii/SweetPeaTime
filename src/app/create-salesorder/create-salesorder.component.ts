@@ -10,7 +10,6 @@ import { FlowerFormula } from '../interface/flower-formula'
 })
 export class CreateSalesorderComponent implements OnInit {
 
-
   salesOrderForm = new FormGroup({
     orderFirstName: new FormControl(),
     orderLastName: new FormControl(),
