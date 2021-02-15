@@ -31,6 +31,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { HttpClientModule } from '@angular/common/http';
 import { SearchflowerComponent } from './searchflower/searchflower.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { EditSalesorderComponent } from './edit-salesorder/edit-salesorder.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     HomeLayoutComponent,
     LoginLayoutComponent,
     CreateSalesorderComponent,
-    SearchflowerComponent
+    SearchflowerComponent,
+    EditSalesorderComponent
   ],
   imports: [
     BrowserModule,

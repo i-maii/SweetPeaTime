@@ -8,6 +8,7 @@ import { LoginComponent } from './login/login.component';
 import { SalesorderComponent } from './salesorder/salesorder.component';
 import { AuthGuard } from './_helpers/auth.guard';
 import { SearchflowerComponent } from './searchflower/searchflower.component';
+import { EditSalesorderComponent } from './edit-salesorder/edit-salesorder.component';
 
 const routes: Routes = [
   {
@@ -40,6 +41,17 @@ const routes: Routes = [
       {
         path: 'createSalesorder',
         component: CreateSalesorderComponent
+      }
+    ]
+  },
+  {
+    path: '',
+    component: HomeLayoutComponent, 
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'editSalesorder',
+        component: EditSalesorderComponent
       }
     ]
   },

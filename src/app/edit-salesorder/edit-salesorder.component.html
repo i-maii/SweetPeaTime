@@ -1,5 +1,5 @@
 <mat-grid-list cols="12" rowHeight="100px">
-    <mat-grid-tile colspan="2">สร้างออเดอร์ ({{numberOfOrder}}) </mat-grid-tile>
+    <mat-grid-tile colspan="2">แก้ไขออเดอร์ ({{numberOfOrder}}) </mat-grid-tile>
 </mat-grid-list>
 
 <form [formGroup]="salesOrderForm" (ngSubmit)="onSubmit()">
@@ -104,7 +104,7 @@
                         <td>
                             <mat-form-field appearance="fill">
                                 <mat-label>จำนวน</mat-label>
-                                <mat-select [(ngModel)]="selectedValue" type="text" formControlName="flowerAvailables">
+                                <mat-select [(ngModel)]="selectedValue" type="text" formControlName="flowerAvaliable">
                                     <mat-option *ngFor="let flowerAvailable of flowerAvailables"
                                         [value]="flowerAvailable.value">
                                         {{flowerAvailable.viewValue}}
@@ -167,7 +167,7 @@
         <mat-grid-tile>
             <div class="button-row">
                 <button mat-raised-button color="primary" type="submit">
-                    สร้างออเดอร์
+                    บันทึกออเดอร์
                 </button>
             </div>
         </mat-grid-tile>
