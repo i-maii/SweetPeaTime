@@ -29,6 +29,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { HttpClientModule } from '@angular/common/http';
+import { SearchflowerComponent } from './searchflower/searchflower.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,8 @@ import { HttpClientModule } from '@angular/common/http';
     LoginComponent,
     HomeLayoutComponent,
     LoginLayoutComponent,
-    CreateSalesorderComponent
+    CreateSalesorderComponent,
+    SearchflowerComponent
   ],
   imports: [
     BrowserModule,
@@ -62,7 +65,8 @@ import { HttpClientModule } from '@angular/common/http';
     MatNativeDateModule,
     MatSelectModule,
     MatCheckboxModule,
-    HttpClientModule
+    HttpClientModule,
+    MatPaginatorModule
   ],
   providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent]

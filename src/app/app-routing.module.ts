@@ -7,6 +7,7 @@ import { LoginLayoutComponent } from './layouts/login-layout.component';
 import { LoginComponent } from './login/login.component';
 import { SalesorderComponent } from './salesorder/salesorder.component';
 import { AuthGuard } from './_helpers/auth.guard';
+import { SearchflowerComponent } from './searchflower/searchflower.component';
 
 const routes: Routes = [
   {
@@ -39,6 +40,17 @@ const routes: Routes = [
       {
         path: 'createSalesorder',
         component: CreateSalesorderComponent
+      }
+    ]
+  },
+  {
+    path: '',
+    component: HomeLayoutComponent, 
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'searchflower',
+        component: SearchflowerComponent
       }
     ]
   },
