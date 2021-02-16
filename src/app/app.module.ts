@@ -18,10 +18,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from './_helpers/auth.guard';
-import { MatFormFieldModule } from '@angular/material/form-field'
-import { AuthService } from './_services/auth.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { HomeLayoutComponent } from './layouts/home-layout.component';
 import { LoginLayoutComponent } from './layouts/login-layout.component';
+import { MatTableModule } from '@angular/material/table';
+import { AuthService } from './_services/auth.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,7 +48,8 @@ import { LoginLayoutComponent } from './layouts/login-layout.component';
     MatGridListModule,
     FormsModule,
     ReactiveFormsModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatTableModule
   ],
   providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent]
