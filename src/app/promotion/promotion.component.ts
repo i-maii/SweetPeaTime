@@ -123,4 +123,28 @@ export class PromotionDialogComponent {
     this.dialogRef.close();
   }
 
+  displayedColumns = ['checked', 'position', 'flowername', 'stock', 'unit', 'location'];
+  dataSource = ELEMENT_DATA_DIALOG;
+
+  highlight(element: ElementDialog) {
+    element.highlighted = !element.highlighted;
+  }
+
 }
+
+export interface ElementDialog {
+  checked: boolean;
+  position: number;
+  flowername: string;
+  stock: number;
+  unit: string;
+  location: string;
+  highlighted?: boolean;
+  hovered?: boolean;
+}
+
+const ELEMENT_DATA_DIALOG: ElementDialog[] = [
+  { checked: false, position: 1, flowername: 'ยูคาลิปตัส', stock: 5, unit: 'ก้าน', location: 'ซงหนิงหนิง' },
+  { checked: false, position: 2, flowername: 'สุ่ย', stock: 250, unit: 'กรัม', location: 'ซงหนิงหนิง' },
+  { checked: false, position: 3, flowername: 'แคสเปีนร์', stock: 300, unit: 'กรัม', location: 'ซงหนิงหนิง' },
+];

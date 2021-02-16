@@ -110,3 +110,19 @@ mat-grid-tile {
   .card-container-left{
     display: inline;
   }
+
+  .example-container {
+    display: flex;
+    flex-direction: column;
+    max-height: 500px;
+    min-width: 600px;
+  }
+  
+  .mat-table {
+    overflow: auto;
+    max-height: 500px;
+  }
+
+  .templatedialog{
+    max-width: 2000px;
+  }

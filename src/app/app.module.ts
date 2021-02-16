@@ -13,7 +13,7 @@ import { MatListModule } from '@angular/material/list';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SalesorderComponent } from './salesorder/salesorder.component';
-import { PromotionComponent } from './promotion/promotion.component';
+import { PromotionComponent, PromotionDialogComponent } from './promotion/promotion.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTableModule } from '@angular/material/table';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -24,6 +24,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -31,7 +34,9 @@ import { MatInputModule } from '@angular/material/input';
     MainNavComponent,
     DashboardComponent,
     SalesorderComponent,
-    PromotionComponent
+    PromotionComponent,
+    PromotionDialogComponent
+
   ],
   imports: [
     BrowserModule,
@@ -52,7 +57,10 @@ import { MatInputModule } from '@angular/material/input';
     MatDialogModule,
     MatSnackBarModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
