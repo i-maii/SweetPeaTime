@@ -10,7 +10,6 @@ import { FlowerFormula } from '../interface/flower-formula'
 })
 export class CreateSalesorderComponent implements OnInit {
 
-
   salesOrderForm = new FormGroup({
     orderFirstName: new FormControl(),
     orderLastName: new FormControl(),
@@ -30,10 +29,6 @@ export class CreateSalesorderComponent implements OnInit {
     forist: new FormControl(),
     note: new FormControl()
   });
-
-  // myGroup = new FormGroup({
-  //   firstName: new FormControl()
-  // });
   
   constructor() { }
 

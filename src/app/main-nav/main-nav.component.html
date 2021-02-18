@@ -8,15 +8,19 @@
       <a mat-list-item routerLinkActive="active" routerLink="/salesorder">ค้นหาและแก้ไขออเดอร์</a>
       <a mat-list-item routerLinkActive="active" routerLink="/createSalesorder">สร้างออเดอร์</a>
       <a mat-list-item routerLinkActive="active" routerLink="/editSalesorder">แก้ไขข้อมูลออเดอร์</a>
+      <a mat-list-item routerLinkActive="active" routerLink="/searchflower">สอบถามข้อมูลช่อดอกไม้</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <mat-toolbar color="primary">
+    <mat-toolbar>
       <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <!-- <span>{{tabName}}</span> -->
+      <span>{{username}}</span>
+      <span class="spacer"></span>
+        <a mat-button (click)="onLogout()">Logout</a>
+      <!-- <span>SweetPeaTimes</span> -->
     </mat-toolbar>
     <!-- Add Content Here -->
     <router-outlet></router-outlet>
