@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MainNavComponent } from './main-nav/main-nav.component';
@@ -26,7 +25,19 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { FormsModule } from '@angular/forms';
+import { LoginComponent } from './login/login.component';
+import { AuthGuard } from './_helpers/auth.guard';
+import { AuthService } from './_services/auth.service';
+import { HomeLayoutComponent } from './layouts/home-layout.component';
+import { LoginLayoutComponent } from './layouts/login-layout.component';
+import { CreateSalesorderComponent } from './create-salesorder/create-salesorder.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { HttpClientModule } from '@angular/common/http';
+import { SearchflowerComponent } from './searchflower/searchflower.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { EditSalesorderComponent } from './edit-salesorder/edit-salesorder.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -35,8 +46,13 @@ import { FormsModule } from '@angular/forms';
     DashboardComponent,
     SalesorderComponent,
     PromotionComponent,
-    PromotionDialogComponent
-
+    PromotionDialogComponent,
+    LoginComponent,
+    HomeLayoutComponent,
+    LoginLayoutComponent,
+    CreateSalesorderComponent,
+    SearchflowerComponent,
+    EditSalesorderComponent
   ],
   imports: [
     BrowserModule,
@@ -60,9 +76,21 @@ import { FormsModule } from '@angular/forms';
     MatInputModule,
     MatSelectModule,
     MatCheckboxModule,
-    FormsModule
+    MatCardModule,
+    MatInputModule,
+    MatGridListModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatTableModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    HttpClientModule,
+    MatPaginatorModule
   ],
-  providers: [],
+  providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
