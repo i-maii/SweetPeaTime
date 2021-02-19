@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { FlowerAvailable } from '../interface/flower-available';
+import { Florist } from '../interface/florist';
 import { FlowerFormula } from '../interface/flower-formula';
+import { RestApiService } from '../_shared/rest-api.service';
 
 @Component({
   selector: 'edit-salesorder',
@@ -21,35 +22,38 @@ export class EditSalesorderComponent implements OnInit {
     receiverAddress: new FormControl(),
     receiveDate: new FormControl(),
     flowerFormular: new FormControl(),
-    flowerAvaliable: new FormControl(),
-    dateAvaliable: new FormControl(),
+    flowerAvailable: new FormControl(),
+    dateAvailable: new FormControl(),
     flowerPrice: new FormControl(),
     deliveryFee: new FormControl(),
     totalPrice: new FormControl(),
-    forist: new FormControl(),
+    florist: new FormControl(),
     note: new FormControl()
   });
   
-  constructor() { }
+  flowerFormulas: FlowerFormula[] = [];
+  florists: Florist[] = [];
+
+  constructor(
+    private restApiService: RestApiService
+  ) { }
 
   ngOnInit(): void {
+    this.restApiService.getFlowerFormula().subscribe((data: FlowerFormula[]) => {
+      for (let i = 0; i < data.length; i++) {
+        this.flowerFormulas.push(data[i]);
+      }
+    });
+    this.restApiService.getFlorist().subscribe((data: Florist[]) => {
+      for (let i = 0; i < data.length; i++) {
+        this.florists.push(data[i]);
+      }
+    });
   }
 
   numberOfOrder: number = 5;
 
   selectedValue: string | undefined;
-
-  flowerAvailables: FlowerAvailable[] = [
-    {value: '1', viewValue: '1'},
-    {value: '2', viewValue: '2'},
-    {value: '3', viewValue: '3'}
-  ];
-
-  flowerFormulas: FlowerFormula[] = [
-    {value: '1', viewValue: 'กุหลาบขาว ยูคา'},
-    {value: '2', viewValue: 'กุหลาบแดง ยูคา'},
-    {value: '3', viewValue: 'ทานตะวัน'}
-  ];
 
   onSubmit(): void {
     console.warn(this.salesOrderForm.value);  

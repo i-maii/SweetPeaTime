@@ -1,23 +1,9 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, EventEmitter, Injectable, OnInit, Output } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { takeUntil } from 'rxjs/operators';
 import { SalesOrderElement } from '../interface/sales-order-element'
-
-const ELEMENT_DATA: SalesOrderElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-  {position: 11, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 12, name: 'Neon', weight: 20.1797, symbol: 'Ne'}
-];
-
+import { RestApiService } from '../_shared/rest-api.service';
 
 @Component({
   selector: 'salesorder',
@@ -27,51 +13,37 @@ const ELEMENT_DATA: SalesOrderElement[] = [
 
 export class SalesorderComponent implements OnInit {
 
-  constructor() { }
+  ELEMENT_DATA: SalesOrderElement[] = [];
+  numberOfOrder: number = 0;
+  displayedColumns: string[] = [];
+  dataSource: any;
+  selection: any;
+
+  constructor(
+    private restApiService: RestApiService
+  ) { }
 
   ngOnInit(): void {
-
+    this.restApiService.getSalesOrder().subscribe((data: SalesOrderElement[]) => {
+      for (let i = 0; i < data.length; i++) {
+        this.ELEMENT_DATA.push(data[i]);
+      }
+      this.numberOfOrder = data.length;
+      this.displayedColumns = ['id', 'status', 'deliveryDateTime', 'customerName', 'select'];
+      this.dataSource = new MatTableDataSource<SalesOrderElement>(this.ELEMENT_DATA);
+      this.selection = new SelectionModel<SalesOrderElement>(true, []);
+    })
   }
-  
-  numberOfOrder: number = 5;
-
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol','select'];
-  dataSource = new MatTableDataSource<SalesOrderElement>(ELEMENT_DATA);
-  selection = new SelectionModel<SalesOrderElement>(true, []);
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
-  }
-
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
-  masterToggle() {
-    this.isAllSelected() ?
-        this.selection.clear() :
-        this.dataSource.data.forEach(row => {
-          // console.log(row)
-          this.selection.select(row)
-        });
-  }
-
-  /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: SalesOrderElement): string {
-    if (!row) {
-      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
-    }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
-  }
-
   printRow(row: SalesOrderElement, check: boolean): void {
-    if(this.selection.isSelected(row) === false){
+    if (this.selection.isSelected(row) === false) {
       console.log(row);
     }
   }
-  
+
 }
