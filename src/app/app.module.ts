@@ -23,6 +23,16 @@ import { HomeLayoutComponent } from './layouts/home-layout.component';
 import { LoginLayoutComponent } from './layouts/login-layout.component';
 import { MatTableModule } from '@angular/material/table';
 import { AuthService } from './_services/auth.service';
+import { CreateSalesorderComponent } from './create-salesorder/create-salesorder.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { HttpClientModule } from '@angular/common/http';
+import { SearchflowerComponent } from './searchflower/searchflower.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { EditSalesorderComponent } from './edit-salesorder/edit-salesorder.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +41,10 @@ import { AuthService } from './_services/auth.service';
     SalesorderComponent,
     LoginComponent,
     HomeLayoutComponent,
-    LoginLayoutComponent
+    LoginLayoutComponent,
+    CreateSalesorderComponent,
+    SearchflowerComponent,
+    EditSalesorderComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +62,13 @@ import { AuthService } from './_services/auth.service';
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
-    MatTableModule
+    MatTableModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    HttpClientModule,
+    MatPaginatorModule
   ],
   providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent]
