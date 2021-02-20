@@ -32,6 +32,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { SearchflowerComponent } from './searchflower/searchflower.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { EditSalesorderComponent } from './edit-salesorder/edit-salesorder.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -68,7 +70,9 @@ import { EditSalesorderComponent } from './edit-salesorder/edit-salesorder.compo
     MatSelectModule,
     MatCheckboxModule,
     HttpClientModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    FlexLayoutModule,
+    NgbModule
   ],
   providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent]

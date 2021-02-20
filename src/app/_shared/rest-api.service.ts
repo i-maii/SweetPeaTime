@@ -5,7 +5,8 @@ import { catchError, retry } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Florist } from '../interface/florist';
 import { FlowerAvailable } from '../interface/flower-available';
-import { FlowerFormula } from '../interface/flower-formula'
+import { FlowerFormula } from '../interface/flower-formula';
+import { PromotionDetail } from '../interface/promotion-detail';
 import { SalesOrderElement } from '../interface/sales-order-element';
 
 @Injectable({
@@ -51,6 +52,14 @@ export class RestApiService {
 
   getFlowerAvailable(id: number): Observable<FlowerAvailable[]> {
     return this.http.get<FlowerAvailable[]>(this.apiURL + '/flowerFormula/getQuantityAvailable/' + id)
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
+  }
+
+  getPromotionDetail(): Observable<PromotionDetail[]> {
+    return this.http.get<PromotionDetail[]>(this.apiURL + '/promotionDetail/currentPromotion')
       .pipe(
         retry(1),
         catchError(this.handleError)
