@@ -1,4 +1,10 @@
 export interface FlowerFormula {
-    value: string;
-    viewValue: string;
+    id: number;
+    name: string;
+    size: string;
+    pattern: string;
+    price: number;
+    imagePath: string;
+    occasion: string;
+    quantityAvailable: string;
 }

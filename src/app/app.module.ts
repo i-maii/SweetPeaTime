@@ -27,9 +27,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './_helpers/auth.guard';
-import { AuthService } from './_services/auth.service';
 import { HomeLayoutComponent } from './layouts/home-layout.component';
 import { LoginLayoutComponent } from './layouts/login-layout.component';
+import { AuthService } from './_services/auth.service';
 import { CreateSalesorderComponent } from './create-salesorder/create-salesorder.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -38,6 +38,7 @@ import { SearchflowerComponent } from './searchflower/searchflower.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { EditSalesorderComponent } from './edit-salesorder/edit-salesorder.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -82,13 +83,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
-    MatTableModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
     MatCheckboxModule,
     HttpClientModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    FlexLayoutModule,
+    NgbModule
   ],
   providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent]

@@ -1,0 +1,35 @@
+.content {
+    padding: 16px;
+}
+
+.content > mat-card {
+    margin-bottom: 16px;
+}
+
+.main-image {
+    text-align: center;
+}
+
+.mat-elevation-z4 mat-card-header {
+    text-align: center;
+    width: 100%;
+    display: block;
+    font-weight: 700;
+}
+
+mat-card-content {
+    font-size: medium;
+}
+
+.main-card .main-header .main-title {
+    font-weight: bold;
+    font-size: xx-large;
+}
+
+.main-card .main-header {
+    padding: 16px;
+}
+
+mat-card-actions {
+    padding: 16px;
+}

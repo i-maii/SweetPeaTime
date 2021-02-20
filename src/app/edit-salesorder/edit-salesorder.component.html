@@ -94,8 +94,8 @@
                             <mat-form-field appearance="fill">
                                 <mat-label>สูตรดอกไม้</mat-label>
                                 <mat-select [(ngModel)]="selectedValue" type="text" formControlName="flowerFormular">
-                                    <mat-option *ngFor="let flowerFormula of flowerFormulas" [value]="flowerFormula.value">
-                                        {{flowerFormula.viewValue}}
+                                    <mat-option *ngFor="let flowerFormula of flowerFormulas" [value]="flowerFormula.id">
+                                        {{flowerFormula.name + flowerFormula.size}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -103,11 +103,21 @@
                         </td>
                         <td>
                             <mat-form-field appearance="fill">
+                                <mat-label>ช่างจัดดอกไม้</mat-label>
+                                <mat-select [(ngModel)]="selectedValue" type="text" formControlName="florist">
+                                    <mat-option *ngFor="let florist of florists"
+                                        [value]="florist.id">
+                                        {{florist.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field appearance="fill">
                                 <mat-label>จำนวน</mat-label>
-                                <mat-select [(ngModel)]="selectedValue" type="text" formControlName="flowerAvaliable">
-                                    <mat-option *ngFor="let flowerAvailable of flowerAvailables"
-                                        [value]="flowerAvailable.value">
-                                        {{flowerAvailable.viewValue}}
+                                <mat-select [(ngModel)]="selectedValue" type="text" formControlName="flowerAvailable">
+                                    <mat-option *ngFor="let flowerFormula of flowerFormulas" [value]="flowerFormula.id">
+                                        {{flowerFormula.quantityAvailable}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -115,7 +125,7 @@
                         <td>
                             <mat-form-field class="create-form-full-width">
                                 <mat-label>สามารถใช้ได้ถึง</mat-label>
-                                <input matInput type="text" formControlName="dateAvaliable">
+                                <input matInput type="text" formControlName="dateAvailable">
                             </mat-form-field>
                         </td>
                     </tr>
@@ -146,12 +156,6 @@
     
                 <table class="create-form-full-width" cellspacing="0">
                     <tr>
-                        <td>
-                            <mat-form-field class="create-form-full-width">
-                                <mat-label>ช่างจัดดอกไม้</mat-label>
-                                <input matInput type="text" formControlName="forist">
-                            </mat-form-field>
-                        </td>
                         <td>
                             <mat-form-field class="create-form-full-width">
                                 <mat-label>โน๊ต</mat-label>

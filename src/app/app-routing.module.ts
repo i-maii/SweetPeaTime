@@ -15,7 +15,7 @@ const routes: Routes = [
   {
     path: '',
     component: HomeLayoutComponent, 
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     children: [
       {
         path: '',
@@ -26,7 +26,7 @@ const routes: Routes = [
   {
     path: '',
     component: HomeLayoutComponent, 
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     children: [
       {
         path: 'salesorder',
@@ -37,7 +37,7 @@ const routes: Routes = [
   {
     path: '',
     component: HomeLayoutComponent, 
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     children: [
       {
         path: 'createSalesorder',
@@ -48,7 +48,7 @@ const routes: Routes = [
   {
     path: '',
     component: HomeLayoutComponent, 
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     children: [
       {
         path: 'editSalesorder',
@@ -59,7 +59,7 @@ const routes: Routes = [
   {
     path: '',
     component: HomeLayoutComponent, 
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     children: [
       {
         path: 'searchflower',
@@ -74,6 +74,16 @@ const routes: Routes = [
       {
         path: 'login',
         component: LoginComponent
+      }
+    ]
+  },
+  {
+    path: '',
+    component: PromotionComponent,
+    children: [
+      {
+        path: 'promotion',
+        component: PromotionComponent
       }
     ]
   }

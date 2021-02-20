@@ -1,4 +1,4 @@
 export interface FlowerAvailable {
-    value: string;
-    viewValue: string;
+    id: number;
+    flowerQuantityAvailiable: number;
 }
