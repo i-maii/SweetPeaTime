@@ -6,6 +6,14 @@
   align-items: flex-start;
 }
 
+.main-div{
+  min-width: 150px;
+  max-width: 900px;
+  width: 100%;
+  margin-left: 200px;
+}
+
+
 .searchResult .table {
   max-width: 900px;
   width: 100%;
