@@ -32,7 +32,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SearchflowerComponent } from './searchflower/searchflower.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { EditSalesorderComponent } from './edit-salesorder/edit-salesorder.component';
-
+import { FlowerFomularService } from './_services/flower-fomular.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -68,9 +68,9 @@ import { EditSalesorderComponent } from './edit-salesorder/edit-salesorder.compo
     MatSelectModule,
     MatCheckboxModule,
     HttpClientModule,
-    MatPaginatorModule
+    MatPaginatorModule,
   ],
-  providers: [AuthService, AuthGuard],
+  providers: [AuthService, AuthGuard, FlowerFomularService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

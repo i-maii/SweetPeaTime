@@ -1,8 +1,13 @@
 //import { Component } from '@angular/core';
 //import { Component, OnInit } from '@angular/core';
+import { ThrowStmt } from '@angular/compiler';
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
+import { FlowerFomular } from '../_models/flower-fomular';
+import { FlowerFomularService } from '../_services/flower-fomular.service';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'searchflower',
@@ -19,14 +24,73 @@ import {MatTableDataSource} from '@angular/material/table';
 }*/
 export class SearchflowerComponent implements AfterViewInit {
   
-  displayedColumns: string[] = ['position', 'Fomular', 'Quantity','Florist', 'Price'];
+  displayedColumns: string[] = ['position', 'Fomular', 'Quantity','Florist', 'Price','deliveryFee', 'totalPrice'];
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  /*flower = new FormControl();
+  flowerList: string[] = ['', 'กุหลาบแดง', 'ทานตะวัน', 'ลิลลี่ขาว', 'ไฮเดรนเยียคราม', 'ไฮเดรนเยียชมพู'];
+*/
+  flower = new FormControl();
+  flowerList: string[] = ['WhiteRose', 'Redrose', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
+  flowerfomular = new FlowerFomular ();  
+  private data: any;  
+
+  SearchFlowerForm = new FormGroup({  
+    flowerCat: new FormControl(),
+    flower: new FormControl(), 
+    occasion: new FormControl(), 
+    color: new FormControl(), 
+    date: new FormControl(), 
+    florist : new FormControl(), 
+    quantity : new FormControl(),
+    priceFrom : new FormControl(), 
+    priceTo: new FormControl(), 
+    address  : new FormControl(), 
+  });
+  
+  constructor(private flowerfomularService : FlowerFomularService) { }  
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngAfterViewInit() {
+   // this.getData(this.flowerfomular)
     this.dataSource.paginator = this.paginator;
   }
+
+
+  
+  getData(flowerfomular: FlowerFomular)  
+  {  
+      this.flowerfomularService.getData(flowerfomular).subscribe(  
+        (        response: { json: () => any; }) => {  
+          this.data = response.json();  
+        },  
+        (        error: any) => {  
+          console.log("error while getting user Details");  
+        }  
+      );  
+  }
+  
+  searchForm(searchInfo : any)  
+  {  
+    searchInfo.flower = 'Whiterose';
+    searchInfo.quantity= 2;
+      //  this.flowerfomular.name = this.Name.value;  
+       // this.flowerfomular.quantity= this.Quantity.value; 
+       this.flowerfomular.name = 'Whiterose' ;  
+       this.flowerfomular.quantity= 2;   
+        this.getData(this.flowerfomular);  
+  }  
+  
+  get Name()  
+  {  
+    return this.SearchFlowerForm.get('flower');  
+  }  
+  
+  get Quantity()  
+  {  
+    return this.SearchFlowerForm.get('quantity');  
+  }  
+
 }
 
 export interface PeriodicElement {
