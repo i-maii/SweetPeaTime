@@ -3,7 +3,7 @@
   padding: 16px;
 }
 
-.content > mat-card {
+.content mat-card {
   margin-bottom: 16px;
 }
 
@@ -43,10 +43,6 @@ mat-card-actions {
 .center {
   display: block;
 }
-
-/* img {
-  border-radius: 5px;
-} */
 
 .image-list {
     flex-wrap: wrap;

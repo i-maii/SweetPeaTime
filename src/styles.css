@@ -9,7 +9,4 @@ body {
 }
 body [class^='mat-'], body [class*='mat-'] {
     font-family: 'Kanit', sans-serif !important;
-} 
-
-
-
+}
