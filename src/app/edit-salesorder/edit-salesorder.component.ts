@@ -45,11 +45,11 @@ export class EditSalesorderComponent implements OnInit {
     {value: '3', viewValue: '3'}
   ];
 
-  flowerFormulas: FlowerFormula[] = [
-    {value: '1', viewValue: 'กุหลาบขาว ยูคา'},
-    {value: '2', viewValue: 'กุหลาบแดง ยูคา'},
-    {value: '3', viewValue: 'ทานตะวัน'}
-  ];
+   flowerFormulas = [
+     {value: '1', viewValue: 'กุหลาบขาว ยูคา'},
+     {value: '2', viewValue: 'กุหลาบแดง ยูคา'},
+     {value: '3', viewValue: 'ทานตะวัน'}
+   ];
 
   onSubmit(): void {
     console.warn(this.salesOrderForm.value);  

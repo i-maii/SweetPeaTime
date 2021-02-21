@@ -45,7 +45,7 @@ export class CreateSalesorderComponent implements OnInit {
     {value: '3', viewValue: '3'}
   ];
 
-  flowerFormulas: FlowerFormula[] = [
+  flowerFormulas = [
     {value: '1', viewValue: 'กุหลาบขาว ยูคา'},
     {value: '2', viewValue: 'กุหลาบแดง ยูคา'},
     {value: '3', viewValue: 'ทานตะวัน'}

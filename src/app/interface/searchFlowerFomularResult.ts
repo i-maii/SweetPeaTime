@@ -1,8 +1,8 @@
 export interface SearchFlowerFomularResult {
     name: string;
     quantity: number;
-    florist: number;
-    price: string;
+    florist: string;
+    price: number;
     deliveryFee: number;
     totalPrice : number;
 }

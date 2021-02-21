@@ -9,7 +9,9 @@ import { FlowerFomular } from '../_models/flower-fomular';
 import { FlowerFomularService } from '../_services/flower-fomular.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { FlowerFormula } from '../interface/flower-formula';
-
+import { RestApiService } from '../_shared/rest-api.service';
+import { SelectionModel } from '@angular/cdk/collections';
+import { SearchFlowerFomularResult } from '../interface/searchFlowerFomularResult';
 
 @Component({
   selector: 'searchflower',
@@ -26,37 +28,59 @@ import { FlowerFormula } from '../interface/flower-formula';
 }*/
 export class SearchflowerComponent implements AfterViewInit {
   
-  displayedColumns: string[] = ['position', 'Fomular', 'Quantity','Florist', 'Price','deliveryFee', 'totalPrice'];
-  dataSource = new MatTableDataSource<SearchFlowerFomularResult>(ELEMENT_DATA);
+ // ELEMENT_DATA: SearchFlowerFomularResult[] = [];
+ ELEMENT_DATA: FlowerFormula[] = [];
+  displayedColumns: string[] = ['id', 'name','quantityAvailable','pattern', 'price','size','occasion'];
+ // dataSource = new MatTableDataSource<SearchFlowerFomularResult>();
+  dataSource = new MatTableDataSource<FlowerFormula>();
   /*flower = new FormControl();
   flowerList: string[] = ['', 'กุหลาบแดง', 'ทานตะวัน', 'ลิลลี่ขาว', 'ไฮเดรนเยียคราม', 'ไฮเดรนเยียชมพู'];
 */
   //flower = new FormControl();
   flowerList: string[] = ['WhiteRose', 'Redrose', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
-  flowerfomular = new FlowerFomular ();  
+  flowerFormulas: FlowerFormula[] = [];
   private data: any;  
 
-  SearchFlowerForm = new FormGroup({  
+  searchFlowerForm = new FormGroup({  
     flowerCat : new FormControl(''),
-    flower : new FormControl(''), 
+    name : new FormControl(''), 
     occasion : new FormControl(''), 
     color : new FormControl(''), 
     date : new FormControl(''), 
-    florist : new FormControl(''), 
+    pattern : new FormControl(''), 
     quantity : new FormControl(),
     priceFrom : new FormControl(''), 
     priceTo : new FormControl(''), 
     address  : new FormControl(''), 
   });
   
-  constructor(private flowerfomularService : FlowerFomularService) { }  
+
+  
+  constructor(private restApiService: RestApiService) { }  
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngAfterViewInit() {
    // this.getData(this.flowerfomular)
+   this.restApiService.searchAllFlowerFormula().subscribe((data: FlowerFormula[]) => {
+  
+    for (let i = 0; i < data.length; i++) {
+      this.ELEMENT_DATA.push(data[i]);
+
+    }
+    
+  this.dataSource = new MatTableDataSource<FlowerFormula>(this.ELEMENT_DATA);
+    
+  
+  })
+
     this.dataSource.paginator = this.paginator;
   }
+  // applyFilter(searchFlowerForm: any) {
+  //   const filterValue = (searchFlowerForm.target as HTMLInputElement).value;
+  //   this.dataSource.filter = filterValue.trim().toLowerCase();
+  // }
+
   selectedValue: string | undefined;
 
   flowerCat = [
@@ -84,53 +108,36 @@ export class SearchflowerComponent implements AfterViewInit {
   ];
 
 
-  flowerFormulas: FlowerFormula[] = [
-    {value: '1', viewValue: 'กุหลาบขาว ยูคา'},
-    {value: '2', viewValue: 'กุหลาบแดง ยูคา'},
-    {value: '3', viewValue: 'ทานตะวัน'}
+  // flowerFormulas: FlowerFormula[] = [
+  //   {value: '1', viewValue: 'กุหลาบขาว ยูคา'},
+  //   {value: '2', viewValue: 'กุหลาบแดง ยูคา'},
+  //   {value: '3', viewValue: 'ทานตะวัน'}
+  // ];
+
+  pattern = [
+    {value: '1', ViewValue : 'เกาหลี'},
+    {value: '2', viewValue: 'ทั่วไป'}
   ];
 
-  florist : FlowerFormula[] = [
-    {value: '1', viewValue: 'หนึ่ง'},
-    {value: '2', viewValue: 'ซงหนิงหนิง'}
-  ];
-
-  getData(flowerfomular: FlowerFomular)  
-  {  
-      // this.flowerfomularService.getData(flowerfomular).subscribe(  
-      //   (        response: { json: () => any; }) => {  
-      //     this.data = response.json();  
-      //   },  
-      //   (        error: any) => {  
-      //     console.log("error while getting user Details");  
-      //   }  
-      // );  
-  }
   
   searchForm()  
-  {  
-    console.warn(this.SearchFlowerForm.value);
-   // searchInfo = new FlowerFomular ();  
-    //searchInfo.flower = 'Whiterose';
-    //searchInfo.quantity= 2;
-      //  this.flowerfomular.name = this.Name.value;  
-       // this.flowerfomular.quantity= this.Quantity.value; 
-       // this.getData(this.flowerfomular);  
-  }  
+  {
+    this.restApiService.searchFlowerFormula(this.searchFlowerForm.value).subscribe((data: FlowerFormula[]) => {
   
-  get Name()  
-  {  
-    return this.SearchFlowerForm.get('flower');  
-  }  
+      for (let i = 0; i < data.length; i++) {
+        this.ELEMENT_DATA.push(data[i]);
   
-  get Quantity()  
-  {  
-    return this.SearchFlowerForm.get('quantity');  
-  }  
+      }
+    
+    this.dataSource = new MatTableDataSource<FlowerFormula>(this.ELEMENT_DATA);    
+  //  this.dataSource = new MatTableDataSource<FlowerFormula>(this.flowerFormulas);
+
+    console.warn(this.searchFlowerForm.value);
+  })  
 
 }
-
-export interface SearchFlowerFomularResult {
+}
+export interface searchFlowerFomularResult {
   position: number 
   name: string;
   quantity: number;
@@ -140,7 +147,7 @@ export interface SearchFlowerFomularResult {
   totalPrice : number;
 }
 
-const ELEMENT_DATA: SearchFlowerFomularResult[] = [
+const ELEMENT_DATA: searchFlowerFomularResult[] = [
   {position: 1, name: 'Hydrogen',quantity: 1, florist: 'หนึ่ง', price: 1.0079,  deliveryFee: 100, totalPrice : 100},
   {position: 2, name: 'Helium', quantity: 1,florist: 'หนึ่ง', price: 1.0079,   deliveryFee: 100, totalPrice : 100},
   {position: 3, name: 'Lithium',quantity: 1,florist: 'หนึ่ง', price: 1.0079,  deliveryFee: 100, totalPrice : 100},
@@ -160,3 +167,4 @@ const ELEMENT_DATA: SearchFlowerFomularResult[] = [
   {position: 19, name: 'Potassium',quantity: 1,florist: 'หนึ่ง', price: 39.0983, deliveryFee: 100,totalPrice : 100},
   {position: 20, name: 'Calcium',quantity: 1, florist: 'หนึ่ง', price: 40.078,  deliveryFee: 100,totalPrice : 100},
 ];
+
