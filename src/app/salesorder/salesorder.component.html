@@ -23,29 +23,29 @@
     <mat-grid-tile colspan="4" rowspan="5">
         <div class="scroll-bar">
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-
-                <!-- Position Column -->
-                <ng-container matColumnDef="position">
+                
+                <!-- No. Column -->
+                <ng-container matColumnDef="id">
                     <th mat-header-cell *matHeaderCellDef> No. </th>
-                    <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+                    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
                 </ng-container>
 
-                <!-- Name Column -->
-                <ng-container matColumnDef="name">
-                    <th mat-header-cell *matHeaderCellDef> Name </th>
-                    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                <!-- ReceiverDateTime Column -->
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef> Status </th>
+                    <td mat-cell *matCellDef="let element"> {{element.status}} </td>
                 </ng-container>
 
-                <!-- Weight Column -->
-                <ng-container matColumnDef="weight">
-                    <th mat-header-cell *matHeaderCellDef> Weight </th>
-                    <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+                <!-- DeliveryDateTime Column -->
+                <ng-container matColumnDef="deliveryDateTime">
+                    <th mat-header-cell *matHeaderCellDef> DeliveryDateTime </th>
+                    <td mat-cell *matCellDef="let element"> {{element.deliveryDateTime}} </td>
                 </ng-container>
 
-                <!-- Symbol Column -->
-                <ng-container matColumnDef="symbol">
-                    <th mat-header-cell *matHeaderCellDef> Symbol </th>
-                    <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+                <!-- CustomerName Column -->
+                <ng-container matColumnDef="customerName">
+                    <th mat-header-cell *matHeaderCellDef> CustomerName </th>
+                    <td mat-cell *matCellDef="let element"> {{element.customerName}} </td>
                 </ng-container>
 
                 <!-- Checkbox Column -->
