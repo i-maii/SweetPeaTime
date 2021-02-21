@@ -7,6 +7,7 @@ import { Florist } from '../interface/florist';
 import { FlowerAvailable } from '../interface/flower-available';
 import { FlowerFormula } from '../interface/flower-formula';
 import { PromotionDetail } from '../interface/promotion-detail';
+import { PromotionDetailLog } from '../interface/promotion-detail-log';
 import { SalesOrderElement } from '../interface/sales-order-element';
 
 @Injectable({
@@ -27,7 +28,7 @@ export class RestApiService {
   }
 
   getFlowerFormula(): Observable<FlowerFormula[]> {
-    return this.http.get<FlowerFormula[]>(this.apiURL + '/flowerFormula/getAll')
+    return this.http.get<FlowerFormula[]>(this.apiURL + '/flowerFormula/getAll?flowerId=' + 1 + '&floristId=' + 2)
       .pipe(
         retry(1),
         catchError(this.handleError)
@@ -58,7 +59,7 @@ export class RestApiService {
       )
   }
 
-  getPromotionDetail(): Observable<PromotionDetail[]> {
+  getCurrentPromotion(): Observable<PromotionDetail[]> {
     return this.http.get<PromotionDetail[]>(this.apiURL + '/promotionDetail/currentPromotion')
       .pipe(
         retry(1),
@@ -66,14 +67,20 @@ export class RestApiService {
       )
   }
 
+  getPromotionDetailLog(isNormal: string): Observable<PromotionDetailLog[]> {
+    return this.http.get<PromotionDetailLog[]>(this.apiURL + '/promotionDetailLog', {
+      params:{
+        'isNormal': isNormal
+      }
+    })
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
+  }
+
   handleError(error: HttpErrorResponse) {
-    let errorMessage = '';
-    if (error.error instanceof ErrorEvent) {
-      errorMessage = error.error.message;
-    } else {
-      errorMessage = 'Error Code: ${error.status}\nMessage: ${error.message}';
-    }
-    window.alert(errorMessage);
-    return throwError(errorMessage);
+    window.alert(error.error);
+    return throwError(error.message);
   }
 }

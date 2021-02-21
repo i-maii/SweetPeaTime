@@ -21,8 +21,13 @@
 .mat-nav-list .mat-list-item {
   color: white;
 }
+
 .hidden {
   display: visible;
+}
+
+.hide {
+  display: none;
 }
 /* 
 @media (min-width: 768px) {

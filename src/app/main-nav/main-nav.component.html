@@ -15,9 +15,9 @@
     <mat-toolbar>
       <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
         *ngIf="isHandset$ | async">
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        <mat-icon aria-label="Side nav toggle icon"></mat-icon>
       </button>
-      <span [ngClass]="{ hidden: !(isHandset$ | async) }">{{username}}</span>
+      <!-- <span [ngClass]="{ hide: !(isHandset$ | async) }">{{username}}</span> -->
       <span class="spacer"></span>
         <a mat-button (click)="onLogout()"><b>ออกจากระบบ</b></a>
       <!-- <span>SweetPeaTimes</span> -->

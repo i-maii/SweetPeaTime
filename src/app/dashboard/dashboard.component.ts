@@ -1,5 +1,7 @@
+import { coerceNumberProperty } from '@angular/cdk/coercion';
 import { Component, OnInit } from '@angular/core';
 import { PromotionDetail } from '../interface/promotion-detail';
+import { PromotionDetailLog } from '../interface/promotion-detail-log';
 import { RestApiService } from '../_shared/rest-api.service';
 @Component({
   selector: 'dashboard',
@@ -9,17 +11,23 @@ import { RestApiService } from '../_shared/rest-api.service';
 export class DashboardComponent implements OnInit {
 
   promotionDetails: PromotionDetail[] = [];
+  promotionDetailLogs: PromotionDetailLog[] = [];
 
   constructor(
     private restApiService: RestApiService
   ) { }
 
   ngOnInit(): void {
-    this.restApiService.getPromotionDetail().subscribe((data: PromotionDetail[]) => {
+    this.restApiService.getCurrentPromotion().subscribe((data: PromotionDetail[]) => {
       for (let i = 0; i < data.length; i++) {
         this.promotionDetails.push(data[i]);
       }
     });
-  }
 
+    this.restApiService.getPromotionDetailLog('true').subscribe((data: PromotionDetailLog[]) => {
+      for (let i = 0; i < 4; i++) {
+        this.promotionDetailLogs.push(data[i]);
+      }
+    });
+  }
 }
