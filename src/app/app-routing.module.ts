@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CreateSalesorderComponent } from './create-salesorder/create-salesorder.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { PromotionComponent } from './promotion/promotion.component';
 import { HomeLayoutComponent } from './layouts/home-layout.component';
 import { LoginLayoutComponent } from './layouts/login-layout.component';
 import { LoginComponent } from './login/login.component';
@@ -73,6 +74,16 @@ const routes: Routes = [
       {
         path: 'login',
         component: LoginComponent
+      }
+    ]
+  },
+  {
+    path: '',
+    component: HomeLayoutComponent,
+    children: [
+      {
+        path: 'promotion',
+        component: PromotionComponent
       }
     ]
   }

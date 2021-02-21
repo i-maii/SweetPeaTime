@@ -24,7 +24,7 @@ export class DashboardComponent implements OnInit {
       }
     });
 
-    this.restApiService.getPromotionDetailLog('true').subscribe((data: PromotionDetailLog[]) => {
+    this.restApiService.getNormalPromotionDetailLog().subscribe((data: PromotionDetailLog[]) => {
       for (let i = 0; i < 4; i++) {
         this.promotionDetailLogs.push(data[i]);
       }
