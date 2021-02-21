@@ -1,5 +1,5 @@
 export interface Florist {
-    id: string;
+    id: number;
     name: string;
     address: string;
     locationName: string;
