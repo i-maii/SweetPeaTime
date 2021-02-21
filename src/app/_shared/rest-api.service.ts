@@ -52,7 +52,15 @@ export class RestApiService {
   }
 
   searchFlowerFormula(searchFlowerForm: any): Observable<FlowerFormula[]> {
-    return this.http.get<FlowerFormula[]>(this.apiURL + '/flowerFormula/search')
+    console.log(searchFlowerForm);
+    return this.http.post<FlowerFormula[]>(this.apiURL + '/flowerFormula/search', { params: {
+        'name': searchFlowerForm.name,
+        'pattern': searchFlowerForm.pattern,
+        'occasion': searchFlowerForm.occasion,
+        'price': searchFlowerForm.priceFrom,
+        'quantityAvailable': searchFlowerForm.quantity,
+        'size': ''
+      }})
       .pipe(
         retry(1),
         catchError(this.handleError)
