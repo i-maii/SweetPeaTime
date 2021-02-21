@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
@@ -52,15 +52,15 @@ export class RestApiService {
   }
 
   searchFlowerFormula(searchFlowerForm: any): Observable<FlowerFormula[]> {
-    console.log(searchFlowerForm);
-    return this.http.post<FlowerFormula[]>(this.apiURL + '/flowerFormula/search', { params: {
-        'name': searchFlowerForm.name,
-        'pattern': searchFlowerForm.pattern,
-        'occasion': searchFlowerForm.occasion,
-        'price': searchFlowerForm.priceFrom,
-        'quantityAvailable': searchFlowerForm.quantity,
-        'size': ''
-      }})
+    let params = new HttpParams;
+    searchFlowerForm.name? params = params.append('name', searchFlowerForm.name): '';
+    searchFlowerForm.pattern? params = params.append('pattern', searchFlowerForm.pattern): '';
+    searchFlowerForm.occasion? params = params.append('occasion', searchFlowerForm.occasion): '';
+    searchFlowerForm.price? params = params.append('price', searchFlowerForm.price): '';
+    searchFlowerForm.quantityAvailable? params = params.append('quantityAvailable', searchFlowerForm.quantityAvailable): '';
+    searchFlowerForm.size? params = params.append('size', searchFlowerForm.size): '';
+
+    return this.http.post<FlowerFormula[]>(this.apiURL + '/flowerFormula/search', null, {params: params})
       .pipe(
         retry(1),
         catchError(this.handleError)

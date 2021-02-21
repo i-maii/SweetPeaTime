@@ -58,6 +58,7 @@ export class SearchflowerComponent implements AfterViewInit {
 
   ngAfterViewInit() {
    // this.getData(this.flowerfomular)\
+    this.flowerFormula = [];
     this.restApiService.searchAllFlowerFormula().subscribe((data: FlowerFormula[]) => {
       for (let i = 0; i < data.length; i++) {
         this.flowerFormula.push(data[i]);
@@ -106,7 +107,7 @@ export class SearchflowerComponent implements AfterViewInit {
   // ];
 
   pattern = [
-    {value: '1', ViewValue : 'เกาหลี'},
+    {value: '1', ViewValue: 'เกาหลี'},
     {value: '2', viewValue: 'ทั่วไป'}
   ];
 
@@ -114,7 +115,8 @@ export class SearchflowerComponent implements AfterViewInit {
   searchForm()  
   {
     this.restApiService.searchFlowerFormula(this.searchFlowerForm.value).subscribe((data: FlowerFormula[]) => {
-  
+      console.log(this.searchFlowerForm.value);
+      this.flowerFormulaSearch = [];
       for (let i = 0; i < data.length; i++) {
         this.flowerFormulaSearch.push(data[i]);
   

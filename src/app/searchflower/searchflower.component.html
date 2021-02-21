@@ -9,7 +9,7 @@
     <mat-form-field appearance="fill">
       <mat-label>ประเภทดอกไม้</mat-label>
       <mat-select type="text" formControlName="flowerCat">
-        <mat-option *ngFor="let flowerCat of flowerCat" [value]="flowerCat.value">
+        <mat-option *ngFor="let flowerCat of flowerCat" [value]="flowerCat.viewValue">
           {{flowerCat.viewValue}}
       </mat-option>
       </mat-select>
@@ -26,19 +26,19 @@
     <mat-form-field appearance="fill">
         <mat-label>โอกาส</mat-label>
         <mat-select type="text" formControlName="occasion">
-          <mat-option value="one">Birthday</mat-option>
-          <mat-option value="two">Congratulations</mat-option>
+          <mat-option value="Birthday">Birthday</mat-option>
+          <mat-option value="Congratulations">Congratulations</mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
         <mat-label>โทนสี</mat-label>
         <mat-select formControlName="color">
-          <mat-option value="one">ขาว</mat-option>
-          <mat-option value="two">ชมพู</mat-option>
-          <mat-option value="one">เหลือง</mat-option>
-          <mat-option value="two">พาสเทล</mat-option>
-          <mat-option value="two">ฟ้า</mat-option>
+          <mat-option value="ขาว">ขาว</mat-option>
+          <mat-option value="ชมพู">ชมพู</mat-option>
+          <mat-option value="เหลือง">เหลือง</mat-option>
+          <mat-option value="พาสเทล">พาสเทล</mat-option>
+          <mat-option value="ฟ้า">ฟ้า</mat-option>
         </mat-select>
       </mat-form-field>
 
