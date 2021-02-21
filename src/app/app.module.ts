@@ -12,7 +12,7 @@ import { MatListModule } from '@angular/material/list';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SalesorderComponent } from './salesorder/salesorder.component';
-import { PromotionComponent, PromotionDialogComponent } from './promotion/promotion.component';
+import { PromotionComponent, PromotionDialogComponent, PromotionUnitDialogComponent } from './promotion/promotion.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTableModule } from '@angular/material/table';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -53,7 +53,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     LoginLayoutComponent,
     CreateSalesorderComponent,
     SearchflowerComponent,
-    EditSalesorderComponent
+    EditSalesorderComponent,
+    PromotionUnitDialogComponent
   ],
   imports: [
     BrowserModule,

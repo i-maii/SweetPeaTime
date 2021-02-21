@@ -79,7 +79,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    component: PromotionComponent,
+    component: HomeLayoutComponent,
     children: [
       {
         path: 'promotion',

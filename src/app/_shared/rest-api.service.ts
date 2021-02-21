@@ -8,6 +8,8 @@ import { FlowerAvailable } from '../interface/flower-available';
 import { FlowerFormula } from '../interface/flower-formula';
 import { PromotionDetail } from '../interface/promotion-detail';
 import { SalesOrderElement } from '../interface/sales-order-element';
+import { Promotion } from '../interface/promotion';
+import { PromotionDetailLog } from '../interface/promotion-detail-log';
 
 @Injectable({
   providedIn: 'root'
@@ -60,6 +62,22 @@ export class RestApiService {
 
   getPromotionDetail(): Observable<PromotionDetail[]> {
     return this.http.get<PromotionDetail[]>(this.apiURL + '/promotionDetail/currentPromotion')
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
+  }
+
+  getPromotion(): Observable<Promotion[]> {
+    return this.http.get<Promotion[]>(this.apiURL + '/promotion/getAll')
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
+  }
+
+  getPromotionDetailLog(): Observable<PromotionDetailLog[]> {
+    return this.http.get<PromotionDetailLog[]>(this.apiURL + '/promotionDetailLog/promotion')
       .pipe(
         retry(1),
         catchError(this.handleError)

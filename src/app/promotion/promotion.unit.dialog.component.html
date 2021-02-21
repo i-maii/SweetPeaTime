@@ -1,13 +1,13 @@
 <mat-card class="example-card-dialog">
-    <mat-card-content>กุหลาบขาว เดซี่</mat-card-content>
-    <p>ขนาด : S</p> 
-    <p>ราคาขาย : 550 </p>
-    <img mat-card-image src="assets/images/flower_1.png" alt="กุหลาบขาว + เดซี่">
+    <mat-card-content>{{data.flowername}}</mat-card-content>
+    <p>ขนาด : {{data.flowersize}}</p> 
+    <p>ราคาขาย : {{data.flowerprice}} </p>
+    <img mat-card-image src={{data.imagespath}} alt="img">
     <mat-card-content>
       <p>จำนวนช่อ</p>
     </mat-card-content>
     <mat-form-field>
-        <mat-label>2</mat-label>
+        <mat-label>{{data.flowerunit}}</mat-label>
         <input matInput>
     </mat-form-field>
     <mat-card-actions>
