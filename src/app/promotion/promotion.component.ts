@@ -19,14 +19,21 @@ export interface DialogData {
 export class PromotionComponent implements OnInit {
 
   promotionDetails: PromotionDetail[] = [];
-  ELEMENT_DATA: PromotionDetail[] = [];
-  displayedColumns: string[] = [];
-  dataSource: any;
- 
   promotionDetailLogs: PromotionDetailLog[] = [];
+  promotionDetailLogsCurrent: PromotionDetailLog[] = [];
+
+  ELEMENT_DATA: PromotionDetail[] = [];
   ELEMENT_DATA2: PromotionDetailLog[] = [];
+  //ELEMENT_DATA3: PromotionDetailLog[] = [];
+
+  displayedColumns: string[] = [];
   displayedColumns2: string[] = [];
+  //displayedColumns3: string[] = [];
+
+  dataSource: any;
   dataSource2: any;
+  //dataSource3: any;
+
   //constructor(public dialog: MatDialog) {}
   constructor(
     private restApiService: RestApiService, public dialog: MatDialog
@@ -35,19 +42,22 @@ export class PromotionComponent implements OnInit {
   ngOnInit(): void {
     this.restApiService.getPromotionDetail().subscribe((data: PromotionDetail[]) => {
       for (let i = 0; i < data.length; i++) {
-        this.ELEMENT_DATA.push(data[i]);
         this.promotionDetails.push(data[i]);
       }
-      this.displayedColumns = ['flowername', 'size', 'unit', 'profit', 'totalprofit', 'price', 'location', 'imageUrl', 'add'];
-      this.dataSource = new MatTableDataSource<PromotionDetail>(this.ELEMENT_DATA);
     });
 
-    this.restApiService.getPromotionDetailLog().subscribe((data: PromotionDetailLog[]) => {
+    this.restApiService.getPromotionDetailLog('true').subscribe((data: PromotionDetailLog[]) => {
       for (let i = 0; i < data.length; i++) {
         this.ELEMENT_DATA2.push(data[i]);
       }
       this.displayedColumns2 = ['flowername', 'size', 'unit', 'profit', 'totalprofit', 'price', 'location', 'imageUrl', 'add'];
       this.dataSource2 = new MatTableDataSource<PromotionDetailLog>(this.ELEMENT_DATA2);
+    });
+
+    this.restApiService.getPromotionDetailLog('false').subscribe((data: PromotionDetailLog[]) => {
+      for (let i = 0; i < data.length; i++) {
+        this.promotionDetailLogsCurrent.push(data[i]);
+      }
     });
   }
 
@@ -59,13 +69,6 @@ export class PromotionComponent implements OnInit {
     });
   }
 
-  /*openDialogFlower() {
-    this.dialog.open(PromotionUnitDialogComponent, {
-      data: {
-        animal: 'panda'
-      }
-    });
-  }*/
   openDialogFlower(pathimg: any,size: any, price: any, name: any, unit: any) {
     this.dialog.open(PromotionUnitDialogComponent, {
       data: {
@@ -73,7 +76,8 @@ export class PromotionComponent implements OnInit {
         flowersize: size,
         flowerprice: price,
         flowername: name,
-        flowerunit: unit
+        flowerunit: unit,
+        sumprofit: price * unit
       }
     });
   } 

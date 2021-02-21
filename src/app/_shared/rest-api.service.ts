@@ -76,8 +76,12 @@ export class RestApiService {
       )
   }
 
-  getPromotionDetailLog(): Observable<PromotionDetailLog[]> {
-    return this.http.get<PromotionDetailLog[]>(this.apiURL + '/promotionDetailLog/promotion')
+  getPromotionDetailLog(isNormal: string): Observable<PromotionDetailLog[]> {
+    return this.http.get<PromotionDetailLog[]>(this.apiURL + '/promotionDetailLog',{
+      params:{
+        'isNormal': isNormal
+      }
+    })
       .pipe(
         retry(1),
         catchError(this.handleError)
