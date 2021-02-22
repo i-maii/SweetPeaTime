@@ -8,6 +8,7 @@ import { RestApiService } from '../_shared/rest-api.service';
 import { StatusOrder } from '../interface/status-order';
 import { SalesOrderElement } from '../interface/sales-order-element';
 import { SalesorderService } from '../salesorder/salesorder.service';
+import { CreateSalesOrder } from '../interface/create-sales-order';
 
 @Component({
   selector: 'edit-salesorder',
@@ -52,7 +53,9 @@ export class EditSalesorderComponent implements OnInit {
   flowerSelected: string | undefined;
   flowerQuantitySelected: string | undefined;
   statusSelected: string | undefined;
-  salesOrderUpdated: SalesOrderElement | undefined;
+  salesOrderUpdated: SalesOrderElement | any;
+
+  updateSalesOrder!: CreateSalesOrder;
 
   constructor(
     private restApiService: RestApiService,
@@ -60,11 +63,14 @@ export class EditSalesorderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.salesOrderForm.controls['orderFirstName'].setValue("Jee");
     
     this.salesOrderService.$isUpdateSalesOrder.subscribe((data) => {
       console.log(data);
-      this.numberOfOrder = data.id;
-      this.salesOrderForm.controls['orderFirstName'].setValue(data.customerFirstName);
+
+      this.salesOrderUpdated = data;
+      // this.numberOfOrder = data.id;
+      
       // this.salesOrderForm.controls['orderFirstName'].setValue(data.customerFirstName);
       // this.salesOrderForm.controls['orderLastName'].setValue(data.customerLastName);
       // this.salesOrderForm.controls['orderPhone'].setValue(data.customerPhone);
@@ -82,9 +88,7 @@ export class EditSalesorderComponent implements OnInit {
       // this.salesOrderForm.controls['florist'].setValue(data.floristId);
       // this.salesOrderForm.controls['note'].setValue(data.note);
       // this.salesOrderForm.controls['status'].setValue(data.status);
-    })
-
-    
+    });
 
     this.salesOrderForm.controls['flowerPrice'].disable();
     this.salesOrderForm.controls['deliveryFee'].disable();
@@ -167,7 +171,11 @@ export class EditSalesorderComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.warn(this.salesOrderForm.value);  
+    this.updateSalesOrder = this.salesOrderForm.value;
+    this.updateSalesOrder.flowerPrice = this.salesOrderForm.controls["flowerPrice"].value;
+    this.updateSalesOrder.deliveryFee = this.salesOrderForm.controls["deliveryFee"].value;
+    this.updateSalesOrder.totalPrice = this.salesOrderForm.controls["totalPrice"].value;
+    console.warn(this.updateSalesOrder);  
     this.salesOrderForm.reset();
   }
 
