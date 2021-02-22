@@ -11,19 +11,19 @@
                     <span>ข้อมูลผู้สั่ง</span>
                     <tr>
                         <td>
-                            <mat-form-field class="create-form-full-width">
+                            <mat-form-field class="create-form-full-width" appearance="fill">
                                 <mat-label>ชื่อ</mat-label>
-                                <input matInput type="text" placeholder="West" formControlName="orderFirstName">
+                                <input matInput type="text" formControlName="orderFirstName">
                             </mat-form-field>
                         </td>
                         <td>
-                            <mat-form-field class="create-form-full-width">
+                            <mat-form-field class="create-form-full-width" appearance="fill">
                                 <mat-label>นามสกุล</mat-label>
-                                <input matInput type="text" placeholder="Gibbin" formControlName="orderLastName">
+                                <input matInput type="text" formControlName="orderLastName">
                             </mat-form-field>
                         </td>
                         <td>
-                            <mat-form-field class="create-form-full-width">
+                            <mat-form-field class="create-form-full-width" appearance="fill">
                                 <mat-label>เบอร์โทรศัพท์</mat-label>
                                 <input matInput type="text" placeholder="0811111111" formControlName="orderPhone">
                             </mat-form-field>
@@ -48,29 +48,31 @@
                     <span>ข้อมูลผู้รับ</span>
                     <tr>
                         <td>
-                            <mat-form-field class="create-form-full-width">
+                            <mat-form-field class="create-form-full-width" appearance="fill">
                                 <mat-label>ชื่อ</mat-label>
-                                <input matInput type="text" placeholder="Brown" formControlName="receiverFirstName">
+                                <input matInput type="text" formControlName="receiverLastName">
                             </mat-form-field>
                         </td>
                         <td>
-                            <mat-form-field class="create-form-full-width">
+                            <mat-form-field class="create-form-full-width" appearance="fill">
                                 <mat-label>นามสกุล</mat-label>
-                                <input matInput type="text" placeholder="Oung" formControlName="receiverLastName">
+                                <input matInput type="text" formControlName="receiverLastName">
                             </mat-form-field>
                         </td>
                         <td>
-                            <mat-form-field class="create-form-full-width">
+                            <mat-form-field class="create-form-full-width" appearance="fill">
                                 <mat-label>เบอร์โทรศัพท์</mat-label>
-                                <input matInput type="text" placeholder="0811111111" formControlName="receiverPhone">
+                                <input matInput type="text" formControlName="receiverPhone">
                             </mat-form-field>
                         </td>
                         <td>
-                            <mat-form-field class="create-form-full-width">
+                            <mat-form-field class="create-form-full-width" appearance="fill">
                                 <mat-label>ที่อยู่ผู้รับ</mat-label>
                                 <input matInput type="text" placeholder="123 abc" formControlName="receiverAddress">
                             </mat-form-field>
                         </td>
+                    </tr>
+                    <tr>
                         <td>
                             <mat-form-field appearance="fill" class="date-picker-form-fill">
                                 <mat-label>วันที่รับ</mat-label>
@@ -95,7 +97,7 @@
                                 <mat-label>สูตรดอกไม้</mat-label>
                                 <mat-select [(ngModel)]="flowerSelected" type="text" formControlName="flowerFormular">
                                     <mat-option *ngFor="let flowerFormula of flowerFormulas" [value]="flowerFormula.id">
-                                        {{flowerFormula.name + flowerFormula.size}}
+                                        {{flowerFormula.name}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -122,33 +124,27 @@
                                 </mat-select>
                             </mat-form-field>
                         </td>
-                        <td>
-                            <mat-form-field class="create-form-full-width">
-                                <mat-label>สามารถใช้ได้ถึง</mat-label>
-                                <input matInput type="text" placeholder="02/15/2021" formControlName="dateAvailable">
-                            </mat-form-field>
-                        </td>
                     </tr>
                 </table>
     
                 <table class="create-form-full-width" cellspacing="0">
                     <tr>
                         <td>
-                            <mat-form-field class="create-form-full-width">
+                            <mat-form-field class="create-form-full-width" appearance="fill">
                                 <mat-label>ราคาช่อดอกไม้</mat-label>
-                                <input matInput type="text" placeholder="300 บาท" formControlName="flowerPrice">
+                                <input matInput type="text" formControlName="flowerPrice">
                             </mat-form-field>
                         </td>
                         <td>
-                            <mat-form-field class="create-form-full-width">
+                            <mat-form-field class="create-form-full-width" appearance="fill">
                                 <mat-label>ราคาค่าส่ง</mat-label>
-                                <input matInput type="text" placeholder="40 บาท" formControlName="deliveryFee">
+                                <input matInput type="text" formControlName="deliveryFee">
                             </mat-form-field>
                         </td>
                         <td>
-                            <mat-form-field class="create-form-full-width">
+                            <mat-form-field class="create-form-full-width" appearance="fill">
                                 <mat-label>ราคาค่ารวม</mat-label>
-                                <input matInput type="text" placeholder="340 บาท" formControlName="totalPrice">
+                                <input matInput type="text" formControlName="totalPrice">
                             </mat-form-field>
                         </td>
                     </tr>
@@ -157,7 +153,7 @@
                 <table class="create-form-full-width" cellspacing="0">
                     <tr>
                         <td>
-                            <mat-form-field class="create-form-full-width">
+                            <mat-form-field class="create-form-full-width" appearance="fill">
                                 <mat-label>โน๊ต</mat-label>
                                 <input matInput type="text" formControlName="note">
                             </mat-form-field>

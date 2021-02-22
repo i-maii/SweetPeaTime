@@ -4,6 +4,8 @@ import { FlowerFormula } from '../interface/flower-formula'
 import { Florist } from '../interface/florist'
 import { RestApiService } from '../_shared/rest-api.service';
 import { FlowerAvailable } from '../interface/flower-available';
+import { SalesOrderPrice } from '../interface/sales-order-price';
+import { CreateSalesOrder } from '../interface/create-sales-order';
 
 @Component({
   selector: 'create-salesorder',
@@ -24,14 +26,13 @@ export class CreateSalesorderComponent implements OnInit {
     receiveDate: new FormControl(),
     flowerFormular: new FormControl(),
     flowerAvailable: new FormControl(),
-    dateAvailable: new FormControl(),
     flowerPrice: new FormControl(),
     deliveryFee: new FormControl(),
     totalPrice: new FormControl(),
     florist: new FormControl(),
     note: new FormControl()
   });
-  
+
   constructor(
     private restApiService: RestApiService
   ) { }
@@ -42,6 +43,8 @@ export class CreateSalesorderComponent implements OnInit {
   floristSelected: string | undefined;
   flowerSelected: string | undefined;
   flowerQuantitySelected: string | undefined;
+  createSalesOrder!: CreateSalesOrder;
+
 
   ngOnInit(): void {
     this.salesOrderForm.controls['flowerPrice'].disable();
@@ -60,23 +63,78 @@ export class CreateSalesorderComponent implements OnInit {
       }
     });
 
-    // if(this.salesOrderForm.controls["flowerFormular"].value != null){
-      this.salesOrderForm.controls["flowerFormular"].valueChanges.subscribe((val: number = 1) => {
-        console.log(val);
+    this.salesOrderForm.controls["flowerFormular"].valueChanges.subscribe((val: number = 1) => {
+      if (this.salesOrderForm.controls["flowerFormular"].value != null) {
+        let floristId = 1;
+        let totalOrder = 0;
+        if (this.salesOrderForm.controls["florist"].value != null) {
+          floristId = this.salesOrderForm.controls["florist"].value;
+        }
         this.flowerAvailables = [];
-        this.restApiService.getFlowerAvailable(val).subscribe((data: FlowerAvailable[]) => {
+        this.restApiService.getFlowerAvailable(val, floristId).subscribe((data: FlowerAvailable[]) => {
           for (let i = 0; i < data.length; i++) {
             this.flowerAvailables.push(data[i]);
           }
         });
-      });
-    // }
-    
+
+        this.restApiService.getSalesOrderPrice(val, floristId, totalOrder).subscribe((data: SalesOrderPrice) => {
+          this.salesOrderForm.controls["flowerPrice"].setValue(data.flowerPrice);
+          this.salesOrderForm.controls["deliveryFee"].setValue(data.feePrice);
+          this.salesOrderForm.controls["totalPrice"].setValue(data.totalPrice);
+        });
+      }
+    });
+
+    this.salesOrderForm.controls["florist"].valueChanges.subscribe((val: number = 1) => {
+      if (this.salesOrderForm.controls["florist"].value != null) {
+        let formulaId = 1;
+        let totalOrder = 0;
+        if (this.salesOrderForm.controls["flowerFormular"].value != null) {
+          formulaId = this.salesOrderForm.controls["flowerFormular"].value;
+        }
+        this.flowerAvailables = [];
+        this.restApiService.getFlowerAvailable(formulaId, val).subscribe((data: FlowerAvailable[]) => {
+          for (let i = 0; i < data.length; i++) {
+            this.flowerAvailables.push(data[i]);
+          }
+        });
+
+        this.restApiService.getSalesOrderPrice(formulaId, val, totalOrder).subscribe((data: SalesOrderPrice) => {
+          this.salesOrderForm.controls["flowerPrice"].setValue(data.flowerPrice);
+          this.salesOrderForm.controls["deliveryFee"].setValue(data.feePrice);
+          this.salesOrderForm.controls["totalPrice"].setValue(data.totalPrice);
+        });
+      }
+    });
+
+    this.salesOrderForm.controls["flowerAvailable"].valueChanges.subscribe((val: number = 0) => {
+      if (this.salesOrderForm.controls["flowerAvailable"].value != null) {
+        let formulaId = 1;
+        let floristId = 1;
+        if (this.salesOrderForm.controls["flowerFormular"].value != null) {
+          formulaId = this.salesOrderForm.controls["flowerFormular"].value;
+        }
+        if (this.salesOrderForm.controls["florist"].value != null) {
+          floristId = this.salesOrderForm.controls["florist"].value;
+        }
+        this.restApiService.getSalesOrderPrice(formulaId, floristId, val).subscribe((data: SalesOrderPrice) => {
+          this.salesOrderForm.controls["flowerPrice"].setValue(data.flowerPrice);
+          this.salesOrderForm.controls["deliveryFee"].setValue(data.feePrice);
+          this.salesOrderForm.controls["totalPrice"].setValue(data.totalPrice);
+        });
+      }
+    });
+
   }
 
   onSubmit(): void {
-    console.warn(this.salesOrderForm.value);  
+    this.createSalesOrder = this.salesOrderForm.value;
+    this.createSalesOrder.flowerPrice = this.salesOrderForm.controls["flowerPrice"].value;
+    this.createSalesOrder.deliveryFee = this.salesOrderForm.controls["deliveryFee"].value;
+    this.createSalesOrder.totalPrice = this.salesOrderForm.controls["totalPrice"].value;
+    console.warn(this.createSalesOrder);
+    this.restApiService.createSalesOrder(this.createSalesOrder);
     this.salesOrderForm.reset();
   }
-  
+
 }

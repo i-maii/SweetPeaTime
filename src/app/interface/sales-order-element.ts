@@ -7,9 +7,23 @@ export interface SalesOrderElement {
     receiverName: string;
     receiverAddress: string;
     receiverPhone: string;
-    note: string;
     deliveryDateTime: string;
     receiverDateTime: string;
-    status: string;
     deliveryPrice: string;
+    orderFirstName: string;
+    orderLastName: string;
+    orderPhone: string;
+    orderDate: Date;
+    receiverFirstName: string;
+    receiverLastName: string;
+    receiveDate: Date;
+    flowerFormular: number;
+    flowerAvailable: number;
+    flowerPrice: string;
+    deliveryFee: string;
+    totalPrice: string;
+    florist: number;
+    note: string;
+    status: string;
 }
+

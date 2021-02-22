@@ -54,7 +54,7 @@
                     <td mat-cell *matCellDef="let row">
                         <button mat-raised-button 
                         color="primary" 
-                        (click)="$event.stopPropagation(); printRow(row, selection.isSelected(row))" 
+                        (click)="$event.stopPropagation(); onEdit(row)" 
                         routerLinkActive="active" 
                         routerLink="/editSalesorder"
                         >Edit
