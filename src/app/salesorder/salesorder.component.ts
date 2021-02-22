@@ -1,12 +1,9 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, EventEmitter, Injectable, OnInit, Output } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { takeUntil } from 'rxjs/operators';
 import { SalesOrderElement } from '../interface/sales-order-element'
 import { RestApiService } from '../_shared/rest-api.service';
 import { SalesOrderDetail } from '../interface/sales-order-detail'
-import { Subscription } from 'rxjs';
-import { DataService } from '../_services/data-service';
 
 @Component({
   selector: 'salesorder',
@@ -23,8 +20,7 @@ export class SalesorderComponent implements OnInit {
   selection: any;
 
   constructor(
-    private restApiService: RestApiService,
-    private data: DataService
+    private restApiService: RestApiService
   ) { }
 
   ngOnInit(): void {
