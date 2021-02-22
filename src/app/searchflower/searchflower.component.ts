@@ -26,7 +26,7 @@ export class SearchflowerComponent implements AfterViewInit {
  // ELEMENT_DATA: SearchFlowerFomularResult[] = [];
   flowerFormula: FlowerFormula[] = [];
   flowerFormulaSearch: FlowerFormula[] = [];
-  displayedColumns: string[] = ['id', 'name','quantityAvailable','pattern', 'price','size','occasion'];
+  displayedColumns: string[] = ['name','quantityAvailable','pattern', 'price','size','occasion'];
  // dataSource = new MatTableDataSource<SearchFlowerFomularResult>();
   dataSource = new MatTableDataSource<FlowerFormula>();
   /*flower = new FormControl();
@@ -76,39 +76,35 @@ export class SearchflowerComponent implements AfterViewInit {
   selectedValue: string | undefined;
 
   flowerCat = [
-    {value: '1', viewValue: 'ดอกไม้สด'},
-    {value: '2', viewValue: 'ดอกไม้แห้ง'}
+    {value: '1', viewValue: ''},
+    {value: '2', viewValue: 'ดอกไม้สด'},
+    {value: '3', viewValue: 'ดอกไม้แห้ง'}
   ];
 
   flower = [
     {value: '1', viewValue: 'กุหลาบขาว'},
     {value: '2', viewValue: 'กุหลาบแดง'},
-    {value: '3', viewValue: 'ทานตะวัน'}
+    {value: '3', viewValue: 'กุหลาบชมพู'},
+    {value: '4', viewValue: 'ทานตะวัน'},
+    {value: '5', viewValue: 'ไฮเดรนเยีย'}
   ];
 
   occasion = [
     {value: '1', viewValue: 'Congratulations'},
     {value: '2', viewValue: 'hospital'},
-    {value: '3', viewValue: 'date'},
+    {value: '3', viewValue: 'Birthday'},
     {value: '4', viewValue: 'Wedding'},
     {value: '4', viewValue: 'Valentine'}
   ];
 
   color = [
     {value: '1', viewValue: 'ขาว'},
-    {value: '2', viewValue: 'เหลือง'},
+    {value: '2', viewValue: 'เหลือง'}
   ];
-
-
-  // flowerFormulas: FlowerFormula[] = [
-  //   {value: '1', viewValue: 'กุหลาบขาว ยูคา'},
-  //   {value: '2', viewValue: 'กุหลาบแดง ยูคา'},
-  //   {value: '3', viewValue: 'ทานตะวัน'}
-  // ];
-
   pattern = [
-    {value: '1', ViewValue: 'เกาหลี'},
-    {value: '2', viewValue: 'ทั่วไป'}
+    {value: '1', viewValue: ''},
+    {value: '2', viewValue: 'เกาหลี'},
+    {value: '3', viewValue: 'ทั่วไป'}
   ];
 
   

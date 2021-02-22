@@ -26,6 +26,7 @@
     <mat-form-field appearance="fill">
         <mat-label>โอกาส</mat-label>
         <mat-select type="text" formControlName="occasion">
+          <mat-option value=""></mat-option>
           <mat-option value="Birthday">Birthday</mat-option>
           <mat-option value="Congratulations">Congratulations</mat-option>
         </mat-select>
@@ -34,6 +35,7 @@
       <mat-form-field appearance="fill">
         <mat-label>โทนสี</mat-label>
         <mat-select formControlName="color">
+          <mat-option value=""> </mat-option>
           <mat-option value="ขาว">ขาว</mat-option>
           <mat-option value="ชมพู">ชมพู</mat-option>
           <mat-option value="เหลือง">เหลือง</mat-option>
@@ -108,11 +110,11 @@
   <mat-label>Total Price</mat-label>
   <input matInput value="700">
 </mat-form-field>
-      <!-- Position Column -->
+      <!-- Position Column 
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef> ลำดับ </th>
         <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-      </ng-container>
+      </ng-container>-->
   
       <!-- Name Column -->
       <ng-container matColumnDef="name">
@@ -143,7 +145,7 @@
       </ng-container>
 
       <ng-container matColumnDef="occasion">
-        <th mat-header-cell *matHeaderCellDef> ราคารวม </th>
+        <th mat-header-cell *matHeaderCellDef> โอกาส </th>
         <td mat-cell *matCellDef="let element"> {{element.occasion}} </td>
       </ng-container>
 
