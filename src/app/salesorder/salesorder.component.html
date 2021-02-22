@@ -52,17 +52,22 @@
                 <ng-container matColumnDef="select" >
                     <th mat-header-cell *matHeaderCellDef></th>
                     <td mat-cell *matCellDef="let row">
-                        <button mat-raised-button 
+                        <!-- <button mat-raised-button 
                         color="primary" 
-                        (click)="$event.stopPropagation(); onEdit(row)" 
+                        (click)="onEdit(row)" 
                         routerLinkActive="active" 
                         routerLink="/editSalesorder"
+                        >Edit
+                        </button> -->
+                        <button mat-raised-button 
+                        color="primary" 
+                        (click)="onEdit(row)" 
                         >Edit
                         </button>
                     </td>
                 </ng-container>
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;">
                 </tr>
             </table>
         </div>
