@@ -2,7 +2,8 @@ export interface SalesOrderElement {
     id: number;
     date: string;
     price: number;
-    customerName: string;
+    customerFirstName: string;
+    customerLastName: string;
     customerPhone: string;
     receiverName: string;
     receiverAddress: string;

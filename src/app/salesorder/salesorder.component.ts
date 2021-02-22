@@ -1,9 +1,10 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, EventEmitter, Injectable, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Injectable, OnInit, Output, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SalesOrderElement } from '../interface/sales-order-element'
 import { RestApiService } from '../_shared/rest-api.service';
 import { SalesOrderDetail } from '../interface/sales-order-detail'
+import { SalesorderService } from './salesorder.service';
 
 @Component({
   selector: 'salesorder',
@@ -13,25 +14,24 @@ import { SalesOrderDetail } from '../interface/sales-order-detail'
 
 export class SalesorderComponent implements OnInit {
 
-  salesOrder: SalesOrderElement[] = [];
+  salesOrders: SalesOrderElement[] = [];
   numberOfOrder: number = 0;
   displayedColumns: string[] = [];
   dataSource: any;
-  selection: any;
 
   constructor(
-    private restApiService: RestApiService
+    private restApiService: RestApiService,
+    private service: SalesorderService
   ) { }
 
   ngOnInit(): void {
     this.restApiService.getSalesOrder().subscribe((data: SalesOrderElement[]) => {
       for (let i = 0; i < data.length; i++) {
-        this.salesOrder.push(data[i]);
+        this.salesOrders.push(data[i]);
       }
       this.numberOfOrder = data.length;
       this.displayedColumns = ['id', 'status', 'deliveryDateTime', 'customerName', 'select'];
-      this.dataSource = new MatTableDataSource<SalesOrderElement>(this.salesOrder);
-      this.selection = new SelectionModel<SalesOrderElement>(true, []);
+      this.dataSource = new MatTableDataSource<SalesOrderElement>(this.salesOrders);
     });
   }
 
@@ -46,7 +46,8 @@ export class SalesorderComponent implements OnInit {
       row.florist = data.florist.id;
       row.flowerFormular = data.flowerFormula.id;
     })
-    console.log(row);
+    this.service.updateSalesOrder(row);
+    // console.log(row);
   }
 
 }

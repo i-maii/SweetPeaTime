@@ -6,6 +6,8 @@ import { FlowerFormula } from '../interface/flower-formula';
 import { SalesOrderPrice } from '../interface/sales-order-price';
 import { RestApiService } from '../_shared/rest-api.service';
 import { StatusOrder } from '../interface/status-order';
+import { SalesOrderElement } from '../interface/sales-order-element';
+import { SalesorderService } from '../salesorder/salesorder.service';
 
 @Component({
   selector: 'edit-salesorder',
@@ -15,23 +17,23 @@ import { StatusOrder } from '../interface/status-order';
 export class EditSalesorderComponent implements OnInit {
 
   salesOrderForm = new FormGroup({
-    orderFirstName: new FormControl(),
-    orderLastName: new FormControl(),
-    orderPhone: new FormControl(),
-    orderDate: new FormControl(),
-    receiverFirstName: new FormControl(),
-    receiverLastName: new FormControl(),
-    receiverPhone: new FormControl(),
-    receiverAddress: new FormControl(),
-    receiveDate: new FormControl(),
-    flowerFormular: new FormControl(),
-    flowerAvailable: new FormControl(),
-    flowerPrice: new FormControl(),
-    deliveryFee: new FormControl(),
-    totalPrice: new FormControl(),
-    florist: new FormControl(),
-    note: new FormControl(),
-    status: new FormControl
+    orderFirstName: new FormControl(''),
+    orderLastName: new FormControl(''),
+    orderPhone: new FormControl(''),
+    orderDate: new FormControl(''),
+    receiverFirstName: new FormControl(''),
+    receiverLastName: new FormControl(''),
+    receiverPhone: new FormControl(''),
+    receiverAddress: new FormControl(''),
+    receiveDate: new FormControl(''),
+    flowerFormular: new FormControl(''),
+    flowerAvailable: new FormControl(''),
+    flowerPrice: new FormControl(''),
+    deliveryFee: new FormControl(''),
+    totalPrice: new FormControl(''),
+    florist: new FormControl(''),
+    note: new FormControl(''),
+    status: new FormControl('')
   });
   
   statusOrders: StatusOrder[] = [
@@ -50,12 +52,39 @@ export class EditSalesorderComponent implements OnInit {
   flowerSelected: string | undefined;
   flowerQuantitySelected: string | undefined;
   statusSelected: string | undefined;
+  salesOrderUpdated: SalesOrderElement | undefined;
 
   constructor(
-    private restApiService: RestApiService
+    private restApiService: RestApiService,
+    private salesOrderService: SalesorderService
   ) { }
 
   ngOnInit(): void {
+    
+    this.salesOrderService.$isUpdateSalesOrder.subscribe((data) => {
+      console.log(data);
+      this.numberOfOrder = data.id;
+      this.salesOrderForm.controls['orderFirstName'].setValue(data.customerFirstName);
+      // this.salesOrderForm.controls['orderFirstName'].setValue(data.customerFirstName);
+      // this.salesOrderForm.controls['orderLastName'].setValue(data.customerLastName);
+      // this.salesOrderForm.controls['orderPhone'].setValue(data.customerPhone);
+      // this.salesOrderForm.controls['orderDate'].setValue(data.date);
+      // this.salesOrderForm.controls['receiverFirstName'].setValue(data.receiverFirstName);
+      // this.salesOrderForm.controls['receiverLastName'].setValue(data.receiverLastName);
+      // this.salesOrderForm.controls['receiverPhone'].setValue(data.receiverPhone);
+      // this.salesOrderForm.controls['receiverAddress'].setValue(data.receiverAddress);
+      // this.salesOrderForm.controls['receiveDate'].setValue(data.receiveDateTime);
+      // this.salesOrderForm.controls['flowerFormular'].setValue(data.flowerFormula);
+      // this.salesOrderForm.controls['flowerAvailable'].setValue(data.flowerAvailable);
+      // this.salesOrderForm.controls['flowerPrice'].setValue(data.flowerPrice);
+      // this.salesOrderForm.controls['deliveryFee'].setValue(data.deliveryFee);
+      // this.salesOrderForm.controls['totalPrice'].setValue(data.totalPrice);
+      // this.salesOrderForm.controls['florist'].setValue(data.floristId);
+      // this.salesOrderForm.controls['note'].setValue(data.note);
+      // this.salesOrderForm.controls['status'].setValue(data.status);
+    })
+
+    
 
     this.salesOrderForm.controls['flowerPrice'].disable();
     this.salesOrderForm.controls['deliveryFee'].disable();
