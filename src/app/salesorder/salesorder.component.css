@@ -23,12 +23,19 @@ button {
 }
 
 .scroll-bar {
-    overflow-x: scroll; 
-    height: 100%; 
+    overflow-x: scroll;
+    height: 100%;
     width: 100%;
 }
 
-th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+th.mat-header-cell,
+td.mat-cell,
+td.mat-footer-cell {
     width: 15%;
 }
 
+.center {
+    margin: auto;
+    width: 60%;
+    padding: 10px;
+}

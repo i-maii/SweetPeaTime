@@ -2,29 +2,23 @@ export interface SalesOrderElement {
     id: number;
     date: string;
     price: number;
-    customerFirstName: string;
-    customerLastName: string;
+    customerName: string;
+    customerLineFb: string;
     customerPhone: string;
     receiverName: string;
     receiverAddress: string;
     receiverPhone: string;
-    deliveryDateTime: string;
-    receiverDateTime: string;
+    deliveryDateTime: Date;
+    receiveDateTime: Date;
     deliveryPrice: string;
-    orderFirstName: string;
-    orderLastName: string;
-    orderPhone: string;
-    orderDate: Date;
-    receiverFirstName: string;
-    receiverLastName: string;
-    receiveDate: Date;
-    flowerFormular: number;
-    flowerAvailable: number;
-    flowerPrice: string;
+    flowerFormula: number;
+    flowerAvailable: string;
+    flowerPrice: number;
     deliveryFee: string;
     totalPrice: string;
     florist: number;
     note: string;
     status: string;
+    orderTotal: string;
 }
 

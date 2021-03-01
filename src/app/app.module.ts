@@ -36,10 +36,11 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { HttpClientModule } from '@angular/common/http';
 import { SearchflowerComponent } from './searchflower/searchflower.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { EditSalesorderComponent } from './edit-salesorder/edit-salesorder.component';
 import { FormControlName } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { EditSalesOrderComponent } from './salesorder/edit-sales-order/edit-sales-order.component';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -54,8 +55,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     LoginLayoutComponent,
     CreateSalesorderComponent,
     SearchflowerComponent,
-    EditSalesorderComponent,
-    PromotionUnitDialogComponent
+    PromotionUnitDialogComponent,
+    EditSalesOrderComponent
   ],
   imports: [
     BrowserModule,
@@ -92,7 +93,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     HttpClientModule,
     MatPaginatorModule,
     FlexLayoutModule,
-    NgbModule
+    NgbModule,
+    MatRadioModule
   ],
   providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent]

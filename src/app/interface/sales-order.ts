@@ -2,16 +2,16 @@ export interface SalesOrder {
     id: number;
     date: string;
     price: number;
-    customerFirstName: string;
-    customerLastName: string;
+    customerName: string;
+    customerLineFb: string;
     customerPhone: string;
-    receiverFirstName: string;
-    receiverLastName: string;
+    receiverName: string;
     receiverAddress: string;
     receiverPhone: string;
     note: string;
-    deliveryDateTime: string;
-    receiverDateTime: string;
+    deliveryDateTime: Date;
+    receiveDateTime: Date;
     status: string;
     deliveryPrice: number;
+    totalPrice: number;
 }

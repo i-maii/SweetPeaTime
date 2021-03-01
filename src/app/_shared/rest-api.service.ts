@@ -5,13 +5,13 @@ import { catchError, retry } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { PromotionDetail } from '../interface/promotion-detail';
 import { PromotionDetailLog } from '../interface/promotion-detail-log';
-import { CreateSalesOrder } from '../interface/create-sales-order';
 import { Florist } from '../interface/florist';
 import { FlowerAvailable } from '../interface/flower-available';
 import { FlowerFormula } from '../interface/flower-formula'
 import { SalesOrderDetail } from '../interface/sales-order-detail';
 import { SalesOrderElement } from '../interface/sales-order-element';
 import { SalesOrderPrice } from '../interface/sales-order-price';
+import { SalesOrder } from '../interface/sales-order';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +31,7 @@ export class RestApiService {
   }
 
   getFlowerFormula(): Observable<FlowerFormula[]> {
-    return this.http.get<FlowerFormula[]>(this.apiURL + '/flowerFormula/getAll?flowerId=' + 1 + '&floristId=' + 2)
+    return this.http.get<FlowerFormula[]>(this.apiURL + '/flowerFormula/getflowerFormula')
       .pipe(
         retry(1),
         catchError(this.handleError)
@@ -47,6 +47,14 @@ export class RestApiService {
 }
   getSalesOrder(): Observable<SalesOrderElement[]> {
     return this.http.get<SalesOrderElement[]>(this.apiURL + '/salesOrder/getAll')
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
+  }
+
+  getAllSalesOrderDetail(): Observable<SalesOrderDetail[]> {
+    return this.http.get<SalesOrderDetail[]>(this.apiURL + '/salesOrderDetail/getAllSalesOrderDetail')
       .pipe(
         retry(1),
         catchError(this.handleError)
@@ -72,7 +80,7 @@ export class RestApiService {
   getSalesOrderDetail(salesOrderId: number): Observable<SalesOrderDetail> {
     let params = new HttpParams;
     params = params.append('salesOrderId', salesOrderId+"");
-    return this.http.get<SalesOrderDetail>(this.apiURL + '/salesOrderDetail/getAllBySaleOrder', {
+    return this.http.get<SalesOrderDetail>(this.apiURL + '/salesOrderDetail/getBySalesOrder', {
       params: params
     })
       .pipe(
@@ -89,11 +97,12 @@ export class RestApiService {
       )
   }
 
-  getFlowerAvailable(formulaId: number, floristId: number): Observable<FlowerAvailable[]> {
+  getFlowerAvailable(formulaId: number, floristId: number): Observable<number> {
     let params = new HttpParams;
     params = params.append('formulaId', formulaId+"");
     params = params.append('floristId', floristId+"");
-    return this.http.get<FlowerAvailable[]>(this.apiURL + '/flowerFormulaDetail/getFormulaDetail', {
+    // params = params.append('orderDate', orderDate+"");
+    return this.http.get<number>(this.apiURL + '/flowerFormulaDetail/getFormulaDetail', {
       params: params
     })
       .pipe(
@@ -140,9 +149,37 @@ export class RestApiService {
       )
   }
   
-  createSalesOrder(salesOrder: CreateSalesOrder) {
+  createSalesOrder(salesOrder: SalesOrderElement) {
     console.log("test create salesorder " + salesOrder.note);
     this.http.post(this.apiURL + '/salesOrder/createSalesOrder', salesOrder).subscribe(
+      (val) => {
+          console.log("POST call successful value returned in body", 
+                      val);
+      },
+      response => {
+          console.log("POST call in error", response);
+      },
+      () => {
+          console.log("The POST observable is now completed.");
+      });
+  }
+
+  updateSalesOrder(salesOrder: SalesOrderElement) {
+    this.http.post(this.apiURL + '/salesOrder/updateSalesOrder', salesOrder).subscribe(
+      (val) => {
+          console.log("POST call successful value returned in body", 
+                      val);
+      },
+      response => {
+          console.log("POST call in error", response);
+      },
+      () => {
+          console.log("The POST observable is now completed.");
+      });
+  }
+
+  cancelSalesOrder(salesOrderDetail: SalesOrderDetail) {
+    this.http.post(this.apiURL + '/salesOrder/cancelSalesOrder', salesOrderDetail).subscribe(
       (val) => {
           console.log("POST call successful value returned in body", 
                       val);
