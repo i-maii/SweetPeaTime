@@ -94,10 +94,13 @@ export class SalesorderComponent implements OnInit {
       let customerLineFbFound = data.customerLineFb.toString().trim().toLowerCase().indexOf(filter.toLowerCase()) !== -1;
       let receiverNameFound = data.receiverName.toString().trim().toLowerCase().indexOf(filter.toLowerCase()) !== -1;
 
-      // let flowerFormulaFound = data.salesOrderDetail.flowerFormula.name.toString().trim().toLowerCase().indexOf(filter.toLowerCase()) !== -1;
-
-      // return statusFound || customerNameFound || customerLineFbFound || receiverNameFound || flowerFormulaFound;
-      return statusFound || customerNameFound || customerLineFbFound || receiverNameFound;
+      let flowerFormulaFound = false;
+      for (let i=0; i<data.salesOrderDetails.length; i++) {
+        flowerFormulaFound = data.salesOrderDetails[i].flowerFormula.name.toString().trim().toLowerCase().indexOf(filter.toLowerCase()) !== -1;
+        if (flowerFormulaFound)
+          break;
+      }
+      return statusFound || customerNameFound || customerLineFbFound || receiverNameFound || flowerFormulaFound;
     }
     return myFilterPredicate;
   }
