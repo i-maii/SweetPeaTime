@@ -10,6 +10,7 @@ import { SalesorderComponent } from './salesorder/salesorder.component';
 import { AuthGuard } from './_helpers/auth.guard';
 import { SearchflowerComponent } from './searchflower/searchflower.component';
 import { EditSalesorderComponent } from './edit-salesorder/edit-salesorder.component';
+import { StockComponent } from './stock/stock.component';
 
 const routes: Routes = [
   {
@@ -84,6 +85,16 @@ const routes: Routes = [
       {
         path: 'promotion',
         component: PromotionComponent
+      }
+    ]
+  },
+  {
+    path: '',
+    component: HomeLayoutComponent,
+    children: [
+      {
+        path: 'stock',
+        component: StockComponent
       }
     ]
   }

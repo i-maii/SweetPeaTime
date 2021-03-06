@@ -40,6 +40,9 @@ import { EditSalesorderComponent } from './edit-salesorder/edit-salesorder.compo
 import { FormControlName } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { StockComponent } from './stock/stock.component';
+import { DeleteStockComponent } from './stock/delete-stock/delete-stock.component';
+import { AddStockComponent } from './stock/add-stock/add-stock.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +58,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     CreateSalesorderComponent,
     SearchflowerComponent,
     EditSalesorderComponent,
-    PromotionUnitDialogComponent
+    PromotionUnitDialogComponent,
+    StockComponent,
+    DeleteStockComponent,
+    AddStockComponent
   ],
   imports: [
     BrowserModule,
