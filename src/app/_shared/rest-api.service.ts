@@ -13,6 +13,7 @@ import { SalesOrderElement } from '../interface/sales-order-element';
 import { SalesOrderPrice } from '../interface/sales-order-price';
 import { SalesOrder } from '../interface/sales-order';
 import { DatePipe } from '@angular/common';
+import { SalesOrderDetailListDto } from '../interface/sales-order-detail-list-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -46,9 +47,18 @@ export class RestApiService {
       retry(1),
       catchError(this.handleError)
     )
-}
+  }
+
   getSalesOrder(): Observable<SalesOrderElement[]> {
     return this.http.get<SalesOrderElement[]>(this.apiURL + '/salesOrder/getAll')
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
+  }
+
+  getListSalesOrder(): Observable<SalesOrderDetailListDto[]> {
+    return this.http.get<SalesOrderDetailListDto[]>(this.apiURL + '/salesOrder/getSalesOrderDetailListDto')
       .pipe(
         retry(1),
         catchError(this.handleError)
@@ -181,8 +191,8 @@ export class RestApiService {
       });
   }
 
-  cancelSalesOrder(salesOrderDetail: SalesOrderDetail) {
-    this.http.post(this.apiURL + '/salesOrder/cancelSalesOrder', salesOrderDetail).subscribe(
+  cancelSalesOrder(id: number) {
+    this.http.post(this.apiURL + '/salesOrder/cancelSalesOrder', id).subscribe(
       (val) => {
           console.log("POST call successful value returned in body", 
                       val);

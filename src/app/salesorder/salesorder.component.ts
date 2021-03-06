@@ -6,6 +6,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { EditSalesOrderComponent } from './edit-sales-order/edit-sales-order.component';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { SalesOrderElement } from '../interface/sales-order-element';
+import { SalesOrderDetailListDto } from '../interface/sales-order-detail-list-dto';
 
 @Component({
   selector: 'salesorder',
@@ -15,7 +17,7 @@ import Swal from 'sweetalert2';
 
 export class SalesorderComponent implements OnInit {
 
-  salesOrders: SalesOrderDetail[] = [];
+  salesOrders: SalesOrderDetailListDto[] = [];
   numberOfOrder: number = 0;
   displayedColumns: string[] = [];
   dataSource: any;
@@ -32,13 +34,14 @@ export class SalesorderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.restApiService.getAllSalesOrderDetail().subscribe((data: SalesOrderDetail[]) => {
+    this.restApiService.getListSalesOrder().subscribe((data: SalesOrderDetailListDto[]) => {
       for (let i = 0; i < data.length; i++) {
         this.salesOrders.push(data[i]);
       }
+      console.log(this.salesOrders);
       this.numberOfOrder = data.length;
       this.displayedColumns = ['id', 'status', 'deliveryDateTime', 'customerName', 'customerLineFb', 'receiverName', 'flowerFormula', 'selectEdit', 'selectDel'];
-      this.dataSource = new MatTableDataSource<SalesOrderDetail>(this.salesOrders);
+      this.dataSource = new MatTableDataSource<SalesOrderDetailListDto>(this.salesOrders);
       this.searchFilter.valueChanges.subscribe((searchFilterValue) => {
         this.dataSource.filter = searchFilterValue;
       });
@@ -47,41 +50,16 @@ export class SalesorderComponent implements OnInit {
     });
   }
 
-  openDialog(row: SalesOrderDetail): void {
-    console.log(row.salesOrder.id);
-    this.restApiService.getSalesOrderDetail(row.salesOrder.id).subscribe((data: SalesOrderDetail[]) => {
-      console.log(data);
-      for (let i = 0; i < data.length; i++) {
-
-        const dialogRef = this.dialog.open(EditSalesOrderComponent, {
-          data: {
-            id: data[0].salesOrder.id,
-            customerName: data[0].salesOrder.customerName,
-            customerPhone: data[0].salesOrder.customerPhone,
-            customerLineFb: data[0].salesOrder.customerLineFb,
-            date: data[0].salesOrder.date,
-            receiverName: data[0].salesOrder.receiverName,
-            receiverPhone: data[0].salesOrder.receiverPhone,
-            receiverAddress: data[0].salesOrder.receiverAddress,
-            receiveDateTime: data[0].salesOrder.deliveryDateTime,
-            flowerFormula: data[i].flowerFormula.id,
-            orderTotal: data[i].quantity,
-            flowerPrice: data[0].salesOrder.price,
-            deliveryFee: data[0].salesOrder.deliveryPrice,
-            totalPrice: data[0].salesOrder.totalPrice,
-            florist: data[0].florist.id,
-            note: data[0].salesOrder.note,
-            status: data[0].salesOrder.status
-          }
-        });
-      }
+  openDialog(row: SalesOrderDetailListDto): void {
+    const dialogRef = this.dialog.open(EditSalesOrderComponent, {
+      data: row
     });
 
   }
 
-  deleteSalesorder(row: SalesOrderDetail): void {
+  deleteSalesorder(row: SalesOrderDetailListDto): void {
     console.log(row);
-    if (row.salesOrder.status === "ส่งแล้ว") {
+    if (row.status === "ส่งแล้ว") {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -98,7 +76,7 @@ export class SalesorderComponent implements OnInit {
         confirmButtonText: 'ใช่, ยกเลิก!'
       }).then((result) => {
         if (result.isConfirmed) {
-          this.restApiService.cancelSalesOrder(row);
+          this.restApiService.cancelSalesOrder(row.id);
           Swal.fire(
             'Deleted!',
             'Your file has been deleted.',
@@ -107,18 +85,19 @@ export class SalesorderComponent implements OnInit {
         }
       })
     }
-
   }
 
   customFilterPredicate() {
-    const myFilterPredicate = function (data: SalesOrderDetail, filter: string): boolean {
-      let statusFound = data.salesOrder.status.toString().trim().toLowerCase().indexOf(filter.toLowerCase()) !== -1;
-      let customerNameFound = data.salesOrder.customerName.toString().trim().toLowerCase().indexOf(filter.toLowerCase()) !== -1;
-      let customerLineFbFound = data.salesOrder.customerLineFb.toString().trim().toLowerCase().indexOf(filter.toLowerCase()) !== -1;
-      let receiverNameFound = data.salesOrder.receiverName.toString().trim().toLowerCase().indexOf(filter.toLowerCase()) !== -1;
-      let flowerFormulaFound = data.flowerFormula.name.toString().trim().toLowerCase().indexOf(filter.toLowerCase()) !== -1;
+    const myFilterPredicate = function (data: SalesOrderDetailListDto, filter: string): boolean {
+      let statusFound = data.status.toString().trim().toLowerCase().indexOf(filter.toLowerCase()) !== -1;
+      let customerNameFound = data.customerName.toString().trim().toLowerCase().indexOf(filter.toLowerCase()) !== -1;
+      let customerLineFbFound = data.customerLineFb.toString().trim().toLowerCase().indexOf(filter.toLowerCase()) !== -1;
+      let receiverNameFound = data.receiverName.toString().trim().toLowerCase().indexOf(filter.toLowerCase()) !== -1;
 
-      return statusFound || customerNameFound || customerLineFbFound || receiverNameFound || flowerFormulaFound;
+      // let flowerFormulaFound = data.salesOrderDetail.flowerFormula.name.toString().trim().toLowerCase().indexOf(filter.toLowerCase()) !== -1;
+
+      // return statusFound || customerNameFound || customerLineFbFound || receiverNameFound || flowerFormulaFound;
+      return statusFound || customerNameFound || customerLineFbFound || receiverNameFound;
     }
     return myFilterPredicate;
   }

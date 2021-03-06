@@ -32,7 +32,6 @@ export class CreateSalesorderComponent implements OnInit {
     note: new FormControl(),
   });
 
-
   dataArray = [];
   salesOrderMultiple: SalesOrderMultiple | undefined;
 
@@ -126,20 +125,12 @@ export class CreateSalesorderComponent implements OnInit {
     //       receiveDateTime = this.salesOrderForm.controls["receiveDateTime"].value;
     //       formulaId = this.salesOrderForm.controls.flowerMultipleDtoList.value[i].flowerFormula;
 
-<<<<<<< HEAD
-          this.restApiService.getFlowerAvailable(formulaId, floristId, receiveDateTime).subscribe((data: number) => {
-            ((this.salesOrderForm.get('flowerMultipleForms') as FormArray).at(i) as FormGroup).get('flowerAvailable')?.patchValue(data);
-          });
-        }
-      }
-=======
     //       this.restApiService.getFlowerAvailable(formulaId, floristId, receiveDateTime).subscribe((data: number) => {
     //         console.log(data);
     //         ((this.salesOrderForm.get('flowerMultipleDtoList') as FormArray).at(i) as FormGroup).get('flowerAvailable')?.patchValue(data);
     //       });
     //     }
     //   }
->>>>>>> eb8292c3913f5b2cbe3556eb4e578640747a29aa
 
       // for (let i = 0; i < this.salesOrderForm.controls.flowerMultipleDtoList.value.length; i++) {
       //   if (this.salesOrderForm.controls.flowerMultipleDtoList.value[i].orderTotal != null
