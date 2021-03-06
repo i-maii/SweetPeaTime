@@ -1,3 +1,5 @@
+import { FlowerMultipleDto } from "./flower-multiple-dto";
+
 export interface SalesOrderElement {
     id: number;
     date: string;
@@ -9,6 +11,7 @@ export interface SalesOrderElement {
     receiverAddress: string;
     receiverPhone: string;
     deliveryDateTime: Date;
+    flowerMultipleDtoList: FlowerMultipleDto
     receiveDateTime: Date;
     deliveryPrice: string;
     flowerFormula: number;
