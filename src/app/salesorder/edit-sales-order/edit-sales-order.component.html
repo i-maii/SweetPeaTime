@@ -17,20 +17,23 @@
                         <div class="col-3">
                             <mat-form-field class="create-form-full-width" appearance="fill">
                                 <mat-label>ชื่อ</mat-label>
-                                <input matInput type="text" formControlName="customerName" [(ngModel)]="data.customerName">
+                                <input matInput type="text" formControlName="customerName"
+                                    [(ngModel)]="data.customerName">
                             </mat-form-field>
                         </div>
                         <div class="col-3">
                             <mat-form-field class="create-form-full-width" appearance="fill">
                                 <mat-label>เบอร์โทรศัพท์</mat-label>
-                                <input matInput type="text" placeholder="0811111111" formControlName="customerPhone" [(ngModel)]="data.customerPhone">
+                                <input matInput type="text" placeholder="0811111111" formControlName="customerPhone"
+                                    [(ngModel)]="data.customerPhone">
                             </mat-form-field>
                         </div>
 
                         <div class="col-3">
                             <mat-form-field class="create-form-full-width" appearance="fill">
                                 <mat-label>Line / FB</mat-label>
-                                <input matInput type="text" formControlName="customerLineFb" [(ngModel)]="data.customerLineFb">
+                                <input matInput type="text" formControlName="customerLineFb"
+                                    [(ngModel)]="data.customerLineFb">
                             </mat-form-field>
                         </div>
                         <div class="col-3">
@@ -66,26 +69,29 @@
                         <div class="col-3">
                             <mat-form-field class="create-form-full-width" appearance="fill">
                                 <mat-label>ชื่อ</mat-label>
-                                <input matInput type="text" formControlName="receiverName" [(ngModel)]="data.receiverName">
+                                <input matInput type="text" formControlName="receiverName"
+                                    [(ngModel)]="data.receiverName">
                             </mat-form-field>
                         </div>
                         <div class="col-3">
                             <mat-form-field class="create-form-full-width" appearance="fill">
                                 <mat-label>เบอร์โทรศัพท์</mat-label>
-                                <input matInput type="text" placeholder="0811111111" formControlName="receiverPhone" [(ngModel)]="data.receiverPhone">
+                                <input matInput type="text" placeholder="0811111111" formControlName="receiverPhone"
+                                    [(ngModel)]="data.receiverPhone">
                             </mat-form-field>
                         </div>
                         <div class="col-3">
                             <mat-form-field class="create-form-full-width" appearance="fill">
                                 <mat-label>ที่อยู่ผู้รับ</mat-label>
-                                <input matInput type="text" placeholder="123 abc" formControlName="receiverAddress" [(ngModel)]="data.receiverAddress">
+                                <input matInput type="text" placeholder="123 abc" formControlName="receiverAddress"
+                                    [(ngModel)]="data.receiverAddress">
                             </mat-form-field>
                         </div>
                         <div class="col-3">
                             <mat-form-field appearance="fill" class="date-picker-form-fill">
                                 <mat-label>วันที่รับ</mat-label>
                                 <input matInput [matDatepicker]="datepicker2" placeholder="02/15/2021" type="text"
-                                formControlName="receiveDateTime" [(ngModel)]="data.receiveDateTime">
+                                    formControlName="receiveDateTime" [(ngModel)]="data.receiveDateTime">
                                 <mat-datepicker-toggle matSuffix [for]="datepicker2"></mat-datepicker-toggle>
                                 <mat-datepicker #datepicker2>
                                     <mat-datepicker-actions>
@@ -111,45 +117,46 @@
             <div class="row">
                 <div class="col"></div>
                 <div class="col-10">
-                    <div class="row">
-                        <div class="col-3">
-                            <mat-form-field appearance="fill">
-                                <mat-label>สูตรดอกไม้</mat-label>
-                                <mat-select [(ngModel)]="data.flowerFormula" type="text" formControlName="flowerFormula">
-                                    <mat-option *ngFor="let flowerFormula of flowerFormulas" [value]="flowerFormula.id">
-                                        {{flowerFormula.name}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-3">
-                            <mat-form-field appearance="fill">
-                                <mat-label>ช่างจัดดอกไม้</mat-label>
-                                <mat-select [(ngModel)]="data.florist" type="text" formControlName="florist">
-                                    <mat-option *ngFor="let florist of florists" [value]="florist.id">
-                                        {{florist.name}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-3">
-                            <mat-form-field appearance="fill">
-                                <mat-label>จำนวน</mat-label>
-                                <input matInput type="text" formControlName="orderTotal" [(ngModel)]="data.orderTotal">
-                            </mat-form-field>
+                    <div formArrayName="flowerMultipleForms">
+                        <div *ngFor="let data of arr; let i=index">
+                            <div [formGroupName]="i">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <mat-form-field appearance="fill">
+                                            <mat-label>สูตรดอกไม้</mat-label>
+                                            <mat-select [(ngModel)]="data.flowerFormula" type="text"
+                                                formControlName="flowerFormula">
+                                                <mat-option *ngFor="let flowerFormula of flowerFormulas"
+                                                    [value]="flowerFormula.id">
+                                                    {{flowerFormula.name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-3">
+                                        <mat-form-field appearance="fill">
+                                            <mat-label>จำนวน</mat-label>
+                                            <input matInput type="text" formControlName="orderTotal"
+                                                [(ngModel)]="data.orderTotal">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-3">
                             <mat-form-field class="create-form-full-width" appearance="fill">
                                 <mat-label>ราคาช่อดอกไม้</mat-label>
-                                <input matInput type="text" formControlName="flowerPrice" [(ngModel)]="data.flowerPrice">
+                                <input matInput type="text" formControlName="flowerPrice" [(ngModel)]="data.flowerPrice"
+                                    readonly>
                             </mat-form-field>
                         </div>
                         <div class="col-3">
                             <mat-form-field class="create-form-full-width" appearance="fill">
                                 <mat-label>ราคาค่าส่ง</mat-label>
-                                <input matInput type="text" formControlName="deliveryFee" [(ngModel)]="data.deliveryFee">
+                                <input matInput type="text" formControlName="deliveryFee"
+                                    [(ngModel)]="data.deliveryFee">
                             </mat-form-field>
                         </div>
                         <div class="col-3">
@@ -169,10 +176,8 @@
                         <div class="col-3">
                             <mat-form-field appearance="fill">
                                 <mat-label>สถานะออเดอร์</mat-label>
-                                <mat-select [(ngModel)]="data.status" type="text"
-                                    formControlName="status">
-                                    <mat-option *ngFor="let statusOrder of statusOrders"
-                                        [value]="statusOrder.value">
+                                <mat-select [(ngModel)]="data.status" type="text" formControlName="status">
+                                    <mat-option *ngFor="let statusOrder of statusOrders" [value]="statusOrder.value">
                                         {{statusOrder.name}}
                                     </mat-option>
                                 </mat-select>

@@ -79,10 +79,10 @@ export class RestApiService {
       )
   }
 
-  getSalesOrderDetail(salesOrderId: number): Observable<SalesOrderDetail> {
+  getSalesOrderDetail(salesOrderId: number): Observable<SalesOrderDetail[]> {
     let params = new HttpParams;
     params = params.append('salesOrderId', salesOrderId+"");
-    return this.http.get<SalesOrderDetail>(this.apiURL + '/salesOrderDetail/getBySalesOrder', {
+    return this.http.get<SalesOrderDetail[]>(this.apiURL + '/salesOrderDetail/getBySalesOrder', {
       params: params
     })
       .pipe(

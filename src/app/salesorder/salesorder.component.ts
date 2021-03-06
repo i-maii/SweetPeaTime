@@ -4,7 +4,7 @@ import { RestApiService } from '../_shared/rest-api.service';
 import { SalesOrderDetail } from '../interface/sales-order-detail'
 import { MatDialog } from '@angular/material/dialog';
 import { EditSalesOrderComponent } from './edit-sales-order/edit-sales-order.component';
-import { FormControl } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -20,6 +20,11 @@ export class SalesorderComponent implements OnInit {
   displayedColumns: string[] = [];
   dataSource: any;
   searchFilter = new FormControl();
+  flowerMultipleForms = new FormArray([new FormGroup({
+    flowerFormula: new FormControl(),
+    orderTotal: new FormControl(),
+  })
+  ]);
 
   constructor(
     private restApiService: RestApiService,
@@ -44,29 +49,32 @@ export class SalesorderComponent implements OnInit {
 
   openDialog(row: SalesOrderDetail): void {
     console.log(row.salesOrder.id);
-    this.restApiService.getSalesOrderDetail(row.salesOrder.id).subscribe((data: SalesOrderDetail) => {
+    this.restApiService.getSalesOrderDetail(row.salesOrder.id).subscribe((data: SalesOrderDetail[]) => {
       console.log(data);
-      const dialogRef = this.dialog.open(EditSalesOrderComponent, {
-        data: {
-          id: data.salesOrder.id,
-          customerName: data.salesOrder.customerName,
-          customerPhone: data.salesOrder.customerPhone,
-          customerLineFb: data.salesOrder.customerLineFb,
-          date: data.salesOrder.date,
-          receiverName: data.salesOrder.receiverName,
-          receiverPhone: data.salesOrder.receiverPhone,
-          receiverAddress: data.salesOrder.receiverAddress,
-          receiveDateTime: data.salesOrder.deliveryDateTime,
-          flowerFormula: data.flowerFormula.id,
-          orderTotal: data.quantity,
-          flowerPrice: data.salesOrder.price,
-          deliveryFee: data.salesOrder.deliveryPrice,
-          totalPrice: data.salesOrder.totalPrice,
-          florist: data.florist.id,
-          note: data.salesOrder.note,
-          status: data.salesOrder.status
-        }
-      });
+      for (let i = 0; i < data.length; i++) {
+
+        const dialogRef = this.dialog.open(EditSalesOrderComponent, {
+          data: {
+            id: data[0].salesOrder.id,
+            customerName: data[0].salesOrder.customerName,
+            customerPhone: data[0].salesOrder.customerPhone,
+            customerLineFb: data[0].salesOrder.customerLineFb,
+            date: data[0].salesOrder.date,
+            receiverName: data[0].salesOrder.receiverName,
+            receiverPhone: data[0].salesOrder.receiverPhone,
+            receiverAddress: data[0].salesOrder.receiverAddress,
+            receiveDateTime: data[0].salesOrder.deliveryDateTime,
+            flowerFormula: data[i].flowerFormula.id,
+            orderTotal: data[i].quantity,
+            flowerPrice: data[0].salesOrder.price,
+            deliveryFee: data[0].salesOrder.deliveryPrice,
+            totalPrice: data[0].salesOrder.totalPrice,
+            florist: data[0].florist.id,
+            note: data[0].salesOrder.note,
+            status: data[0].salesOrder.status
+          }
+        });
+      }
     });
 
   }

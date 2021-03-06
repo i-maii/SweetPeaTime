@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Florist } from 'src/app/interface/florist';
 import { FlowerAvailable } from 'src/app/interface/flower-available';
@@ -27,15 +27,16 @@ export class EditSalesOrderComponent implements OnInit {
     receiverPhone: new FormControl(),
     receiverAddress: new FormControl(),
     receiveDateTime: new FormControl(),
-    flowerFormula: new FormControl(),
-    orderTotal: new FormControl(),
     flowerPrice: new FormControl(),
     deliveryFee: new FormControl(),
     totalPrice: new FormControl(),
     florist: new FormControl(),
     note: new FormControl(),
-    status: new FormControl()
+    status: new FormControl(),
+    flowerMultipleForms: new FormArray([]),
   });
+
+  arr: any;
 
   statusOrders: StatusOrder[] = [
       {value: 'จ่ายแล้ว', name: 'จ่ายแล้ว'},
@@ -60,13 +61,35 @@ export class EditSalesOrderComponent implements OnInit {
     public dialogRef: MatDialogRef<SalesorderComponent>,
     @Inject(MAT_DIALOG_DATA) public data: SalesOrderElement,
     private restApiService: RestApiService,
-  ) { }
+    private fb: FormBuilder
+  ) {
+    this.salesOrderForm = this.fb.group({
+      customerName: new FormControl(),
+      customerPhone: new FormControl(),
+      customerLineFb: new FormControl(),
+      date: new FormControl(),
+      receiverName: new FormControl(),
+      receiverPhone: new FormControl(),
+      receiverAddress: new FormControl(),
+      receiveDateTime: new FormControl(),
+      flowerPrice: new FormControl(),
+      deliveryFee: new FormControl(),
+      totalPrice: new FormControl(),
+      florist: new FormControl(),
+      note: new FormControl(),
+      status: new FormControl(),
+      flowerMultipleForms: this.fb.array([new FormGroup({
+        flowerFormula: new FormControl(),
+        orderTotal: new FormControl(),
+      })
+      ])
+    });
+   }
 
   ngOnInit(): void {
     this.numberOfOrder = this.data.id;
-    this.salesOrderForm.controls['flowerFormula'].disable();
+    this.arr = this.salesOrderForm.controls.flowerMultipleForms.value;
     this.salesOrderForm.controls['florist'].disable();
-    this.salesOrderForm.controls['orderTotal'].disable();
     this.salesOrderForm.controls['flowerPrice'].disable();
     this.salesOrderForm.controls['deliveryFee'].disable();
     this.salesOrderForm.controls['totalPrice'].disable();

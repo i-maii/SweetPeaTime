@@ -26,9 +26,6 @@ export class CreateSalesorderComponent implements OnInit {
     receiverAddress: new FormControl(),
     receiveDateTime: new FormControl(),
     flowerPrice: new FormControl(),
-    // flowerFormula: new FormControl(),
-    // flowerAvailable: new FormControl(),
-    // orderTotal: new FormControl(),
     deliveryFee: new FormControl(),
     totalPrice: new FormControl(),
     florist: new FormControl(),
@@ -130,7 +127,7 @@ export class CreateSalesorderComponent implements OnInit {
           formulaId = this.salesOrderForm.controls.flowerMultipleForms.value[i].flowerFormula;
 
           this.restApiService.getFlowerAvailable(formulaId, floristId, receiveDateTime).subscribe((data: number) => {
-            this.flowerAvailable = data;
+            ((this.salesOrderForm.get('flowerMultipleForms') as FormArray).at(i) as FormGroup).get('flowerAvailable')?.patchValue(data);
           });
         }
       }
