@@ -12,6 +12,7 @@ import { SalesOrderDetail } from '../interface/sales-order-detail';
 import { SalesOrderElement } from '../interface/sales-order-element';
 import { SalesOrderPrice } from '../interface/sales-order-price';
 import { SalesOrder } from '../interface/sales-order';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,8 @@ export class RestApiService {
   apiURL = environment.apiUrl;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private datepipe: DatePipe
   ) { }
 
   httpOptions = {
@@ -97,11 +99,12 @@ export class RestApiService {
       )
   }
 
-  getFlowerAvailable(formulaId: number, floristId: number): Observable<number> {
+  getFlowerAvailable(formulaId: number, floristId: number, orderDate: Date): Observable<number> {
     let params = new HttpParams;
     params = params.append('formulaId', formulaId+"");
     params = params.append('floristId', floristId+"");
-    // params = params.append('orderDate', orderDate+"");
+    params = params.append('orderDate', this.datepipe.transform(orderDate, 'yyyy-MM-dd')+"");
+    console.log(params);
     return this.http.get<number>(this.apiURL + '/flowerFormulaDetail/getFormulaDetail', {
       params: params
     })

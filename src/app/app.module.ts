@@ -41,6 +41,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EditSalesOrderComponent } from './salesorder/edit-sales-order/edit-sales-order.component';
 import { MatRadioModule } from '@angular/material/radio';
+import { DatePipe } from '@angular/common'
 
 @NgModule({
   declarations: [
@@ -96,7 +97,7 @@ import { MatRadioModule } from '@angular/material/radio';
     NgbModule,
     MatRadioModule
   ],
-  providers: [AuthService, AuthGuard],
+  providers: [AuthService, AuthGuard, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

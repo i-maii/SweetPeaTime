@@ -1,4 +1,4 @@
-export class SalesOrderMultiple {
+export interface SalesOrderMultiple {
     flowerFormula: any;
     flowerAvailable: any;
     orderTotal: any;
