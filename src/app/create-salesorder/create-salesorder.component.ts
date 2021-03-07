@@ -110,109 +110,6 @@ export class CreateSalesorderComponent implements OnInit {
       }
     });
 
-
-    // this.salesOrderForm.controls["flowerMultipleDtoList"]?.valueChanges.subscribe((val) => {
-    //   let floristId = 0;
-    //   let totalOrder = 0;
-    //   let formulaId = 0;
-    //   let receiveDateTime = new Date();
-
-    //   for (let i = 0; i < this.salesOrderForm.controls.flowerMultipleDtoList.value.length; i++) {
-    //     if (this.salesOrderForm.controls.flowerMultipleDtoList.value[i].flowerFormula != null
-    //       && this.salesOrderForm.controls["florist"].value != null
-    //       && this.salesOrderForm.controls["receiveDateTime"].value != null) {
-
-    //       floristId = this.salesOrderForm.controls["florist"].value;
-    //       receiveDateTime = this.salesOrderForm.controls["receiveDateTime"].value;
-    //       formulaId = this.salesOrderForm.controls.flowerMultipleDtoList.value[i].flowerFormula;
-
-<<<<<<< HEAD
-          this.restApiService.getFlowerAvailable(formulaId, floristId, receiveDateTime).subscribe((data: number) => {
-            ((this.salesOrderForm.get('flowerMultipleForms') as FormArray).at(i) as FormGroup).get('flowerAvailable')?.patchValue(data);
-          });
-        }
-      }
-=======
-    //       this.restApiService.getFlowerAvailable(formulaId, floristId, receiveDateTime).subscribe((data: number) => {
-    //         console.log(data);
-    //         ((this.salesOrderForm.get('flowerMultipleDtoList') as FormArray).at(i) as FormGroup).get('flowerAvailable')?.patchValue(data);
-    //       });
-    //     }
-    //   }
->>>>>>> eb8292c3913f5b2cbe3556eb4e578640747a29aa
-
-      // for (let i = 0; i < this.salesOrderForm.controls.flowerMultipleDtoList.value.length; i++) {
-      //   if (this.salesOrderForm.controls.flowerMultipleDtoList.value[i].orderTotal != null
-      //     && this.salesOrderForm.controls["florist"].value != null
-      //     && this.salesOrderForm.controls["receiveDateTime"].value != null) {
-
-      //     floristId = this.salesOrderForm.controls["florist"].value;
-      //     receiveDateTime = this.salesOrderForm.controls["receiveDateTime"].value;
-      //     totalOrder = this.salesOrderForm.controls.flowerMultipleDtoList.value[i].orderTotal;
-
-      //     this.restApiService.getSalesOrderPrice(formulaId, floristId, totalOrder).subscribe((data: SalesOrderPrice) => {
-      //       this.salesOrderForm.controls["flowerPrice"].setValue(data.flowerPrice);
-      //       this.salesOrderForm.controls["deliveryFee"].setValue(data.feePrice);
-      //       this.salesOrderForm.controls["totalPrice"].setValue(data.totalPrice);
-      //     });
-      //   }
-      // }
-    // });
-
-    // this.salesOrderForm.controls["florist"].valueChanges.subscribe((val: number = 1) => {
-    //   if (this.salesOrderForm.controls["florist"].value != null) {
-    //     let formulaId = 0;
-    //     let totalOrder = 0;
-    //     let receiveDateTime = new Date();
-
-    //     val = this.salesOrderForm.controls["florist"].value;
-
-    //     // for (let i = 0; i < this.flowerMultipleDtoList.length; i++) {
-    //     if (this.salesOrderForm.get("flowerMultipleDtoList")?.value[0].flowerFormula != null
-    //       && this.salesOrderForm.controls["receiveDateTime"].value != null) {
-    //       receiveDateTime = this.salesOrderForm.controls["receiveDateTime"].value;
-    //       formulaId = this.salesOrderForm.get("flowerMultipleDtoList")?.value[0].flowerFormula;
-    //       this.restApiService.getFlowerAvailable(val, formulaId, receiveDateTime).subscribe((data: number) => {
-    //         this.flowerAvailable = data;
-    //       });
-    //       // }
-    //     }
-
-    //     // for (let i = 0; i < this.flowerMultipleDtoList.length; i++) {
-    //     if (this.salesOrderForm.get("flowerMultipleDtoList")?.value[0].orderTotal != null) {
-    //       totalOrder = this.salesOrderForm.get("flowerMultipleDtoList")?.value[0].orderTotal;
-    //       this.restApiService.getSalesOrderPrice(formulaId, val, totalOrder).subscribe((data: SalesOrderPrice) => {
-    //         this.salesOrderForm.controls["flowerPrice"].setValue(data.flowerPrice);
-    //         this.salesOrderForm.controls["deliveryFee"].setValue(data.feePrice);
-    //         this.salesOrderForm.controls["totalPrice"].setValue(data.totalPrice);
-    //       });
-    //     }
-    //     // }
-    //   }
-
-    // });
-
-    // this.salesOrderForm.controls["receiveDateTime"].valueChanges.subscribe((val) => {
-    //   if (this.salesOrderForm.controls["receiveDateTime"].value != null) {
-    //     let formulaId = 1;
-    //     let floristId = 1;
-
-    //     if (this.salesOrderForm.controls["florist"].value != null) {
-    //       floristId = this.salesOrderForm.controls["florist"].value;
-    //     }
-
-    //     for (let i = 0; i < this.flowerMultipleDtoList.length; i++) {
-    //       if (this.salesOrderForm.get("flowerMultipleDtoList")?.value[i].flowerFormula != null) {
-    //         formulaId = this.salesOrderForm.get("flowerMultipleDtoList")?.value[i].flowerFormula;
-    //         this.restApiService.getFlowerAvailable(formulaId, floristId, val).subscribe((data: number) => {
-    //           this.flowerAvailable = data;
-    //         });
-    //       }
-    //     }
-
-    //   }
-    // });
-
   }
 
   onSubmit(): void {
@@ -220,7 +117,7 @@ export class CreateSalesorderComponent implements OnInit {
     this.createSalesOrder.flowerPrice = this.salesOrderForm.controls["flowerPrice"].value;
     this.createSalesOrder.deliveryFee = this.salesOrderForm.controls["deliveryFee"].value;
     this.createSalesOrder.totalPrice = this.salesOrderForm.controls["totalPrice"].value;
-    // this.createSalesOrder.flowerAvailable = this.salesOrderForm.controls["flowerAvailable"].value;
+    
     console.warn(this.createSalesOrder);
     console.log(this.flowerMultipleDtoList.value);
     this.restApiService.createSalesOrder(this.createSalesOrder);
@@ -251,17 +148,24 @@ export class CreateSalesorderComponent implements OnInit {
     let floristId = 0;
     let totalOrder = 0;
     let formulaId = 0;
+    let flowerPrice = 0;
+    let receiveDateTime = new Date();
 
     for (let i = 0; i < this.salesOrderForm.controls.flowerMultipleDtoList.value.length; i++) {
       if (this.salesOrderForm.controls.flowerMultipleDtoList.value[i].orderTotal != null
         && this.salesOrderForm.controls["florist"].value != null
+        && this.salesOrderForm.controls.flowerMultipleDtoList.value[row].flowerFormula != null
         && this.salesOrderForm.controls["receiveDateTime"].value != null) {
 
         floristId = this.salesOrderForm.controls["florist"].value;
         formulaId = this.salesOrderForm.controls.flowerMultipleDtoList.value[row].flowerFormula;
         totalOrder = this.salesOrderForm.controls.flowerMultipleDtoList.value[i].orderTotal;
+        receiveDateTime = this.salesOrderForm.controls["receiveDateTime"].value;
+        if (this.salesOrderForm.controls["flowerPrice"].value != null){
+          flowerPrice = this.salesOrderForm.controls["flowerPrice"].value;
+        }
 
-        this.restApiService.getSalesOrderPrice(formulaId, floristId, totalOrder).subscribe((data: SalesOrderPrice) => {
+        this.restApiService.getSalesOrderPrice(formulaId, floristId, totalOrder, flowerPrice, receiveDateTime).subscribe((data: SalesOrderPrice) => {
           this.salesOrderForm.controls["flowerPrice"].setValue(data.flowerPrice);
           this.salesOrderForm.controls["deliveryFee"].setValue(data.feePrice);
           this.salesOrderForm.controls["totalPrice"].setValue(data.totalPrice);

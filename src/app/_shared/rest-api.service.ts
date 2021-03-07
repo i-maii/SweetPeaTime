@@ -122,11 +122,13 @@ export class RestApiService {
     )
   }
   
-  getSalesOrderPrice(formulaId: number, floristId: number, totalOrder: number): Observable<SalesOrderPrice> {
+  getSalesOrderPrice(formulaId: number, floristId: number, totalOrder: number, flowerPrice: number, receiveDateTime: Date): Observable<SalesOrderPrice> {
     let params = new HttpParams;
     params = params.append('formulaId', formulaId+"");
     params = params.append('floristId', floristId+"");
     params = params.append('totalOrder', totalOrder+"");
+    params = params.append('flowerPrice', flowerPrice+"");
+    params = params.append('receiveDateTime', this.datepipe.transform(receiveDateTime, 'yyyy-MM-dd')+"");
     return this.http.get<SalesOrderPrice>(this.apiURL + '/flowerFormula/priceOfSalesOrder', {
       params: params
     })
