@@ -128,6 +128,8 @@ export class EditSalesOrderComponent implements OnInit {
       'Good job!',
       'แก้ไขออเดอร์สำเร็จ!',
       'success'
-    )
+    ).then((result) => {
+      window.location.reload();
+    });
   }
 }
