@@ -42,6 +42,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EditSalesOrderComponent } from './salesorder/edit-sales-order/edit-sales-order.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { DatePipe } from '@angular/common'
+import { StockComponent } from './stock/stock.component';
+import { DeleteStockComponent } from './stock/delete-stock/delete-stock.component';
+import { AddStockComponent } from './stock/add-stock/add-stock.component';
 
 @NgModule({
   declarations: [
@@ -56,8 +59,11 @@ import { DatePipe } from '@angular/common'
     LoginLayoutComponent,
     CreateSalesorderComponent,
     SearchflowerComponent,
+    EditSalesOrderComponent,
     PromotionUnitDialogComponent,
-    EditSalesOrderComponent
+    StockComponent,
+    DeleteStockComponent,
+    AddStockComponent
   ],
   imports: [
     BrowserModule,

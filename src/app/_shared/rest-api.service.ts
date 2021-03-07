@@ -6,14 +6,16 @@ import { environment } from 'src/environments/environment';
 import { PromotionDetail } from '../interface/promotion-detail';
 import { PromotionDetailLog } from '../interface/promotion-detail-log';
 import { Florist } from '../interface/florist';
-import { FlowerAvailable } from '../interface/flower-available';
 import { FlowerFormula } from '../interface/flower-formula'
 import { SalesOrderDetail } from '../interface/sales-order-detail';
 import { SalesOrderElement } from '../interface/sales-order-element';
 import { SalesOrderPrice } from '../interface/sales-order-price';
-import { SalesOrder } from '../interface/sales-order';
 import { DatePipe } from '@angular/common';
 import { SalesOrderDetailListDto } from '../interface/sales-order-detail-list-dto';
+import { Stock } from '../interface/stock';
+import { Flower } from '../interface/flower';
+import { DeleteStock } from '../interface/delete-stock';
+import { AddStock } from '../interface/add-stock';
 
 @Injectable({
   providedIn: 'root'
@@ -205,6 +207,30 @@ export class RestApiService {
       () => {
           console.log("The POST observable is now completed.");
       });
+  }
+  
+  getStock(): Observable<Stock[]> {
+    return this.http.get<Stock[]>(this.apiURL + '/stock')
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
+  }
+
+  getFlower(): Observable<Flower[]> {
+    return this.http.get<Flower[]>(this.apiURL + '/flower/getAll')
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
+  }
+
+  deleteStock(stock: DeleteStock[]): Observable<any> {
+    return this.http.post(this.apiURL + '/stock/deleteStock', stock, { observe: 'response'});
+  }
+
+  addStock(stock: AddStock): Observable<any> {
+    return this.http.post(this.apiURL + '/stock/addStock', stock, { observe: 'response'});
   }
 
   handleError(error: HttpErrorResponse) {
