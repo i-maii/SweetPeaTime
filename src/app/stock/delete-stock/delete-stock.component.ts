@@ -15,7 +15,6 @@ export class DeleteStockComponent implements OnInit {
 
   formDeleteStock: FormGroup;
   arr: any;
-  // deleteQuantity = new FormControl('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]);
 
   constructor(
     public dialogRef: MatDialogRef<Stock>,

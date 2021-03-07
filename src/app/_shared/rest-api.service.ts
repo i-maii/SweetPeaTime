@@ -229,7 +229,7 @@ export class RestApiService {
     return this.http.post(this.apiURL + '/stock/deleteStock', stock, { observe: 'response'});
   }
 
-  addStock(stock: AddStock): Observable<any> {
+  addStock(stock: AddStock[]): Observable<any> {
     return this.http.post(this.apiURL + '/stock/addStock', stock, { observe: 'response'});
   }
 
