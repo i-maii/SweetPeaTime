@@ -97,4 +97,5 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }

@@ -3,6 +3,7 @@ export interface FlowerFormula {
     name: string;
     size: string;
     pattern: string;
+    color: string;
     price: number;
     imagePath: string;
     occasion: string;
