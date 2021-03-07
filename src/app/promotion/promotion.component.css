@@ -9,7 +9,18 @@ mat-grid-tile {
   margin-right: 8px;  
 }
 
- .example-list {
+.content {
+  padding: 16px;
+}
+
+.popup-dialog {
+  /*width: 300px;
+  height: 250px*/
+  width: 380px;
+  height: 100px
+}
+
+.example-list {
     width: 300px;
     max-width: 100%;
     border: solid 1px #ccc;
@@ -18,7 +29,7 @@ mat-grid-tile {
     background: white;
     border-radius: 4px;
     overflow: hidden;
-  }
+}
   
   .example-box {
     padding: 20px 10px;
@@ -68,17 +79,19 @@ mat-grid-tile {
 
   .current-card {
     height: 100%;
-    width: 30%;
+    /*width: 70%;*/
     /*width: 40%;*/
     /*background: beige;*/
+    object-fit: contain;
     background: rgb(255, 255, 255);
   }
 
   .promotion-card {
-    height: 400%;
-    width: 50%;
+    height: 100%;
+    /*width: 75%;*/
     /*width: 35%;*/
     /*background: beige;*/
+    object-fit: contain;
     background: rgb(255, 255, 255);
   }
 
@@ -116,9 +129,23 @@ mat-grid-tile {
   }
 
   .main-image {
-    max-width: 200px;
-    display: flex;
+    /*max-width: 150px;
+    max-height: 150px;
+    object-fit: contain;*/
+
+    height: 150px;
+    object-fit: contain;
   }
+
+  .main-image-dialog {
+    max-width: 210px;
+    max-height: 180px;
+    object-fit: contain;
+  }
+
+  .image-list-image {
+    border-radius: 5px;
+}
 
   .card-container-left{
     display: inline;
@@ -139,7 +166,6 @@ mat-grid-tile {
   .templatedialog{
     max-width: 2000px;
   }
-
   /*----------*/
   .example-container {
     width: 400px;

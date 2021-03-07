@@ -12,6 +12,10 @@ import { FlowerFormula } from '../interface/flower-formula'
 import { SalesOrderDetail } from '../interface/sales-order-detail';
 import { SalesOrderElement } from '../interface/sales-order-element';
 import { SalesOrderPrice } from '../interface/sales-order-price';
+import { Flower } from '../interface/flower';
+import { FlowerFormulaDetail } from "../interface/flower-formula-detail";
+import { PromotionDetailDto } from "../interface/promotion-detail-dto";
+import { PromotionDetailCurrentDto } from "../interface/promotion-detail-current-dto";
 
 @Injectable({
   providedIn: 'root'
@@ -153,6 +157,74 @@ export class RestApiService {
       () => {
           console.log("The POST observable is now completed.");
       });
+  }
+
+  getFlower(): Observable<Flower[]> {
+    return this.http.get<Flower[]>(this.apiURL + '/flower/getAll')
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
+  }
+
+  getStock(flowerId: any): Observable<FlowerFormulaDetail[]> {
+    let params = new HttpParams;
+    params = params.append('flowerId', flowerId+"");
+    return this.http.get<FlowerFormulaDetail[]>(this.apiURL + '/flowerFormulaDetail/getPromotion',{
+      params: params
+    })
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
+  }
+
+  getCheckFlowerFormulaDetail(formulaId: any, flowerId: any): Observable<FlowerFormulaDetail[]> {
+    let params = new HttpParams;
+    params = params.append('formulaId', formulaId+"");
+    params = params.append('flowerId', flowerId+"");
+    return this.http.get<FlowerFormulaDetail[]>(this.apiURL + '/flowerFormulaDetail/getQuantityPromotion',{
+      params: params
+    })
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
+  }
+
+  updatePromotion(promotionId: number) {
+    console.log(promotionId);
+    let params = new HttpParams;
+    params = params.append('promotionId', promotionId + "");
+
+    this.http.post(this.apiURL + '/promotionDetail/updatePromotion?', null, {params: params})
+    .subscribe(
+      (val) => {
+          console.log("POST call successful value returned in body", 
+                      val);
+      },
+      response => {
+          console.log("POST call in error", response);
+      },
+      () => {
+          console.log("The POST observable is now completed.");
+      });
+  }
+
+  getPromotion(): Observable<PromotionDetailDto[]> {
+    return this.http.get<PromotionDetailDto[]>(this.apiURL + '/promotionDetail/getPromotion')
+    .pipe(
+      retry(1),
+      catchError(this.handleError)
+    )
+  }
+
+  getPromotionSuggest(): Observable<PromotionDetailCurrentDto[]> {
+    return this.http.get<PromotionDetailCurrentDto[]>(this.apiURL + '/promotionDetail/getPromotionSuggest')
+    .pipe(
+      retry(1),
+      catchError(this.handleError)
+    )
   }
 
   handleError(error: HttpErrorResponse) {

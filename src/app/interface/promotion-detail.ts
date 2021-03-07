@@ -1,5 +1,6 @@
 import { FlowerFormula } from "./flower-formula";
 import { Promotion } from "./promotion";
+import { Florist } from "./florist";
 
 export interface PromotionDetail {
     id: number;
@@ -11,4 +12,5 @@ export interface PromotionDetail {
     promotions: Promotion; 
     flowerFormula: FlowerFormula;
     locationName: string;
+    florist: Florist;
   }

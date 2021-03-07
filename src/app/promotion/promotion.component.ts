@@ -1,10 +1,12 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { CdkDragDrop, CdkDropList, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PromotionDetail } from '../interface/promotion-detail';
 import { PromotionDetailLog } from '../interface/promotion-detail-log';
 import { RestApiService } from '../_shared/rest-api.service';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
+import { FlowerFormulaDetail } from '../interface/flower-formula-detail';
+import { PromotionDetailDto } from "../interface/promotion-detail-dto";
+import { PromotionDetailCurrentDto } from "../interface/promotion-detail-current-dto";
 
 export interface DialogData {
   images: 'test';
@@ -19,20 +21,31 @@ export interface DialogData {
 export class PromotionComponent implements OnInit {
 
   promotionDetails: PromotionDetail[] = [];
-  promotionDetailLogs: PromotionDetailLog[] = [];
+  promotionDetailLogsNormal: PromotionDetailLog[] = [];
   promotionDetailLogsCurrent: PromotionDetailLog[] = [];
-
-  ELEMENT_DATA: PromotionDetail[] = [];
-  ELEMENT_DATA2: PromotionDetailLog[] = [];
-  //ELEMENT_DATA3: PromotionDetailLog[] = [];
+  flowerQuantity: FlowerFormulaDetail[] = [];
+  stockQuantity: FlowerFormulaDetail[] = [];
+  promotionDetailsDtos: PromotionDetailDto[] = [];
+  promotionDetailsCurrentDtos: PromotionDetailCurrentDto[] = [];
 
   displayedColumns: string[] = [];
-  displayedColumns2: string[] = [];
-  //displayedColumns3: string[] = [];
-
+  displayedColumnsNormal: string[] = [];
+  displayedColumnsNormalDto: string[] = [];
+  displayedColumnsNormalCurrentDto: string[] = [];
+    
   dataSource: any;
-  dataSource2: any;
-  //dataSource3: any;
+  dataSourceNormal: any;
+  dataSourceNormalDto: any;
+  dataSourceNormalCurrentDto: any;
+
+  totalProfitNormal: any;
+  totalProfitCurrent: any;
+  totalprofit: any;
+  cntPromotion: any;
+  flowerName: any;
+  count: any;
+  allQuantity: any;
+  weeklyPromotion: number = 20;
 
   //constructor(public dialog: MatDialog) {}
   constructor(
@@ -43,28 +56,69 @@ export class PromotionComponent implements OnInit {
     this.restApiService.getCurrentPromotion().subscribe((data: PromotionDetail[]) => {
       for (let i = 0; i < data.length; i++) {
         this.promotionDetails.push(data[i]);
+        this.cntPromotion = data.length;
       }
     });
 
     this.restApiService.getNormalPromotionDetailLog().subscribe((data: PromotionDetailLog[]) => {
       for (let i = 0; i < data.length; i++) {
-        this.ELEMENT_DATA2.push(data[i]);
+        this.promotionDetailLogsNormal.push(data[i]);
       }
-      this.displayedColumns2 = ['flowername', 'size', 'unit', 'profit', 'totalprofit', 'price', 'location', 'imageUrl', 'add'];
-      this.dataSource2 = new MatTableDataSource<PromotionDetailLog>(this.ELEMENT_DATA2);
+      this.displayedColumnsNormal = ['flowername', 'size', 'unit', 'profit', 'totalprofit', 'price', 'location', 'imageUrl', 'add'];
+      this.dataSourceNormal = new MatTableDataSource<PromotionDetailLog>(this.promotionDetailLogsNormal);
     });
 
     this.restApiService.getCurrentPromotionDetailLog().subscribe((data: PromotionDetailLog[]) => {
       for (let i = 0; i < data.length; i++) {
         this.promotionDetailLogsCurrent.push(data[i]);
       }
+      this.displayedColumns = ['flowername', 'size', 'unit', 'profit', 'totalprofit', 'price', 'location', 'totalFlower', 'stock', 'imageUrl', 'add'];
+      this.dataSource = new MatTableDataSource<PromotionDetailLog>(this.promotionDetailLogsCurrent);
+      //console.log();
     });
+
+    this.restApiService.getCheckFlowerFormulaDetail("8", "27").subscribe((data: FlowerFormulaDetail[]) => {
+      for (let i = 0; i < data.length; i++) {
+        this.flowerQuantity.push(data[i]);
+      }
+    });
+
+    this.restApiService.getPromotion().subscribe((data: PromotionDetailDto[]) => {
+      for (let i = 0; i < data.length; i++) {
+        this.promotionDetailsDtos.push(data[i]);
+      }
+      this.displayedColumnsNormalDto = ['flowername', 'size', 'unit', 'profit', 'totalprofit', 'price', 'location', 'imageUrl', 'add'];
+      this.dataSourceNormalDto = new MatTableDataSource<PromotionDetailDto>(this.promotionDetailsDtos);
+    });
+
+    this.restApiService.getPromotionSuggest().subscribe((data: PromotionDetailCurrentDto[]) => {
+      for (let i = 0; i < data.length; i++) {
+        this.promotionDetailsCurrentDtos.push(data[i]);
+      }
+      this.displayedColumnsNormalCurrentDto = ['flowername', 'size', 'unit', 'profit', 'totalprofit', 'price', 'location', 'imageUrl', 'add'];
+      this.dataSourceNormalCurrentDto = new MatTableDataSource<PromotionDetailCurrentDto>(this.promotionDetailsCurrentDtos);
+    });
+
+    
+  }
+
+  getIdFlowerReplace(id: number) {
+    //console.log(id)
+    this.restApiService.updatePromotion(id);
+  }
+
+  calculateTotalProfit(profit: any, unit: any) {
+    return this.totalprofit = profit * unit;
+  }
+
+  showQuantity(flowerQuantity: any,unit: any) {
+    return this.allQuantity = flowerQuantity * unit;
   }
 
   openDialog() {
-    this.dialog.open(PromotionDialogComponent, {
+    this.dialog.open(PromotionSuccessDialogComponent, {
       data: {
-        animal: 'panda'
+        animal: 'test'
       }
     });
   }
@@ -80,6 +134,33 @@ export class PromotionComponent implements OnInit {
         sumprofit: price * unit
       }
     });
+  } 
+
+  openDialogReplaceFlower(pathimg: any,size: any, price: any, name: any, unit: any, cntPromotion: any) {
+    if (cntPromotion == 4) {
+      this.dialog.open(PromotionReplaceDialogComponent, {
+        data: {
+          imagespath: pathimg,
+          flowersize: size,
+          flowerprice: price,
+          flowername: name,
+          flowerunit: unit,
+          sumprofit: price * unit
+        }
+      });
+    }
+    else{
+      this.dialog.open(PromotionUnitDialogComponent, {
+        data: {
+          imagespath: pathimg,
+          flowersize: size,
+          flowerprice: price,
+          flowername: name,
+          flowerunit: unit,
+          sumprofit: price * unit
+        }
+      });
+    }
   } 
 
 }
@@ -126,7 +207,7 @@ const ELEMENT_DATA_DIALOG: ElementDialog[] = [
   { checked: false, position: 3, flowername: 'แคสเปีนร์', stock: 300, unit: 'กรัม', location: 'ซงหนิงหนิง' },
 ];
 
-/*--------- Unit Promotion ---------*/
+/* Unit Promotion */
 @Component({
   selector: 'promotiondialog',
   templateUrl: './promotion.unit.dialog.component.html',
@@ -142,6 +223,77 @@ export class PromotionUnitDialogComponent {
     ngOnInit() {
       // will log the entire data object
       console.log(this.data)
+    }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+}
+
+/* Replace Flower */
+@Component({
+  selector: 'promotiondialog',
+  templateUrl: './promotion.replace.dialog.component.html',
+  styleUrls: ['./promotion.component.css']
+})
+export class PromotionReplaceDialogComponent {
+  promotionId: any;
+  
+  constructor(
+    public dialogRef: MatDialogRef<PromotionReplaceDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private restApiService: RestApiService, public dialog: MatDialog
+    ) {}
+
+    promotionDetailsReplace: PromotionDetail[] = [];
+
+    ngOnInit() {
+      //console.log(this.data)
+
+      this.restApiService.getCurrentPromotion().subscribe((data: PromotionDetail[]) => {
+        for (let i = 0; i < data.length; i++) {
+          this.promotionDetailsReplace.push(data[i]);
+        }
+      });
+  
+    }
+
+    openDialog() {
+      this.dialog.open(PromotionSuccessDialogComponent, {
+        data: {
+          animal: 'test'
+        }
+      });
+    }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+
+  getIdFlowerReplace(id: number) {
+    //console.log(id)
+    this.restApiService.updatePromotion(id);
+
+  }
+
+}
+
+/* Replace Flower */
+@Component({
+  selector: 'promotiondialog',
+  templateUrl: './promotion.success.dialog.component.html',
+  styleUrls: ['./promotion.component.css']
+})
+export class PromotionSuccessDialogComponent {
+  
+  constructor(
+    public dialogRef: MatDialogRef<PromotionSuccessDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    ) {}
+
+    ngOnInit() {
     }
 
   onNoClick(): void {
