@@ -9,6 +9,7 @@ import { SalesOrderElement } from 'src/app/interface/sales-order-element';
 import { SalesOrderPrice } from 'src/app/interface/sales-order-price';
 import { StatusOrder } from 'src/app/interface/status-order';
 import { RestApiService } from 'src/app/_shared/rest-api.service';
+import Swal from 'sweetalert2';
 import { SalesorderComponent } from '../salesorder.component';
 
 @Component({
@@ -123,5 +124,10 @@ export class EditSalesOrderComponent implements OnInit {
     this.updateSalesOrder.id = this.numberOfOrder;
     console.log(this.updateSalesOrder);
     this.restApiService.updateSalesOrder(this.updateSalesOrder);
+    Swal.fire(
+      'Good job!',
+      'แก้ไขออเดอร์สำเร็จ!',
+      'success'
+    )
   }
 }

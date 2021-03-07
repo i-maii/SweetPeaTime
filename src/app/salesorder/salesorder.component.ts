@@ -65,6 +65,12 @@ export class SalesorderComponent implements OnInit {
         title: 'Oops...',
         text: 'ไม่สามารถยกเลิกออเดอร์นี้ได้ เนื่องจากสถานะ: ส่งแล้ว'
       })
+    } if (row.status === "ยกเลิกออเดอร์") {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'ไม่สามารถยกเลิกออเดอร์นี้ได้ เนื่องจากสถานะ: ยกเลิกออเดอร์'
+      })
     } else {
       Swal.fire({
         title: 'จะยกเลิกออเดอร์นี้ใช่ไหม?',
@@ -76,12 +82,17 @@ export class SalesorderComponent implements OnInit {
         confirmButtonText: 'ใช่, ยกเลิก!'
       }).then((result) => {
         if (result.isConfirmed) {
+          console.log(row.id);
           this.restApiService.cancelSalesOrder(row.id);
           Swal.fire(
             'Deleted!',
             'Your file has been deleted.',
-            'success'
-          )
+            'success',
+          ).then((result) => {
+            window.location.reload();
+          });
+        } else if (result.isDenied) {
+          Swal.fire('Changes are not saved', '', 'info')
         }
       })
     }
