@@ -11,17 +11,14 @@ export interface SalesOrderElement {
     receiverAddress: string;
     receiverPhone: string;
     deliveryDateTime: Date;
-    flowerMultipleDtoList: FlowerMultipleDto
+    flowerMultipleDtoList: FlowerMultipleDto[]
     receiveDateTime: Date;
     deliveryPrice: string;
-    flowerFormula: number;
-    flowerAvailable: string;
     flowerPrice: number;
     deliveryFee: string;
     totalPrice: string;
     florist: number;
     note: string;
     status: string;
-    orderTotal: string;
 }
 

@@ -32,7 +32,6 @@ export class CreateSalesorderComponent implements OnInit {
     note: new FormControl(),
   });
 
-
   dataArray = [];
   salesOrderMultiple: SalesOrderMultiple | undefined;
 
