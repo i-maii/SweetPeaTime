@@ -1,3 +1,4 @@
+import { Florist } from "./florist";
 import { FlowerFormula } from "./flower-formula";
 import { Promotion } from "./promotion";
 
@@ -10,7 +11,7 @@ export interface PromotionDetailLog {
     status: string;
     promotions: Promotion; 
     flowerFormula: FlowerFormula;
-    locationName: string;
     sequence: number;
     promotionType: string;
+    florist: Florist;
 }
