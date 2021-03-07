@@ -8,6 +8,7 @@ import { SalesOrderPrice } from '../interface/sales-order-price';
 import { SalesOrderElement } from '../interface/sales-order-element';
 import { SalesOrderMultiple } from '../interface/sales-order-multiple';
 import { DatePipe } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'create-salesorder',
@@ -120,6 +121,11 @@ export class CreateSalesorderComponent implements OnInit {
     console.warn(this.createSalesOrder);
     console.log(this.flowerMultipleDtoList.value);
     this.restApiService.createSalesOrder(this.createSalesOrder);
+    Swal.fire(
+      'Good job!',
+      'บันทึกออเดอร์สำเร็จ!',
+      'success'
+    )
     this.salesOrderForm.reset();
   }
 
