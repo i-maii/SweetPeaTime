@@ -276,23 +276,12 @@ export class RestApiService {
     return this.http.post(this.apiURL + '/stock/addStock', stock, { observe: 'response'});
   }
   
-  updatePromotion(promotionId: number) {
+  updatePromotion(promotionId: number): Observable<any> {
     console.log(promotionId);
     let params = new HttpParams;
     params = params.append('promotionId', promotionId + "");
 
-    this.http.post(this.apiURL + '/promotionDetail/updatePromotion?', null, {params: params})
-    .subscribe(
-      (val) => {
-          console.log("POST call successful value returned in body", 
-                      val);
-      },
-      response => {
-          console.log("POST call in error", response);
-      },
-      () => {
-          console.log("The POST observable is now completed.");
-      });
+    return this.http.post(this.apiURL + '/promotionDetail/updatePromotion?', null, {params: params, observe: 'response' });
   }
 
   getPromotion(): Observable<PromotionDetailDto[]> {

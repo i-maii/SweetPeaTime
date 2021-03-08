@@ -58,7 +58,7 @@
                     promotionDetailsDtos.formulaName,
                     promotionDetailsDtos.quantity,
                     cntPromotion)" >
-              >
+              <mat-icon>forward</mat-icon>
             </button>
           </td>
         </ng-container>
@@ -134,7 +134,7 @@
                       promotionDetailsCurrentDtos.quantity,
                       cntPromotion
                       )" >
-              >
+                <mat-icon>forward</mat-icon>
               </button>
             </td>
           </ng-container>
@@ -317,15 +317,15 @@
                         <div>สถานที่   : {{promotionDetail.florist.locationName}}</div>
                     </mat-card-content>
                     <mat-card-actions>
-                      <button mat-mini-fab color="primary">
-                        <mat-icon>facebook</mat-icon>
-                      </button>  
-                      <button mat-mini-fab color="warn">
-                        IG
-                      </button>
-                      <button mat-mini-fab color="basic" (click)="getIdFlowerReplace(promotionDetail.id)" (click)="openDialog()">
-                        DL
-                      </button>      
+                        <button mat-mini-fab color="primary">
+                          <mat-icon>facebook</mat-icon>
+                        </button>  
+                        <button mat-mini-fab color="warn">
+                          IG
+                        </button>
+                        <button mat-mini-fab color="basic" (click)="getIdFlowerReplace(promotionDetail.id)">
+                          <mat-icon>delete</mat-icon>
+                        </button>   
                     </mat-card-actions>
                 </mat-card>
             </div>

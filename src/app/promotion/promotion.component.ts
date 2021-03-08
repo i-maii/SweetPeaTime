@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FlowerFormulaDetail } from '../interface/flower-formula-detail';
 import { PromotionDetailDto } from "../interface/promotion-detail-dto";
 import { PromotionDetailCurrentDto } from "../interface/promotion-detail-current-dto";
+import Swal from 'sweetalert2';
 
 export interface DialogData {
   images: 'test';
@@ -49,7 +50,7 @@ export class PromotionComponent implements OnInit {
 
   //constructor(public dialog: MatDialog) {}
   constructor(
-    private restApiService: RestApiService, public dialog: MatDialog
+    private restApiService: RestApiService, public dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -104,7 +105,23 @@ export class PromotionComponent implements OnInit {
 
   getIdFlowerReplace(id: number) {
     //console.log(id)
-    this.restApiService.updatePromotion(id);
+    this.restApiService.updatePromotion(id).subscribe(resp => {
+      if (resp['status'] === 200) {
+        Swal.fire(
+          'Good job!',
+          'ตัดสต๊อกสำเร็จ',
+          'success'
+        ).then((result) => {
+          window.location.reload();
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'เกิดข้อผิดพลาด',
+        });
+      }
+    });
   }
 
   calculateTotalProfit(profit: any, unit: any) {
@@ -138,15 +155,10 @@ export class PromotionComponent implements OnInit {
 
   openDialogReplaceFlower(pathimg: any,size: any, price: any, name: any, unit: any, cntPromotion: any) {
     if (cntPromotion == 4) {
-      this.dialog.open(PromotionReplaceDialogComponent, {
-        data: {
-          imagespath: pathimg,
-          flowersize: size,
-          flowerprice: price,
-          flowername: name,
-          flowerunit: unit,
-          sumprofit: price * unit
-        }
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'โปรโมชั่นปัจจุบันเต็มแล้ว กรุณาลบโปรโมชั่นปัจจุบันออกก่อนทำรายการ',
       });
     }
     else{
@@ -274,7 +286,24 @@ export class PromotionReplaceDialogComponent {
 
   getIdFlowerReplace(id: number) {
     //console.log(id)
-    this.restApiService.updatePromotion(id);
+    this.restApiService.updatePromotion(id).subscribe(resp => {
+      if (resp['status'] === 200) {
+        this.dialogRef.close();
+        Swal.fire(
+          'Good job!',
+          'ตัดสต๊อกสำเร็จ',
+          'success'
+        ).then((result) => {
+          window.location.reload();
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'เกิดข้อผิดพลาด',
+        });
+      }
+    });;
 
   }
 
