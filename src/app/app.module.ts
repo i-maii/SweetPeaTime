@@ -109,4 +109,5 @@ import { AddStockComponent } from './stock/add-stock/add-stock.component';
   providers: [AuthService, AuthGuard, DatePipe],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }

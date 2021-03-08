@@ -1,11 +1,14 @@
-export interface FlowerFormula {
+export interface SearchFlowerFormulaResult {
     id: number;
+    position: number; 
+    florist: string;
     name: string;
     size: string;
     pattern: string;
     color: string;
     price: number;
-    imagePath: string;
     occasion: string;
     quantityAvailable: string;
+    deliveryFee: number;
+    totalPrice : number;
 }

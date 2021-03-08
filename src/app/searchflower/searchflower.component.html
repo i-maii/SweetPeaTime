@@ -1,5 +1,7 @@
 <p></p>
-
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_0D0m6Sc8trPtnSkxF_f_FI0Sk-qXTNI&callback=initMap">
+  </script>
 
 <form [formGroup]="searchFlowerForm" (ngSubmit)="searchForm()">  
   <div class="main-div">
@@ -69,6 +71,15 @@
   </mat-form-field>
 
   <mat-form-field appearance="fill">
+    <mat-label>ช่าง</mat-label>
+    <mat-select type="text" formControlName="florist">
+      <mat-option *ngFor="let florist of florist" [value]="florist.viewValue">
+        {{florist.viewValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
     <mat-label>จำนวนช่อที่ต้องการ</mat-label>
     <input matInput value="4" formControlName ="quantity">
   </mat-form-field>
@@ -110,11 +121,11 @@
   <mat-label>Total Price</mat-label>
   <input matInput value="700">
 </mat-form-field>
-      <!-- Position Column 
-      <ng-container matColumnDef="id">
+      <!-- Position Column -->
+      <ng-container matColumnDef="position">
         <th mat-header-cell *matHeaderCellDef> ลำดับ </th>
-        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-      </ng-container>-->
+        <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+      </ng-container>
   
       <!-- Name Column -->
       <ng-container matColumnDef="name">
@@ -130,15 +141,16 @@
   
       <!-- Symbol Column -->
       <ng-container matColumnDef="pattern">
-        <th mat-header-cell *matHeaderCellDef> ช่าง </th>
+        <th mat-header-cell *matHeaderCellDef> รูปแบบ </th>
         <td mat-cell *matCellDef="let element"> {{element.pattern}} </td>
       </ng-container>
-  
-      <ng-container matColumnDef="price">
-        <th mat-header-cell *matHeaderCellDef> ราคา</th>
-        <td mat-cell *matCellDef="let element"> {{element.price}} </td>
-      </ng-container>
 
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="color">
+          <th mat-header-cell *matHeaderCellDef> โทนสี </th>
+          <td mat-cell *matCellDef="let element"> {{element.color}} </td>
+        </ng-container>
+    
       <ng-container matColumnDef="size">
         <th mat-header-cell *matHeaderCellDef>ขนาด</th>
         <td mat-cell *matCellDef="let element"> {{element.size}} </td>
@@ -147,6 +159,26 @@
       <ng-container matColumnDef="occasion">
         <th mat-header-cell *matHeaderCellDef> โอกาส </th>
         <td mat-cell *matCellDef="let element"> {{element.occasion}} </td>
+      </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="florist">
+              <th mat-header-cell *matHeaderCellDef> ช่าง </th>
+              <td mat-cell *matCellDef="let element"> {{element.florist}} </td>
+            </ng-container>
+
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef> ราคา</th>
+        <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+      </ng-container>
+      <ng-container matColumnDef="deliveryFee">
+        <th mat-header-cell *matHeaderCellDef> ค่าส่ง </th>
+        <td mat-cell *matCellDef="let element"> {{element.deliveryFee}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="totalPrice">
+        <th mat-header-cell *matHeaderCellDef> ราคารวม </th>
+        <td mat-cell *matCellDef="let element"> {{element.totalPrice}} </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

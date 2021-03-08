@@ -80,12 +80,16 @@ export class RestApiService {
 
   searchFlowerFormula(searchFlowerForm: any): Observable<FlowerFormula[]> {
     let params = new HttpParams;
+    searchFlowerForm.flowerCat? params = params.append('flowerCat', searchFlowerForm.flowerCat): '';
     searchFlowerForm.name? params = params.append('name', searchFlowerForm.name): '';
     searchFlowerForm.pattern? params = params.append('pattern', searchFlowerForm.pattern): '';
+    searchFlowerForm.color? params = params.append('color', searchFlowerForm.color): '';
     searchFlowerForm.occasion? params = params.append('occasion', searchFlowerForm.occasion): '';
-    searchFlowerForm.price? params = params.append('price', searchFlowerForm.price): '';
+    searchFlowerForm.priceFrom? params = params.append('priceFrom', searchFlowerForm.priceFrom): '';
+    searchFlowerForm.priceTo? params = params.append('priceTo', searchFlowerForm.priceTo): '';
     searchFlowerForm.quantityAvailable? params = params.append('quantityAvailable', searchFlowerForm.quantityAvailable): '';
     searchFlowerForm.size? params = params.append('size', searchFlowerForm.size): '';
+    searchFlowerForm.florist? params = params.append('florist', searchFlowerForm.florist): '';
 
     return this.http.post<FlowerFormula[]>(this.apiURL + '/flowerFormula/search', null, {params: params})
       .pipe(
@@ -214,10 +218,24 @@ export class RestApiService {
   
   getStock(): Observable<Stock[]> {
     return this.http.get<Stock[]>(this.apiURL + '/stock')
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
   }
   
   getFlower(): Observable<Flower[]> {
     return this.http.get<Flower[]>(this.apiURL + '/flower/getAll')
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
+  }
+
+  calculateDeliveryFee(area :string){
+    let params = new HttpParams;
+    params = params.append('area', area);
+    return this.http.get(this.apiURL + '/calculation/calculateDeliveryFee', { params: params})
       .pipe(
         retry(1),
         catchError(this.handleError)
@@ -230,7 +248,20 @@ export class RestApiService {
     params = params.append('flowerId', flowerId+"");
     return this.http.get<FlowerFormulaDetail[]>(this.apiURL + '/flowerFormulaDetail/getQuantityPromotion',{
       params: params
-    })
+    }).pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
+  }
+
+  calculateTotalPrice(deliveryFee :number, flowerFormulaPrice :number[] ){
+    let params = new HttpParams;
+    params = params.append('deliveryFee', deliveryFee.toString());
+    flowerFormulaPrice.forEach((price:number) => {
+       params = params.append('flowerFormulaPrice[]', price.toString());
+  })
+    //params = params.append('florflowerFormulaPrice', flowerFormulaPrice);
+    return this.http.get(this.apiURL + '/calculation/calculateTotalPrice', { params: params})
       .pipe(
         retry(1),
         catchError(this.handleError)
@@ -284,4 +315,8 @@ export class RestApiService {
     window.alert(error.error);
     return throwError(error.message);
   }
+
+
+ 
+
 }
