@@ -87,7 +87,7 @@
                     <div class="col-3">
                         <mat-form-field appearance="fill" class="date-picker-form-fill">
                             <mat-label>วันที่รับ</mat-label>
-                            <input matInput [matDatepicker]="datepicker2" placeholder="02/15/2021" type="text"
+                            <input matInput [matDatepicker]="datepicker2" placeholder="2021-02-15" type="text"
                                 formControlName="receiveDateTime" (dateChange)="floristChange()">
                             <mat-datepicker-toggle matSuffix [for]="datepicker2"></mat-datepicker-toggle>
                             <mat-datepicker #datepicker2>
@@ -161,7 +161,7 @@
                                 </div>
                                 
                                 <div class="col">
-                                    <button mat-raised-button color="warn" (click)="removeFlowerMultiple(i)">
+                                    <button type="button" mat-raised-button color="warn" (click)="removeFlowerMultiple(i)">
                                         <mat-icon aria-hidden="false">clear</mat-icon>
                                     </button>
                                 </div>
@@ -207,7 +207,7 @@
             </div>
             <div class="col">
                 <div class="button-row">
-                    <button mat-raised-button color="primary" type="submit">
+                    <button [disabled]="!salesOrderForm.valid" mat-raised-button color="primary" type="submit">
                         สร้างออเดอร์
                     </button>
                 </div>

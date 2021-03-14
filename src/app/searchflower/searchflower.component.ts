@@ -11,7 +11,7 @@ import { SearchFlowerFormulaResult } from '../interface/searchFlowerFormulaResul
 import { FlowerFomular } from '../_models/flower-fomular';
 import { RestApiService } from '../_shared/rest-api.service';
 //import { googlemaps } from '@types/googlemaps/reference/distance-matrix.d.ts';
-// import { google } from 'google-maps';
+import { google } from 'google-maps';
 // declare var google: any;
 @Component({
   selector: 'searchflower',

@@ -19,6 +19,7 @@ import { AddStock } from '../interface/add-stock';
 import { FlowerFormulaDetail } from "../interface/flower-formula-detail";
 import { PromotionDetailDto } from "../interface/promotion-detail-dto";
 import { PromotionDetailCurrentDto } from "../interface/promotion-detail-current-dto";
+import { PriceOfOrders } from '../interface/priceOfOrders';
 
 @Injectable({
   providedIn: 'root'
@@ -141,20 +142,8 @@ export class RestApiService {
     )
   }
   
-  getSalesOrderPrice(formulaId: number, floristId: number, totalOrder: number, flowerPrice: number, receiveDateTime: Date): Observable<SalesOrderPrice> {
-    let params = new HttpParams;
-    params = params.append('formulaId', formulaId+"");
-    params = params.append('floristId', floristId+"");
-    params = params.append('totalOrder', totalOrder+"");
-    params = params.append('flowerPrice', flowerPrice+"");
-    params = params.append('receiveDateTime', this.datepipe.transform(receiveDateTime, 'yyyy-MM-dd')+"");
-    return this.http.get<SalesOrderPrice>(this.apiURL + '/flowerFormula/priceOfSalesOrder', {
-      params: params
-    })
-      .pipe(
-        retry(1),
-        catchError(this.handleError)
-      )
+  getSalesOrderPrice(priceOfOrders: PriceOfOrders[]): Observable<any> {
+    return this.http.post<SalesOrderPrice>(this.apiURL + '/flowerFormula/priceOfSalesOrder', priceOfOrders, {observe: 'body'});
   }
 
   getCurrentPromotionDetailLog(): Observable<PromotionDetailLog[]> {
@@ -173,19 +162,8 @@ export class RestApiService {
       )
   }
   
-  createSalesOrder(salesOrder: SalesOrderElement) {
-    console.log("test create salesorder " + salesOrder.note);
-    this.http.post(this.apiURL + '/salesOrder/createSalesOrder', salesOrder).subscribe(
-      (val) => {
-          console.log("POST call successful value returned in body", 
-                      val);
-      },
-      response => {
-          console.log("POST call in error", response);
-      },
-      () => {
-          console.log("The POST observable is now completed.");
-      });
+  createSalesOrder(salesOrder: SalesOrderElement): Observable<any> {
+    return this.http.post(this.apiURL + '/salesOrder/createSalesOrder', salesOrder, { observe: 'response'});
   }
 
   updateSalesOrder(salesOrder: SalesOrderElement) {
