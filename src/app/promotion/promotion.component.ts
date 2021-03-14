@@ -109,7 +109,8 @@ export class PromotionComponent implements OnInit {
       if (resp['status'] === 200) {
         Swal.fire(
           'Good job!',
-          'ตัดสต๊อกสำเร็จ',
+          /*'ตัดสต๊อกสำเร็จ',*/
+          'ลบโปรโมชั่นสำเร็จ',
           'success'
         ).then((result) => {
           window.location.reload();
@@ -291,7 +292,8 @@ export class PromotionReplaceDialogComponent {
         this.dialogRef.close();
         Swal.fire(
           'Good job!',
-          'ตัดสต๊อกสำเร็จ',
+          /*'ตัดสต๊อกสำเร็จ',*/
+          'ลบโปรโมชั่นสำเร็จ',
           'success'
         ).then((result) => {
           window.location.reload();
