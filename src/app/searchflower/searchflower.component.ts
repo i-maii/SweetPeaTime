@@ -1,7 +1,13 @@
-
+/* eslint-disable no-undef */
 
 //import { Component } from '@angular/core';
 //import { Component, OnInit } from '@angular/core';
+// <reference types="@types/googlemaps" />
+//<reference types="googlemaps" />
+// <reference types="googlemaps" />
+/// <reference types="@types/googlemaps" />
+
+//<reference path="/Users/mac/SweetPeaTime/node_modules/@types/googlemaps/index.d.ts"/>
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import { FormControl, FormGroup, FormControlName } from '@angular/forms';
 import {MatPaginator} from '@angular/material/paginator';
@@ -10,14 +16,28 @@ import { FlowerFormula } from '../interface/flower-formula';
 import { SearchFlowerFormulaResult } from '../interface/searchFlowerFormulaResult';
 import { FlowerFomular } from '../_models/flower-fomular';
 import { RestApiService } from '../_shared/rest-api.service';
+//import {google} from '@types/googlemaps';
 //import { googlemaps } from '@types/googlemaps/reference/distance-matrix.d.ts';
-// import { google } from 'google-maps';
-// declare var google: any;
+//import { googlemaps } from '@types/googlemaps';
+//import {google} from 'googlemaps';
+import { AgmCoreModule, MapsAPILoader } from "@agm/core";
+//import { GoogleMapsModule } from '@angular/google-maps';
+import { GoogleMapsModule } from '@angular/google-maps';
+import { MapInfoWindow, MapMarker, GoogleMap } from '@angular/google-maps';
+import { identifierModuleUrl } from '@angular/compiler';
+//declare var google: GoogleMap;
+declare const google: GoogleMap;
+
+//declare var google: { maps: { LatLng: new (arg0: number, arg1: number) => any; geometry: { spherical: { computeDistanceBetween: (arg0: any, arg1: any) => any; }; }; }; };
+//var google2 : GoogleMapsModule;
+//declare var google: google;
 @Component({
   selector: 'searchflower',
   templateUrl:'./searchflower.component.html',
   styleUrls:['./searchflower.component.css']
 })
+
+
 /*export class SearchflowerComponent implements OnInit {
 
   constructor() { }
@@ -29,11 +49,13 @@ import { RestApiService } from '../_shared/rest-api.service';
 export class SearchflowerComponent implements AfterViewInit {
   [x: string]: any;
   // Load google maps script after view init
+  currentDate = new Date();
 
   flowerFormula: FlowerFormula[] = [];
   flowerFormulaSearch: FlowerFormula[] = [];
   displayedColumns: string[] = ['position','name','quantityAvailable','pattern','color','size','occasion','florist','price','deliveryFee', 'totalPrice'];
   searchFlowerFormulaResult: SearchFlowerFormulaResult[] = [];
+  searchFlowerFormulaResultFilter: SearchFlowerFormulaResult[] = [];
   searchFlowerFormulaFlorist: SearchFlowerFormulaResult[] = [];
   deliveryFee: any = 0;
   dataSource = new MatTableDataSource<SearchFlowerFormulaResult>();
@@ -44,6 +66,7 @@ export class SearchflowerComponent implements AfterViewInit {
   flowerList: string[] = ['WhiteRose', 'Redrose', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
   flowerFormulas: FlowerFormula[] = [];
   private data: any;  
+  
 
   searchFlowerForm = new FormGroup({  
     flowerCat : new FormControl(''),
@@ -61,7 +84,17 @@ export class SearchflowerComponent implements AfterViewInit {
   });
   test: any;
   
-
+  //productLat;                                                          
+  //productLong;                                                          
+  //userLat;                                                               
+  //userLong;
+  //productLat;                                                          
+  //productLong;                                                          
+  //userLat;                                                               
+  //userLong;
+  map!: google.maps.Map;
+  //listingPlace;                                                    
+  //distanceProductToUser;
   
   constructor(private restApiService: RestApiService) { }  
 
@@ -69,6 +102,32 @@ export class SearchflowerComponent implements AfterViewInit {
 
   ngAfterViewInit() {
    // this.getData(this.flowerfomular)\
+
+   
+   this.productLat = 40.785091; // change it to your preferences                                           
+   this.productLong = 73.968285; // <-- static                                                                                     
+// const coordinates = new google.mapM(this.productLat, this.productLong); // init our coordinate for marker :)
+// this.marker = new google.set.Marker({ 
+//   position: 11,
+//   map: this.map 
+//  })
+
+navigator.geolocation.getCurrentPosition((position) => {           
+  this.userLat = position.coords.latitude;                              
+   this.userLong = position.coords.longitude; 
+   alert("Google Maps in your Browser"+ this.userLong);                  
+   console.log('resultados distancia (mts) -- ', this.userLong)
+   // this.calculateDistanceUserToProduct();                                  
+  }, error => {                   
+                                        
+ alert("Please Allow Google Maps in your Browser"+ this.userLong);                  
+               })
+ 
+  //const mexicoCity = new google.maps.LatLng(19.432608, -99.133209);
+  // const jacksonville = new google.maps.LatLng(40.730610, -73.935242);
+  // const distance = google.maps.geometry.spherical.computeDistanceBetween(mexicoCity, jacksonville);
+   // console.log('resultados distancia (mts) -- ', mexicoCity)
+   //this.getDistancia("siam paragon","icon siam");
    this.searchFlowerFormulaFlorist = [];
     this.flowerFormula = [];
     this.restApiService.searchAllFlowerFormula().subscribe((data: FlowerFormula[]) => {
@@ -83,7 +142,7 @@ export class SearchflowerComponent implements AfterViewInit {
           color: string,
           price: number,
           occasion: string,
-          quantityAvailable: string,
+          quantityAvailable: number,
           deliveryFee: number,
           totalPrice : number
          } = { 
@@ -96,7 +155,7 @@ export class SearchflowerComponent implements AfterViewInit {
          color: '',
          price: 0,
          occasion: '',
-         quantityAvailable: '',
+         quantityAvailable: 0,
          deliveryFee: 0,
          totalPrice : 0   
         };
@@ -109,7 +168,7 @@ export class SearchflowerComponent implements AfterViewInit {
          searchResult.color = data[i].color;
          searchResult.price = data[i].price;
          searchResult.occasion = data[i].occasion;
-         searchResult.quantityAvailable = data[i].quantityAvailable;
+         searchResult.quantityAvailable = Number(data[i].quantityAvailable);
          searchResult.deliveryFee = 0;
          searchResult.totalPrice = data[i].price;
   
@@ -118,16 +177,16 @@ export class SearchflowerComponent implements AfterViewInit {
          if (data[i].pattern == 'เกาหลี')
               {
                 searchResult.florist =  'ซงหนิงหนิง';
-                  //find quantity availbale
-                  // this.restApiService.getFlowerAvailable(data[i].id, 1).subscribe((result) => {
-                  // searchResult.quantityAvailable = "2";})
+                  //find quantity availbale for nink
+                  this.restApiService.getFlowerAvailableFromCurrentStock(data[i].id, 1,this.currentDate).subscribe((result) => {
+                  searchResult.quantityAvailable = result;})
               }
               else
               {
                 searchResult.florist = 'หนึ่ง';
               //find quantity available for neung
-              // this.restApiService.getFlowerAvailable(data[i].id, 2).subscribe((result) => {
-              //   searchResult.quantityAvailable = "5";})
+              this.restApiService.getFlowerAvailableFromCurrentStock(data[i].id, 2,this.currentDate).subscribe((result) => {
+                searchResult.quantityAvailable = result;})
               //Add new row for new florist
               let resultRow : {
                 id: number,
@@ -139,7 +198,7 @@ export class SearchflowerComponent implements AfterViewInit {
                 color: string,
                 price: number,
                 occasion: string,
-                quantityAvailable: string,
+                quantityAvailable: number,
                 deliveryFee: number,
                 totalPrice : number
               } = { 
@@ -152,7 +211,7 @@ export class SearchflowerComponent implements AfterViewInit {
               color: '',
               price: 0,
               occasion: '',
-              quantityAvailable: '',
+              quantityAvailable: 0,
               deliveryFee: 0,
               totalPrice : 0   
               };
@@ -165,12 +224,13 @@ export class SearchflowerComponent implements AfterViewInit {
               resultRow.color = data[i].color;
               resultRow.price = data[i].price;
               resultRow.occasion = data[i].occasion;
-              resultRow.quantityAvailable = data[i].quantityAvailable;
+              resultRow.quantityAvailable = Number(data[i].quantityAvailable);
               resultRow.deliveryFee = 0;
               resultRow.totalPrice = data[i].price;
+              
               //find quantity available for nink
-              // this.restApiService.getFlowerAvailable(data[i].id, 1).subscribe((result) => {
-              // this.resultRow.quantityAvailable = "3";})
+              this.restApiService.getFlowerAvailableFromCurrentStock(data[i].id, 1,this.currentDate).subscribe((result) => {
+              resultRow.quantityAvailable = result;})
               this.searchFlowerFormulaFlorist.push(resultRow);
               }
               this.searchFlowerFormulaResult.push(searchResult);
@@ -186,6 +246,7 @@ export class SearchflowerComponent implements AfterViewInit {
     });
   }
 
+  
   selectedValue: string | undefined;
 
   flowerCat = [
@@ -250,7 +311,7 @@ export class SearchflowerComponent implements AfterViewInit {
           color: string,
           price: number,
           occasion: string,
-          quantityAvailable: string,
+          quantityAvailable: number,
           deliveryFee: number,
           totalPrice : number
         } = { 
@@ -263,7 +324,7 @@ export class SearchflowerComponent implements AfterViewInit {
         color: '',
         price: 0,
         occasion: '',
-        quantityAvailable: '',
+        quantityAvailable: 0,
         deliveryFee: 0,
         totalPrice : 0   
         };
@@ -276,8 +337,8 @@ export class SearchflowerComponent implements AfterViewInit {
         searchResult.color = data[i].color;
         searchResult.price = data[i].price;
         searchResult.occasion = data[i].occasion;
-        searchResult.quantityAvailable = data[i].quantityAvailable;
-        searchResult.deliveryFee = 200;
+        searchResult.quantityAvailable = Number(data[i].quantityAvailable);
+        searchResult.deliveryFee = 150;
         searchResult.totalPrice = 0;
 
         this.searchFlowerFormulaResult.push(searchResult);
@@ -285,42 +346,68 @@ export class SearchflowerComponent implements AfterViewInit {
       }
     }
   
-    var result;
-    this.restApiService.calculateDeliveryFee("area").subscribe((result) => {
-      this.deliveryFee = result;})
+    
   
-    let totalPrice = 0;
+   // let totalPrice = 0;
       for (let i = 0; i < this.searchFlowerFormulaResult.length; i++) {
         let price: Array<number> = [];
-        totalPrice = 0;
+        let recieveDate: Date; 
+          recieveDate = this.currentDate;
+          if(this.searchFlowerForm.value.date != '')
+          {
+            recieveDate = this.searchFlowerForm.value.date;
+          } 
+        //totalPrice = 0;
         price.push(Number(this.searchFlowerFormulaResult[i].price));
         if (price.length > 0)
         {
-          this.restApiService.calculateTotalPrice(this.deliveryFee, price).subscribe((totalPrice) => {
-          //this.searchFlowerFormulaResult[i].totalPrice = Number(totalPrice);
-          this.searchFlowerFormulaResult[i].position = i+1;
-          this.searchFlowerFormulaResult[i].deliveryFee = this.deliveryFee;
-          this.price= [];
-                  })
-          this.searchFlowerFormulaResult[i].totalPrice = this.searchFlowerFormulaResult[i].price + this.deliveryFee;
-        
+             
               if (this.searchFlowerFormulaResult[i].pattern == 'เกาหลี')
               {
                 this.searchFlowerFormulaResult[i].florist =  'ซงหนิงหนิง';
                   //find quantity availbale
-              //  this.restApiService.getFlowerAvailable(this.searchFlowerFormulaResult[i].id, 1).subscribe((result) => {
-                this.searchFlowerFormulaResult[i].quantityAvailable = "2";
-            //  })
+                
+                this.restApiService.getFlowerAvailableFromCurrentStock(data[i].id, 1,recieveDate).subscribe((result) => {
+                this.searchFlowerFormulaResult[i].quantityAvailable = result;})
 
+                var deliveryFeeResult;
+                this.restApiService.calculateDeliveryFee("area").subscribe((deliveryFeeResult) => {
+               // this.deliveryFee = deliveryFeeResult;
+              
+              })
+              this.deliveryFee = 150;
+                this.restApiService.calculateTotalPrice(150, price).subscribe((totalPrice) => {
+                  //this.searchFlowerFormulaResult[i].totalPrice = Number(totalPrice);
+                this.searchFlowerFormulaResult[i].position = i+1;
+                //this.searchFlowerFormulaResult[i].deliveryFee = this.deliveryFee;
+                this.searchFlowerFormulaResult[i].deliveryFee = 150;
+                this.searchFlowerFormulaResult[i].totalPrice = Number(totalPrice);
+                          })
+                  //this.searchFlowerFormulaResult[i].totalPrice = this.searchFlowerFormulaResult[i].price + this.deliveryFee;
+                 
               }
-              else
+              else //แบบทั่วไป
               {
               this.searchFlowerFormulaResult[i].florist = 'หนึ่ง';
                //find quantity available for neung
-             // this.restApiService.getFlowerAvailable(this.searchFlowerFormulaResult[i].id, 2).subscribe((result) => {
-              this.searchFlowerFormulaResult[i].quantityAvailable = "5";
-            //})
-              let resultRow : {
+              this.restApiService.getFlowerAvailableFromCurrentStock(data[i].id, 2,recieveDate).subscribe((result) => {
+                this.searchFlowerFormulaResult[i].quantityAvailable = result;})
+                
+               //Calculate delivery fee total price for florist neung 
+                var deliveryFeeResult;
+                this.restApiService.calculateDeliveryFee("area").subscribe((deliveryFeeResult) => {
+               // this.deliveryFee = deliveryFeeResult;
+               this.deliveryFee = 200;
+              })
+                this.restApiService.calculateTotalPrice(200, price).subscribe((totalPrice) => {
+                this.searchFlowerFormulaResult[i].position = i+1;
+                this.searchFlowerFormulaResult[i].deliveryFee = this.deliveryFee;
+                this.searchFlowerFormulaResult[i].totalPrice = Number(totalPrice);
+                          })
+              
+              
+                //Add new row for show other florist
+                let resultRow : {
                 id: number,
                 position: number, 
                 florist: string,
@@ -330,7 +417,7 @@ export class SearchflowerComponent implements AfterViewInit {
                 color: string,
                 price: number,
                 occasion: string,
-                quantityAvailable: string,
+                quantityAvailable: number,
                 deliveryFee: number,
                 totalPrice : number
               } = { 
@@ -343,7 +430,7 @@ export class SearchflowerComponent implements AfterViewInit {
               color: '',
               price: 0,
               occasion: '',
-              quantityAvailable: '',
+              quantityAvailable: 0,
               deliveryFee: 0,
               totalPrice : 0   
               };
@@ -357,43 +444,67 @@ export class SearchflowerComponent implements AfterViewInit {
               resultRow.price = this.searchFlowerFormulaResult[i].price;
               resultRow.occasion = this.searchFlowerFormulaResult[i].occasion;
               resultRow.quantityAvailable = this.searchFlowerFormulaResult[i].quantityAvailable;
-              resultRow.deliveryFee = this.searchFlowerFormulaResult[i].deliveryFee;
-          //    resultRow.totalPrice = this.searchFlowerFormulaResult[i].totalPrice;
-             resultRow.totalPrice =   this.searchFlowerFormulaResult[i].price + this.searchFlowerFormulaResult[i].deliveryFee;
-              //find quantity availble for nink
-             // this.restApiService.getFlowerAvailable(this.searchFlowerFormulaResult[i].id, 1).subscribe((result) => {
-              resultRow.quantityAvailable = "3";
-            //})
+
+
+              var deliveryFeeResult;
+              this.restApiService.calculateDeliveryFee("area").subscribe((deliveryFeeResult) => {
+             // this.deliveryFee = deliveryFeeResult;
+             this.deliveryFee = 150;
+              resultRow.deliveryFee = this.deliveryFee ;})
+
+              this.restApiService.calculateTotalPrice(150, price).subscribe((totalPrice) => {
+                //this.searchFlowerFormulaResult[i].totalPrice = Number(totalPrice);
+                resultRow.totalPrice = Number(totalPrice);
+               // this.price= [];
+                        })
+
+             //find quantity availble for nink
+              this.restApiService.getFlowerAvailableFromCurrentStock(data[i].id, 1,recieveDate).subscribe((result) => {
+                resultRow.quantityAvailable  = result;})
+   
               this.searchFlowerFormulaFlorist.push(resultRow);
  
               }
-        }
+        }//End If price.lenght > 0
         this.price= [];
-      }
+      } // Enf for this.searchFlowerFormulaResult.length
  
+      //Merge result from all florist
       this.searchFlowerFormulaResult = this.searchFlowerFormulaResult.concat(this.searchFlowerFormulaFlorist);
     //  this.searchFlowerFormulaResult.sort((a,b)=> a.size.localeCompare(b.size)).sort((a, b) => b.price - a.price);
       for (let i = 0 ; i < this.searchFlowerFormulaResult.length ; i++)
       {
         this.searchFlowerFormulaResult[i].position = i+1;
       }
+      
       this.dataSource = new MatTableDataSource<SearchFlowerFormulaResult>(this.searchFlowerFormulaResult); 
+      if(this.searchFlowerForm.value.quantity != null && this.searchFlowerForm.value.quantity != '')
+      {
+
+        this.searchFlowerFormulaResultFilter = this.searchFlowerFormulaResult.filter(result => result.quantityAvailable >= this.searchFlowerForm.value.quantity);
+       //this.dataSource =this.searchFlowerFormulaResult; 
+       this.dataSource = new MatTableDataSource<SearchFlowerFormulaResult>(this.searchFlowerFormulaResultFilter);
+        //for
+      }
+     this.dataSource.paginator = this.paginator;
 
      // this.searchFlowerFomularResult = this.flowerFormulaSearch;
     
   //  this.dataSource = new MatTableDataSource<FlowerFormula>(this.flowerFormulas);
 
       console.warn(this.searchFlowerForm.value);
+      console.warn(this.dataSource );
+      console.warn(this.searchFlowerFormulaResultFilter );
     })
 
-    this.getDistancia("siam paragon","icon siam");
+  //  this.getDistancia("siam paragon","icon siam");
   }
 
-  public getDistancia(origen: string, destino: string) {
-    return new google.maps.DistanceMatrixService().getDistanceMatrix({'origins': [origen], 'destinations': [destino], travelMode: google.maps.TravelMode.DRIVING}, (results: any) => {
-        console.log('resultados distancia (mts) -- ', results.rows[0].elements[0].distance.value)
-    });
-}
+//   public getDistancia(origen: string, destino: string) {
+//     return new google.maps.DistanceMatrixService().getDistanceMatrix({'origins': [origen], 'destinations': [destino], travelMode: google.maps.TravelMode.DRIVING}, (results: any) => {
+//         console.log('resultados distancia (mts) -- ', results.rows[0].elements[0].distance.value)
+//     });
+// }
 
 }
 

@@ -8,7 +8,7 @@ export interface SearchFlowerFormulaResult {
     color: string;
     price: number;
     occasion: string;
-    quantityAvailable: string;
+    quantityAvailable: number;
     deliveryFee: number;
     totalPrice : number;
 }
