@@ -293,12 +293,21 @@ export class RestApiService {
     )
   }
 
+  addPromotion(formulaName: string, price: number, locationName: string, profit: number, quantity: number) {    
+    console.log(formulaName);
+    return this.http.post(this.apiURL + '/promotionDetail/addPromotion', { 
+      formulaName: formulaName, 
+      price: price,
+      locationName: locationName,
+      profit: profit,
+      quantity: quantity,
+    }, 
+    { observe: 'response'
+    });
+  }
+
   handleError(error: HttpErrorResponse) {
     window.alert(error.error);
     return throwError(error.message);
   }
-
-
- 
-
 }

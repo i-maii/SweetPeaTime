@@ -8,11 +8,11 @@
     </mat-card-content>
     <mat-form-field>
         <mat-label>{{data.flowerunit}}</mat-label>
-        <input matInput>
+        <input matInput [formControl]="quantity">
     </mat-form-field>
     <mat-card-actions>
         <div class="example-button-row">
-            <button mat-raised-button color="primary" (click)="onNoClick()">เพิ่ม</button>
+            <button mat-raised-button color="primary" (click)="replaceFlower()">เพิ่ม</button>
         </div>
     </mat-card-actions>
   </mat-card>
