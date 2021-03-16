@@ -8,6 +8,7 @@ import { FlowerFormulaDetail } from '../interface/flower-formula-detail';
 import { PromotionDetailDto } from "../interface/promotion-detail-dto";
 import { PromotionDetailCurrentDto } from "../interface/promotion-detail-current-dto";
 import Swal from 'sweetalert2';
+import { FormControl } from '@angular/forms';
 
 export interface DialogData {
   images: 'test';
@@ -109,7 +110,8 @@ export class PromotionComponent implements OnInit {
       if (resp['status'] === 200) {
         Swal.fire(
           'Good job!',
-          'ตัดสต๊อกสำเร็จ',
+          /*'ตัดสต๊อกสำเร็จ',*/
+          'ลบโปรโมชั่นสำเร็จ',
           'success'
         ).then((result) => {
           window.location.reload();
@@ -153,7 +155,7 @@ export class PromotionComponent implements OnInit {
     });
   } 
 
-  openDialogReplaceFlower(pathimg: any,size: any, price: any, name: any, unit: any, cntPromotion: any) {
+  openDialogReplaceFlower(pathimg: any,size: any, price: any, name: any, unit: any, location: any, profit: any, cntPromotion: any) {
     if (cntPromotion == 4) {
       Swal.fire({
         icon: 'error',
@@ -169,7 +171,9 @@ export class PromotionComponent implements OnInit {
           flowerprice: price,
           flowername: name,
           flowerunit: unit,
-          sumprofit: price * unit
+          sumprofit: price * unit,
+          location: location,
+          profit: profit,
         }
       });
     }
@@ -230,17 +234,44 @@ export class PromotionUnitDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<PromotionUnitDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) {}
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private restApiService: RestApiService,
+  ) {}
 
-    ngOnInit() {
-      // will log the entire data object
-      console.log(this.data)
-    }
+  quantity = new FormControl('');
+
+  ngOnInit() {
+    // will log the entire data object
+    // console.log(this.data)
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
+  replaceFlower() {
+    console.log(this.data);
+    this.restApiService.addPromotion(this.data.flowername, this.data.flowerprice, this.data.location, this.data.profit, this.quantity.value)
+    .subscribe(resp => {
+      if (resp['status'] === 200) {
+        this.dialogRef.close();
+        Swal.fire(
+          'Good job!',
+          /*'ตัดสต๊อกสำเร็จ',*/
+          'เพิ่มโปรโมชั่นสำเร็จ',
+          'success'
+        ).then((result) => {
+          window.location.reload();
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'เกิดข้อผิดพลาด',
+        });
+      }
+    });
+  }
 }
 
 /* Replace Flower */
@@ -291,7 +322,8 @@ export class PromotionReplaceDialogComponent {
         this.dialogRef.close();
         Swal.fire(
           'Good job!',
-          'ตัดสต๊อกสำเร็จ',
+          /*'ตัดสต๊อกสำเร็จ',*/
+          'ลบโปรโมชั่นสำเร็จ',
           'success'
         ).then((result) => {
           window.location.reload();

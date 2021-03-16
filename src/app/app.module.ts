@@ -36,7 +36,6 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { HttpClientModule } from '@angular/common/http';
 import { SearchflowerComponent } from './searchflower/searchflower.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { FormControlName } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EditSalesOrderComponent } from './salesorder/edit-sales-order/edit-sales-order.component';
@@ -104,7 +103,7 @@ import { AddStockComponent } from './stock/add-stock/add-stock.component';
     MatPaginatorModule,
     FlexLayoutModule,
     NgbModule,
-    MatRadioModule
+    MatRadioModule,
   ],
   providers: [AuthService, AuthGuard, DatePipe],
   bootstrap: [AppComponent]

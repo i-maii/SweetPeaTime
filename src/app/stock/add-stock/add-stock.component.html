@@ -14,7 +14,7 @@
                 <div [formGroupName]="i">
                     <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
                         <mat-form-field fxFlex="20%">
-                            <mat-select placeholder="ชื่อดอกไม้" type="text" formControlName="flower">
+                            <mat-select placeholder="ชื่อดอกไม้" type="text" formControlName="flower" (selectionChange)="flowerChange(i)">
                                 <mat-option *ngFor="let flower of flowers" [value]="flower">
                                     {{flower.flowerName}}
                                 </mat-option>
@@ -23,6 +23,10 @@
         
                         <mat-form-field fxFlex="10%">
                             <input matInput type="number" placeholder="จำนวน" formControlName="quantity">
+                        </mat-form-field>
+        
+                        <mat-form-field fxFlex="5%">
+                            <input [readonly]=true matInput type="text" placeholder="หน่วยนับ" formControlName="unit">
                         </mat-form-field>
 
                         <mat-form-field fxFlex="15%">

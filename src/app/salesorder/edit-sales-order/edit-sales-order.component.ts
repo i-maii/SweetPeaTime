@@ -1,12 +1,14 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MY_FORMATS } from 'src/app/create-salesorder/create-salesorder.component';
 import { Florist } from 'src/app/interface/florist';
 import { FlowerFormula } from 'src/app/interface/flower-formula';
 import { SalesOrderDetailListDto } from 'src/app/interface/sales-order-detail-list-dto';
 import { SalesOrderElement } from 'src/app/interface/sales-order-element';
-import { SalesOrderPrice } from 'src/app/interface/sales-order-price';
 import { StatusOrder } from 'src/app/interface/status-order';
 import { RestApiService } from 'src/app/_shared/rest-api.service';
 import Swal from 'sweetalert2';
@@ -15,7 +17,8 @@ import { SalesorderComponent } from '../salesorder.component';
 @Component({
   selector: 'edit-sales-order',
   templateUrl: './edit-sales-order.component.html',
-  styleUrls: ['./edit-sales-order.component.css']
+  styleUrls: ['./edit-sales-order.component.css'],
+  providers: [{provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]}, {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS}],
 })
 export class EditSalesOrderComponent implements OnInit {
 

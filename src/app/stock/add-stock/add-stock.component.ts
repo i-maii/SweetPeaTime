@@ -1,4 +1,4 @@
-import { Component, OnInit, ɵɵpureFunction1 } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -33,7 +33,6 @@ export class AddStockComponent implements OnInit {
   florists: Florist[] = [];
   formAddStock: FormGroup;
   arr: any;
-  unit: string | undefined;
 
   constructor(
     private restApiService: RestApiService,
@@ -62,6 +61,7 @@ export class AddStockComponent implements OnInit {
     stockInfo.push(this.formBuilder.group({
       flower: new FormControl('', Validators.required),
       quantity: new FormControl('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
+      unit: new FormControl(''),
       lot: new FormControl('', Validators.required),
       price: new FormControl('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
       florist: new FormControl('', Validators.required),
@@ -87,6 +87,7 @@ export class AddStockComponent implements OnInit {
     stockInfo.push(this.formBuilder.group({
       flower: new FormControl('', Validators.required),
       quantity: new FormControl('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
+      unit: new FormControl(''),
       lot: new FormControl('', Validators.required),
       price: new FormControl('', [Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
       florist: new FormControl('', Validators.required),
@@ -124,5 +125,10 @@ export class AddStockComponent implements OnInit {
 
   closeDialog(): void {
     this.dialogRef.close();
+  }
+
+  flowerChange(row: number) {
+    console.log(this.formAddStock.controls.stockInfo.value[row].flower.unit);
+    ((this.formAddStock.get('stockInfo') as FormArray).at(row) as FormGroup).get('unit')?.patchValue(this.formAddStock.controls.stockInfo.value[row].flower.unit)
   }
 }
