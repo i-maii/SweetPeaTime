@@ -5,7 +5,7 @@
 // <reference types="@types/googlemaps" />
 //<reference types="googlemaps" />
 // <reference types="googlemaps" />
-/// <reference types="@types/googlemaps" />
+//// <reference types="@types/googlemaps/" />
 
 //<reference path="/Users/mac/SweetPeaTime/node_modules/@types/googlemaps/index.d.ts"/>
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
@@ -18,15 +18,15 @@ import { FlowerFomular } from '../_models/flower-fomular';
 import { RestApiService } from '../_shared/rest-api.service';
 //import {google} from '@types/googlemaps';
 //import { googlemaps } from '@types/googlemaps/reference/distance-matrix.d.ts';
-//import { googlemaps } from '@types/googlemaps';
+//import { google } from '@types/googlemaps';
 //import {google} from 'googlemaps';
-import { AgmCoreModule, MapsAPILoader } from "@agm/core";
+//import { AgmCoreModule, MapsAPILoader } from "@agm/core";
 //import { GoogleMapsModule } from '@angular/google-maps';
-import { GoogleMapsModule } from '@angular/google-maps';
-import { MapInfoWindow, MapMarker, GoogleMap } from '@angular/google-maps';
+//import { GoogleMapsModule } from '@angular/google-maps';
+//import { MapInfoWindow, MapMarker, GoogleMap } from '@angular/google-maps';
 import { identifierModuleUrl } from '@angular/compiler';
 //declare var google: GoogleMap;
-declare const google: GoogleMap;
+//declare const google: GoogleMap;
 
 //declare var google: { maps: { LatLng: new (arg0: number, arg1: number) => any; geometry: { spherical: { computeDistanceBetween: (arg0: any, arg1: any) => any; }; }; }; };
 //var google2 : GoogleMapsModule;
@@ -55,6 +55,7 @@ export class SearchflowerComponent implements AfterViewInit {
   flowerFormulaSearch: FlowerFormula[] = [];
   displayedColumns: string[] = ['position','name','quantityAvailable','pattern','color','size','occasion','florist','price','deliveryFee', 'totalPrice'];
   searchFlowerFormulaResult: SearchFlowerFormulaResult[] = [];
+  //searchFlowerFormulaResultFilter: SearchFlowerFormulaResult[] = [];
   searchFlowerFormulaResultFilter: SearchFlowerFormulaResult[] = [];
   searchFlowerFormulaFlorist: SearchFlowerFormulaResult[] = [];
   deliveryFee: any = 0;
@@ -92,7 +93,7 @@ export class SearchflowerComponent implements AfterViewInit {
   //productLong;                                                          
   //userLat;                                                               
   //userLong;
-  map!: google.maps.Map;
+  //map!: google.maps.Map;
   //listingPlace;                                                    
   //distanceProductToUser;
   
@@ -112,22 +113,22 @@ export class SearchflowerComponent implements AfterViewInit {
 //   map: this.map 
 //  })
 
-navigator.geolocation.getCurrentPosition((position) => {           
-  this.userLat = position.coords.latitude;                              
-   this.userLong = position.coords.longitude; 
-   alert("Google Maps in your Browser"+ this.userLong);                  
-   console.log('resultados distancia (mts) -- ', this.userLong)
-   // this.calculateDistanceUserToProduct();                                  
-  }, error => {                   
+// navigator.geolocation.getCurrentPosition((position) => {           
+//   this.userLat = position.coords.latitude;                              
+//    this.userLong = position.coords.longitude; 
+//    alert("Google Maps in your Browser"+ this.userLong);                  
+//    console.log('resultados distancia (mts) -- ', this.userLong)
+//    // this.calculateDistanceUserToProduct();                                  
+//   }, error => {                   
                                         
- alert("Please Allow Google Maps in your Browser"+ this.userLong);                  
-               })
+//  alert("Please Allow Google Maps in your Browser"+ this.userLong);                  
+//                })
  
-  //const mexicoCity = new google.maps.LatLng(19.432608, -99.133209);
-  // const jacksonville = new google.maps.LatLng(40.730610, -73.935242);
-  // const distance = google.maps.geometry.spherical.computeDistanceBetween(mexicoCity, jacksonville);
-   // console.log('resultados distancia (mts) -- ', mexicoCity)
-   //this.getDistancia("siam paragon","icon siam");
+ //const mexicoCity = new google.maps.LatLng(19.432608, -99.133209);
+ // const jacksonville = new google.maps.LatLng(40.730610, -73.935242);
+ // const distance = google.maps.geometry.spherical.computeDistanceBetween(mexicoCity, jacksonville);
+  //  console.log('resultados distancia (mts) -- ', distance);
+ //  this.getDistancia("siam paragon","icon siam");
    this.searchFlowerFormulaFlorist = [];
     this.flowerFormula = [];
     this.restApiService.searchAllFlowerFormula().subscribe((data: FlowerFormula[]) => {
@@ -292,11 +293,11 @@ navigator.geolocation.getCurrentPosition((position) => {
   
   searchForm()  
   {
-    this.searchFlowerFormulaResult = [];
+   this.searchFlowerFormulaResult = [];
     this.searchFlowerFormulaFlorist = [];
     this.restApiService.searchFlowerFormula(this.searchFlowerForm.value).subscribe((data: FlowerFormula[]) => {
-      console.log(this.searchFlowerForm.value);
-      this.flowerFormulaSearch = [];
+     // console.log(this.searchFlowerForm.value);
+     // this.flowerFormulaSearch = [];
       if (data !=null)
       {
         for (let i = 0; i < data.length; i++) {
@@ -344,7 +345,7 @@ navigator.geolocation.getCurrentPosition((position) => {
         this.searchFlowerFormulaResult.push(searchResult);
       //   this.searchFlowerFomularResult.push((i.toString(),data[i].name, data[i].name, data[i].occasion, data[i].pattern, data[i].price, data[i].quantityAvailable, data[i].size);
       }
-    }
+    
   
     
   
@@ -461,7 +462,6 @@ navigator.geolocation.getCurrentPosition((position) => {
              //find quantity availble for nink
               this.restApiService.getFlowerAvailableFromCurrentStock(data[i].id, 1,recieveDate).subscribe((result) => {
                 resultRow.quantityAvailable  = result;})
-   
               this.searchFlowerFormulaFlorist.push(resultRow);
  
               }
@@ -472,31 +472,38 @@ navigator.geolocation.getCurrentPosition((position) => {
       //Merge result from all florist
       this.searchFlowerFormulaResult = this.searchFlowerFormulaResult.concat(this.searchFlowerFormulaFlorist);
     //  this.searchFlowerFormulaResult.sort((a,b)=> a.size.localeCompare(b.size)).sort((a, b) => b.price - a.price);
-      for (let i = 0 ; i < this.searchFlowerFormulaResult.length ; i++)
-      {
-        this.searchFlowerFormulaResult[i].position = i+1;
-      }
+   
+  
+
+     }//end data !=null
+   
+
       
-      this.dataSource = new MatTableDataSource<SearchFlowerFormulaResult>(this.searchFlowerFormulaResult); 
       if(this.searchFlowerForm.value.quantity != null && this.searchFlowerForm.value.quantity != '')
       {
 
-        this.searchFlowerFormulaResultFilter = this.searchFlowerFormulaResult.filter(result => result.quantityAvailable >= this.searchFlowerForm.value.quantity);
-       //this.dataSource =this.searchFlowerFormulaResult; 
-       this.dataSource = new MatTableDataSource<SearchFlowerFormulaResult>(this.searchFlowerFormulaResultFilter);
+        
+        this.searchFlowerFormulaResultFilter = this.searchFlowerFormulaResult.filter(result => result.quantityAvailable >= Number(this.searchFlowerForm.value.quantity));
+      // this.dataSource =this.searchFlowerFormulaResult; 
         //for
+        //this.searchFlowerFormulaResult = [];
+        this.dataSource.filteredData = new MatTableDataSource<SearchFlowerFormulaResult>(this.searchFlowerFormulaResultFilter).filteredData;
+
       }
-     this.dataSource.paginator = this.paginator;
+      else
+      {
+        for (let i = 0 ; i < this.searchFlowerFormulaResult.length ; i++)
+        {
+          this.searchFlowerFormulaResult[i].position = i+1;
+        }
+        this.dataSource = new MatTableDataSource<SearchFlowerFormulaResult>(this.searchFlowerFormulaResult);
 
-     // this.searchFlowerFomularResult = this.flowerFormulaSearch;
+      }
     
-  //  this.dataSource = new MatTableDataSource<FlowerFormula>(this.flowerFormulas);
-
       console.warn(this.searchFlowerForm.value);
       console.warn(this.dataSource );
       console.warn(this.searchFlowerFormulaResultFilter );
-    })
-
+    })//end rest API search
   //  this.getDistancia("siam paragon","icon siam");
   }
 
