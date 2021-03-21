@@ -66,7 +66,6 @@ import { AddStockComponent } from './stock/add-stock/add-stock.component';
     AddStockComponent,
     PromotionReplaceDialogComponent,
     PromotionSuccessDialogComponent
-
   ],
   imports: [
     BrowserModule,
