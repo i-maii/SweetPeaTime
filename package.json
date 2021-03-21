@@ -28,6 +28,7 @@
     "@material-ui/icons": "^4.11.2",
     "@material/image-list": "^10.0.0",
     "@ng-bootstrap/ng-bootstrap": "^9.0.2",
+    "@types/facebook-js-sdk": "^3.3.2",
     "bootstrap": "^4.5.0",
     "google-maps": "^4.3.3",
     "material-design-icons": "^3.0.1",

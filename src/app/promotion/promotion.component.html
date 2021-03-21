@@ -321,7 +321,7 @@
                         <div>สถานที่   : {{promotionDetail.florist.locationName}}</div>
                     </mat-card-content>
                     <mat-card-actions>
-                        <button mat-mini-fab color="primary">
+                        <button mat-mini-fab color="primary" (click)="shareToFacebook(promotionDetail.flowerFormula.name,promotionDetail.price,promotionDetail.flowerFormula.imagePath)">
                           <mat-icon>facebook</mat-icon>
                         </button>  
                         <button mat-mini-fab color="warn">

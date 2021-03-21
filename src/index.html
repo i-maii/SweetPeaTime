@@ -11,6 +11,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>  
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCpWlkfyFWRrZvRUEhTJBBqKDaOOQOCHMs"></script>
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId            : '241077867691137',
+        autoLogAppEvents : true,
+        xfbml            : true,
+        version          : 'v3.0'
+      });
+    };
+  </script>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
 </head>
 <body class="mat-typography">
   <app-root></app-root>

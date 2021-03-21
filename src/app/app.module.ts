@@ -44,7 +44,6 @@ import { DatePipe } from '@angular/common'
 import { StockComponent } from './stock/stock.component';
 import { DeleteStockComponent } from './stock/delete-stock/delete-stock.component';
 import { AddStockComponent } from './stock/add-stock/add-stock.component';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -65,7 +64,6 @@ import { AddStockComponent } from './stock/add-stock/add-stock.component';
     AddStockComponent,
     PromotionReplaceDialogComponent,
     PromotionSuccessDialogComponent
-
   ],
   imports: [
     BrowserModule,

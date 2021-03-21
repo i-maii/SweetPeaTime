@@ -34,7 +34,7 @@ export class PromotionComponent implements OnInit {
   displayedColumnsNormal: string[] = [];
   displayedColumnsNormalDto: string[] = [];
   displayedColumnsNormalCurrentDto: string[] = [];
-    
+
   dataSource: any;
   dataSourceNormal: any;
   dataSourceNormalDto: any;
@@ -51,8 +51,10 @@ export class PromotionComponent implements OnInit {
 
   //constructor(public dialog: MatDialog) {}
   constructor(
-    private restApiService: RestApiService, public dialog: MatDialog,
-  ) { }
+    private restApiService: RestApiService, 
+    public dialog: MatDialog,
+  ) { 
+  }
 
   ngOnInit(): void {
     this.restApiService.getCurrentPromotion().subscribe((data: PromotionDetail[]) => {
@@ -100,8 +102,59 @@ export class PromotionComponent implements OnInit {
       this.displayedColumnsNormalCurrentDto = ['flowername', 'size', 'unit', 'profit', 'totalprofit', 'price', 'location', 'imageUrl', 'add'];
       this.dataSourceNormalCurrentDto = new MatTableDataSource<PromotionDetailCurrentDto>(this.promotionDetailsCurrentDtos);
     });
+  }
 
-    
+  shareToFacebook(formulaName: string, price: number, imagePath: string) {
+    const IMAGE_PATH = [
+      { path: 'flower_1.png', url: 'https://i.ibb.co/sJV6ZxJ/flower-1.png' },
+      { path: 'flower_2.png', url: 'https://i.ibb.co/Bn0c2kV/flower-2.png' },
+      { path: 'flower_3.png', url: 'https://i.ibb.co/hV35KVK/flower-3.png' },
+      { path: 'flower_4.png', url: 'https://i.ibb.co/wsJVzbY/flower-4.png' },
+      { path: 'flower_5.png', url: 'https://i.ibb.co/qj98V9D/flower-5.png' },
+      { path: 'flower_6.png', url: 'https://i.ibb.co/ZKkJ7ZV/flower-6.png' },
+      { path: 'flower_7.png', url: 'https://i.ibb.co/SmQhwrZ/flower-7.png' },
+      { path: 'flower_8.png', url: 'https://i.ibb.co/x3ckyPX/flower-8.png' },
+      { path: 'flower.jpg', url: 'https://i.ibb.co/FnQHL4L/flower.jpg' },
+    ];
+
+    let splitted = imagePath.split('/');
+    let index = IMAGE_PATH.findIndex(i => i.path === splitted[2]);
+
+    let message = formulaName + '\nราคา ' + price + ' บาท\nสอบถามเพิ่มเติม Line : @sweetpeatimes';
+    Swal.fire({
+      title: 'ต้องการแชร์โปรโมชั่นนี้ใช่ไหม?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'ยกเลิก',
+      confirmButtonText: 'ใช่'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const params = {
+          access_token: 'EAADbQlCqvIEBAGHAlOe90BFiyUn1XjKiHi1iI0RIsyUkwSfRXQ5fiV7h0JJw0weteXl2diVJ5ThiUr4tW4f5fQ3e3YECFNQd9a63QeebVEx3XntX9Po8yu6Hhs3PCYpTqkRwiOu9V8K05RFKLQ9UWPCdgZBKxZCOTy11lnOaZAg3ZCmmPJnR48ZA0FLUGDf83S7djn9hEsrlggtJ1CsXo',
+          message: message,
+          url: IMAGE_PATH[index].url
+        };
+        
+        FB.api('/110423627789182/photos', 'post', params, (response: any) => {
+          if (response.error) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'เกิดข้อผิดพลาด',
+            });
+            console.log(response.error.message);
+          } else {
+            Swal.fire(
+              'Good job!',
+              'แชร์โปรโมชั่นสำเร็จ',
+              'success'
+            )
+          }
+        });
+      }
+    })
   }
 
   getIdFlowerReplace(id: number) {
@@ -110,7 +163,6 @@ export class PromotionComponent implements OnInit {
       if (resp['status'] === 200) {
         Swal.fire(
           'Good job!',
-          /*'ตัดสต๊อกสำเร็จ',*/
           'ลบโปรโมชั่นสำเร็จ',
           'success'
         ).then((result) => {
@@ -130,7 +182,7 @@ export class PromotionComponent implements OnInit {
     return this.totalprofit = profit * unit;
   }
 
-  showQuantity(flowerQuantity: any,unit: any) {
+  showQuantity(flowerQuantity: any, unit: any) {
     return this.allQuantity = flowerQuantity * unit;
   }
 
@@ -142,7 +194,7 @@ export class PromotionComponent implements OnInit {
     });
   }
 
-  openDialogFlower(pathimg: any,size: any, price: any, name: any, unit: any) {
+  openDialogFlower(pathimg: any, size: any, price: any, name: any, unit: any) {
     this.dialog.open(PromotionUnitDialogComponent, {
       data: {
         imagespath: pathimg,
@@ -153,9 +205,9 @@ export class PromotionComponent implements OnInit {
         sumprofit: price * unit
       }
     });
-  } 
+  }
 
-  openDialogReplaceFlower(pathimg: any,size: any, price: any, name: any, unit: any, location: any, profit: any, cntPromotion: any) {
+  openDialogReplaceFlower(pathimg: any, size: any, price: any, name: any, unit: any, location: any, profit: any, cntPromotion: any) {
     if (cntPromotion == 4) {
       Swal.fire({
         icon: 'error',
@@ -163,7 +215,7 @@ export class PromotionComponent implements OnInit {
         text: 'โปรโมชั่นปัจจุบันเต็มแล้ว กรุณาลบโปรโมชั่นปัจจุบันออกก่อนทำรายการ',
       });
     }
-    else{
+    else {
       this.dialog.open(PromotionUnitDialogComponent, {
         data: {
           imagespath: pathimg,
@@ -177,7 +229,7 @@ export class PromotionComponent implements OnInit {
         }
       });
     }
-  } 
+  }
 
 }
 /*--------- Add flower current flower ---------*/
@@ -191,7 +243,7 @@ export class PromotionDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<PromotionDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -236,7 +288,7 @@ export class PromotionUnitDialogComponent {
     public dialogRef: MatDialogRef<PromotionUnitDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private restApiService: RestApiService,
-  ) {}
+  ) { }
 
   quantity = new FormControl('');
 
@@ -252,25 +304,25 @@ export class PromotionUnitDialogComponent {
   replaceFlower() {
     console.log(this.data);
     this.restApiService.addPromotion(this.data.flowername, this.data.flowerprice, this.data.location, this.data.profit, this.quantity.value)
-    .subscribe(resp => {
-      if (resp['status'] === 200) {
-        this.dialogRef.close();
-        Swal.fire(
-          'Good job!',
-          /*'ตัดสต๊อกสำเร็จ',*/
-          'เพิ่มโปรโมชั่นสำเร็จ',
-          'success'
-        ).then((result) => {
-          window.location.reload();
-        });
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'เกิดข้อผิดพลาด',
-        });
-      }
-    });
+      .subscribe(resp => {
+        if (resp['status'] === 200) {
+          this.dialogRef.close();
+          Swal.fire(
+            'Good job!',
+            /*'ตัดสต๊อกสำเร็จ',*/
+            'เพิ่มโปรโมชั่นสำเร็จ',
+            'success'
+          ).then((result) => {
+            window.location.reload();
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'เกิดข้อผิดพลาด',
+          });
+        }
+      });
   }
 }
 
@@ -282,33 +334,33 @@ export class PromotionUnitDialogComponent {
 })
 export class PromotionReplaceDialogComponent {
   promotionId: any;
-  
+
   constructor(
     public dialogRef: MatDialogRef<PromotionReplaceDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private restApiService: RestApiService, public dialog: MatDialog
-    ) {}
+  ) { }
 
-    promotionDetailsReplace: PromotionDetail[] = [];
+  promotionDetailsReplace: PromotionDetail[] = [];
 
-    ngOnInit() {
-      //console.log(this.data)
+  ngOnInit() {
+    //console.log(this.data)
 
-      this.restApiService.getCurrentPromotion().subscribe((data: PromotionDetail[]) => {
-        for (let i = 0; i < data.length; i++) {
-          this.promotionDetailsReplace.push(data[i]);
-        }
-      });
-  
-    }
+    this.restApiService.getCurrentPromotion().subscribe((data: PromotionDetail[]) => {
+      for (let i = 0; i < data.length; i++) {
+        this.promotionDetailsReplace.push(data[i]);
+      }
+    });
 
-    openDialog() {
-      this.dialog.open(PromotionSuccessDialogComponent, {
-        data: {
-          animal: 'test'
-        }
-      });
-    }
+  }
+
+  openDialog() {
+    this.dialog.open(PromotionSuccessDialogComponent, {
+      data: {
+        animal: 'test'
+      }
+    });
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -348,14 +400,14 @@ export class PromotionReplaceDialogComponent {
   styleUrls: ['./promotion.component.css']
 })
 export class PromotionSuccessDialogComponent {
-  
+
   constructor(
     public dialogRef: MatDialogRef<PromotionSuccessDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    ) {}
+  ) { }
 
-    ngOnInit() {
-    }
+  ngOnInit() {
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
