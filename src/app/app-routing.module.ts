@@ -10,6 +10,7 @@ import { SalesorderComponent } from './salesorder/salesorder.component';
 import { AuthGuard } from './_helpers/auth.guard';
 import { SearchflowerComponent } from './searchflower/searchflower.component';
 import { StockComponent } from './stock/stock.component';
+import { SaleReportComponent } from './report/saleReport.component';
 
 const routes: Routes = [
   {
@@ -83,6 +84,16 @@ const routes: Routes = [
       {
         path: 'stock',
         component: StockComponent
+      }
+    ]
+  },
+  {
+    path: '',
+    component: HomeLayoutComponent,
+    children: [
+      {
+        path: 'report',
+        component: SaleReportComponent
       }
     ]
   }
