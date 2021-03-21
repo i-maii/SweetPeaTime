@@ -22,26 +22,6 @@ import { SalesorderComponent } from '../salesorder.component';
 })
 export class EditSalesOrderComponent implements OnInit {
 
-  // salesOrderForm = new FormGroup({
-  //   customerName: new FormControl(),
-  //   customerPhone: new FormControl(),
-  //   customerLineFb: new FormControl(),
-  //   date: new FormControl(),
-  //   receiverName: new FormControl(),
-  //   receiverPhone: new FormControl(),
-  //   receiverAddress: new FormControl(),
-  //   receiveDateTime: new FormControl(),
-  //   // flowerFormula: new FormControl(),
-  //   // orderTotal: new FormControl(),
-  //   // flowerPrice: new FormControl(),
-  //   deliveryFee: new FormControl(),
-  //   totalPrice: new FormControl(),
-  //   florist: new FormControl(),
-  //   note: new FormControl(),
-  //   status: new FormControl(),
-  //   flowerMultipleForms: new FormArray([]),
-  // });
-
   arr: any;
   salesOrderForm: FormGroup;
   statusOrders: StatusOrder[] = [
@@ -62,6 +42,7 @@ export class EditSalesOrderComponent implements OnInit {
   statusSelected: string | undefined;
   salesOrderUpdated: any = {};
   updateSalesOrder!: SalesOrderElement;
+  oldStatus: string = "";
   
   constructor(
     public dialogRef: MatDialogRef<SalesorderComponent>,
@@ -91,6 +72,10 @@ export class EditSalesOrderComponent implements OnInit {
       })
       ])
     });
+    if (this.data.status == "ยกเลิกออเดอร์") {
+      this.salesOrderForm.controls['status'].disable();
+    }
+    this.oldStatus = this.data.status;
   }
 
   ngOnInit(): void {
@@ -116,23 +101,37 @@ export class EditSalesOrderComponent implements OnInit {
   }
 
   onUpdate(): void {
-    this.dialogRef.close();
     this.updateSalesOrder = this.salesOrderForm.value;
-    for (let i=0; i<this.salesOrderForm.controls.flowerMultipleDtoList.value.length; i++) {
-      this.updateSalesOrder.flowerMultipleDtoList[i].flowerFormula = this.salesOrderForm.controls.flowerMultipleDtoList.value[i].flowerFormula.id;
-    }
-    this.updateSalesOrder.flowerPrice = this.salesOrderForm.controls["flowerPrice"].value;
-    this.updateSalesOrder.deliveryFee = this.salesOrderForm.controls["deliveryFee"].value;
-    this.updateSalesOrder.totalPrice = this.salesOrderForm.controls["totalPrice"].value;
-    this.updateSalesOrder.id = this.numberOfOrder;
-    console.log(this.updateSalesOrder);
-    this.restApiService.updateSalesOrder(this.updateSalesOrder);
-    Swal.fire(
-      'Good job!',
-      'แก้ไขออเดอร์สำเร็จ!',
-      'success'
-    ).then((result) => {
-      window.location.reload();
-    });
+
+    if(this.oldStatus == "ส่งแล้ว" && (
+      this.updateSalesOrder.status == "จ่ายแล้ว" ||
+      this.updateSalesOrder.status == "กำลังจัดช่อดอกไม้" || 
+      this.updateSalesOrder.status == "จัดเสร็จแล้ว")) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'ไม่แก้ไขออเดอร์นี้ได้ เนื่องจากสถานะผิดพลาด'
+        }).then((result) => {
+          window.location.reload();
+        });
+      } else {
+        this.dialogRef.close();
+        for (let i=0; i<this.salesOrderForm.controls.flowerMultipleDtoList.value.length; i++) {
+          this.updateSalesOrder.flowerMultipleDtoList[i].flowerFormula = this.salesOrderForm.controls.flowerMultipleDtoList.value[i].flowerFormula.id;
+        }
+        this.updateSalesOrder.flowerPrice = this.salesOrderForm.controls["flowerPrice"].value;
+        this.updateSalesOrder.deliveryFee = this.salesOrderForm.controls["deliveryFee"].value;
+        this.updateSalesOrder.totalPrice = this.salesOrderForm.controls["totalPrice"].value;
+        this.updateSalesOrder.id = this.numberOfOrder;
+        console.log(this.updateSalesOrder);
+        this.restApiService.updateSalesOrder(this.updateSalesOrder);
+        Swal.fire(
+          'Good job!',
+          'แก้ไขออเดอร์สำเร็จ!',
+          'success'
+        ).then((result) => {
+          window.location.reload();
+        });
+      }
   }
 }
