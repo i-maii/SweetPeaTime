@@ -42,7 +42,7 @@ import { ThisReceiver } from '@angular/compiler';
           }
           console.log(this.salesOrders);
           this.numberOfOrder = data.length;
-         this.displayedColumns = ['id', 'date', 'status', 'customerName', 'customerLineFb', 'receiverName', 'flowerFormula'];
+         this.displayedColumns = ['id', 'date', 'status', 'customerName', 'customerLineFb', 'receiverName', 'flowerFormula' ,'totalPrice', 'florist'];
           this.dataSource = new MatTableDataSource<SalesOrderDetailListDto>(this.salesOrders);
          // this.searchFilter.valueChanges.subscribe((searchFilterValue) => {
           //  this.dataSource.filter = searchFilterValue;
