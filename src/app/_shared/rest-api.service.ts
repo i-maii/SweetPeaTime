@@ -277,8 +277,8 @@ export class RestApiService {
     return this.http.post(this.apiURL + '/promotionDetail/updatePromotion?', null, {params: params, observe: 'response' });
   }
 
-  getPromotion(): Observable<PromotionDetailDto[]> {
-    return this.http.get<PromotionDetailDto[]>(this.apiURL + '/promotionDetail/getPromotion')
+  getPromotion(): Observable<PromotionDetail[]> {
+    return this.http.get<PromotionDetail[]>(this.apiURL + '/promotionDetail/getPromotion')
     .pipe(
       retry(1),
       catchError(this.handleError)
@@ -294,8 +294,21 @@ export class RestApiService {
   }
 
   addPromotion(formulaName: string, price: number, locationName: string, profit: number, quantity: number) {    
-    console.log(formulaName);
+    console.log("test");
     return this.http.post(this.apiURL + '/promotionDetail/addPromotion', { 
+      formulaName: formulaName, 
+      price: price,
+      locationName: locationName,
+      profit: profit,
+      quantity: quantity,
+    }, 
+    { observe: 'response'
+    });
+  }
+
+   recalculatePromotion(formulaName: string, price: number, locationName: string, profit: number, quantity: number) {    
+    console.log("test");
+    return this.http.post(this.apiURL + '/promotionDetail/recalculatePromotion', { 
       formulaName: formulaName, 
       price: price,
       locationName: locationName,

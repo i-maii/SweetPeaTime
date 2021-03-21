@@ -6,8 +6,8 @@ export interface PromotionDetailCurrentDto{
     profit: number;
     totalProfit: number;
     price: number;
-    locationName: string;
-    image: string;
-    quantityFlower: string;
-    stock: string;
+    locationName: String;
+    image: String;
+    quantityFlower: String;
+    stock: number;
 }

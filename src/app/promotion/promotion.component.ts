@@ -30,6 +30,8 @@ export class PromotionComponent implements OnInit {
   promotionDetailsDtos: PromotionDetailDto[] = [];
   promotionDetailsCurrentDtos: PromotionDetailCurrentDto[] = [];
 
+  promotionDetailList: PromotionDetail[] = [];
+
   displayedColumns: string[] = [];
   displayedColumnsNormal: string[] = [];
   displayedColumnsNormalDto: string[] = [];
@@ -62,7 +64,7 @@ export class PromotionComponent implements OnInit {
       }
     });
 
-    this.restApiService.getNormalPromotionDetailLog().subscribe((data: PromotionDetailLog[]) => {
+    /*this.restApiService.getNormalPromotionDetailLog().subscribe((data: PromotionDetailLog[]) => {
       for (let i = 0; i < data.length; i++) {
         this.promotionDetailLogsNormal.push(data[i]);
       }
@@ -83,21 +85,30 @@ export class PromotionComponent implements OnInit {
       for (let i = 0; i < data.length; i++) {
         this.flowerQuantity.push(data[i]);
       }
-    });
+    });*/
 
-    this.restApiService.getPromotion().subscribe((data: PromotionDetailDto[]) => {
+    /*this.restApiService.getPromotion().subscribe((data: PromotionDetailDto[]) => {
       for (let i = 0; i < data.length; i++) {
         this.promotionDetailsDtos.push(data[i]);
       }
       this.displayedColumnsNormalDto = ['flowername', 'size', 'unit', 'profit', 'totalprofit', 'price', 'location', 'imageUrl', 'add'];
       this.dataSourceNormalDto = new MatTableDataSource<PromotionDetailDto>(this.promotionDetailsDtos);
+    });*/
+
+    this.restApiService.getPromotion().subscribe((data: PromotionDetail[]) => {
+      for (let i = 0; i < data.length; i++) {
+        this.promotionDetailList.push(data[i]);
+        console.log(data[i]);
+      }
+      this.displayedColumnsNormal = ['flowername', 'size', 'unit', 'profit', 'totalprofit', 'price', 'location', 'imageUrl', 'add'];
+      this.dataSourceNormal = new MatTableDataSource<PromotionDetail>(this.promotionDetailList);
     });
 
     this.restApiService.getPromotionSuggest().subscribe((data: PromotionDetailCurrentDto[]) => {
       for (let i = 0; i < data.length; i++) {
         this.promotionDetailsCurrentDtos.push(data[i]);
       }
-      this.displayedColumnsNormalCurrentDto = ['flowername', 'size', 'unit', 'profit', 'totalprofit', 'price', 'location', 'imageUrl', 'add'];
+      this.displayedColumnsNormalCurrentDto = ['flowername', 'size', 'unit', 'profit', 'totalprofit', 'price', 'location', 'quantityFlower', 'stock', 'imageUrl', 'add'];
       this.dataSourceNormalCurrentDto = new MatTableDataSource<PromotionDetailCurrentDto>(this.promotionDetailsCurrentDtos);
     });
 
@@ -250,6 +261,19 @@ export class PromotionUnitDialogComponent {
   }
 
   replaceFlower() {
+    this.restApiService.recalculatePromotion(this.data.flowername, this.data.flowerprice, this.data.location, this.data.profit, this.quantity.value)
+    .subscribe(resp => {
+      if (resp['status'] === 200) {
+        text: 'Test'
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'เกิดข้อผิดพลาด',
+        });
+      }
+    });
+
     console.log(this.data);
     this.restApiService.addPromotion(this.data.flowername, this.data.flowerprice, this.data.location, this.data.profit, this.quantity.value)
     .subscribe(resp => {
@@ -257,7 +281,6 @@ export class PromotionUnitDialogComponent {
         this.dialogRef.close();
         Swal.fire(
           'Good job!',
-          /*'ตัดสต๊อกสำเร็จ',*/
           'เพิ่มโปรโมชั่นสำเร็จ',
           'success'
         ).then((result) => {
@@ -322,7 +345,6 @@ export class PromotionReplaceDialogComponent {
         this.dialogRef.close();
         Swal.fire(
           'Good job!',
-          /*'ตัดสต๊อกสำเร็จ',*/
           'ลบโปรโมชั่นสำเร็จ',
           'success'
         ).then((result) => {
