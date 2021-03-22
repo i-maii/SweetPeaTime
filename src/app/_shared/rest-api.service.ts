@@ -92,7 +92,7 @@ export class RestApiService {
     searchFlowerForm.size? params = params.append('size', searchFlowerForm.size): '';
     searchFlowerForm.florist? params = params.append('florist', searchFlowerForm.florist): '';
 
-    return this.http.post<FlowerFormula[]>(this.apiURL + '/flowerFormula/search', null, {params: params})
+    return this.http.get<FlowerFormula[]>(this.apiURL + '/flowerFormula/search',{params: params})
       .pipe(
         retry(1),
         catchError(this.handleError)
@@ -139,7 +139,7 @@ export class RestApiService {
     params = params.append('formulaId', formulaId+"");
     params = params.append('floristId', floristId+"");
     params = params.append('orderDate', this.datepipe.transform(orderDate, 'yyyy-MM-dd')+"");
-    console.log(params);
+   // console.log(params);
     return this.http.get<number>(this.apiURL + '/flowerFormulaDetail/getFormulaDetailFromStock', {
       params: params
     })

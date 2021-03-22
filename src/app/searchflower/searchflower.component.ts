@@ -6,7 +6,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FlowerFormula } from '../interface/flower-formula';
 import { SearchFlowerFormulaResult } from '../interface/searchFlowerFormulaResult';
 import { RestApiService } from '../_shared/rest-api.service';
-
 @Component({
   selector: 'searchflower',
   templateUrl: './searchflower.component.html',
@@ -421,6 +420,9 @@ export class SearchflowerComponent implements AfterViewInit {
         //this.dataSource =this.searchFlowerFormulaResult; 
         this.dataSource = new MatTableDataSource<SearchFlowerFormulaResult>(this.searchFlowerFormulaResultFilter);
         //for
+        //this.searchFlowerFormulaResult = [];
+        this.dataSource.filteredData = new MatTableDataSource<SearchFlowerFormulaResult>(this.searchFlowerFormulaResultFilter).filteredData;
+
       }
       this.dataSource.paginator = this.paginator;
 
