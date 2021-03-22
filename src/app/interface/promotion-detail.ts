@@ -11,6 +11,7 @@ export interface PromotionDetail {
     status: string;
     promotions: Promotion; 
     flowerFormula: FlowerFormula;
-    locationName: string;
+    expiryDate: Date;
     florist: Florist;
+    type: string;
   }
