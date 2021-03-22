@@ -143,7 +143,7 @@ export class PromotionComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         const params = {
-          access_token: 'EAADbQlCqvIEBAOYriQFxFvQ3LyZCH5tQiPA0Pw5maIRw5510eHXSZAiYbnEBaTcoxa6tBHaKE2lMHq7SyGnB2zU9btQpgCsjzsdOySpL49i6TNOlUZBd6L1sLuNI2aakVkgCBQgsi7L0pJmL7ZCYXKVItUZBTgeLOPwUoMzsNuiz8ERUslatK9PNhdsZAfWZCqNVeD2WRAyYRRD8QZA7N4L5',
+          access_token: 'EAADbQlCqvIEBAOkQE880IJ2tuG1c3VRPFGKCptKZCrcqeZBfyWFZC0fZCqZBORy5ThRwQS0oulXoFLZB9qL4JzfMNRRdegYgDtBeaMWU4ZAcjCgUaqrL9hZAs15v0ZBKb15NG2k9yVUv93aW4P1YJws05EPGrZArhZAHxOXPwXyRAyn3tMtSjBfZCUT0z6q6HMCrK9oWROhlmk8awVBA1BfGOtBE',
           message: message,
           url: IMAGE_PATH[index].url
         };
