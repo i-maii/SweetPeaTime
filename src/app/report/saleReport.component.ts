@@ -7,6 +7,7 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { SalesOrderElement } from '../interface/sales-order-element';
 import { SalesOrderDetailListDto } from '../interface/sales-order-detail-list-dto';
+import { ThisReceiver } from '@angular/compiler';
 
 @Component({
     selector: 'report',
@@ -21,11 +22,12 @@ import { SalesOrderDetailListDto } from '../interface/sales-order-detail-list-dt
   displayedColumns: string[] = [];
   dataSource: any;
   searchFilter = new FormControl();
-  flowerMultipleForms = new FormArray([new FormGroup({
-    flowerFormula: new FormControl(),
-    orderTotal: new FormControl(),
-  })
-  ]);
+  saleReportForm = new FormGroup({
+    startDate: new FormControl(),
+    endDate: new FormControl(),
+  });
+  currentDate = new Date();
+  endDate = new Date();
 
   constructor(
     private restApiService: RestApiService,
@@ -34,21 +36,24 @@ import { SalesOrderDetailListDto } from '../interface/sales-order-detail-list-dt
 
 
     ngOnInit(): void {
-        this.restApiService.getListSalesOrder().subscribe((data: SalesOrderDetailListDto[]) => {
+        this.restApiService.searchListSalesOrder(this.currentDate,this.endDate).subscribe((data: SalesOrderDetailListDto[]) => {
           for (let i = 0; i < data.length; i++) {
             this.salesOrders.push(data[i]);
           }
           console.log(this.salesOrders);
           this.numberOfOrder = data.length;
-          this.displayedColumns = ['id', 'status', 'deliveryDateTime', 'customerName', 'customerLineFb', 'receiverName', 'flowerFormula', 'selectEdit', 'selectDel'];
+         this.displayedColumns = ['id', 'date', 'status', 'customerName', 'customerLineFb', 'receiverName', 'flowerFormula' ,'totalPrice', 'florist'];
           this.dataSource = new MatTableDataSource<SalesOrderDetailListDto>(this.salesOrders);
-          this.searchFilter.valueChanges.subscribe((searchFilterValue) => {
-            this.dataSource.filter = searchFilterValue;
-          });
+         // this.searchFilter.valueChanges.subscribe((searchFilterValue) => {
+          //  this.dataSource.filter = searchFilterValue;
+          //});
     
-          this.dataSource.filterPredicate = this.customFilterPredicate();
+       //   this.dataSource.filterPredicate = this.customFilterPredicate();
         });
       }
+
+      searchSaleReport() {}
+
 
       customFilterPredicate() {
         const myFilterPredicate = function (data: SalesOrderDetailListDto, filter: string): boolean {
@@ -67,4 +72,8 @@ import { SalesOrderDetailListDto } from '../interface/sales-order-detail-list-dt
         }
         return myFilterPredicate;
       }
+
+
+
+
   }  
