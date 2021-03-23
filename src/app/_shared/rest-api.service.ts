@@ -34,7 +34,7 @@ export class RestApiService {
   florists: Florist[] = [];
   floristDeliveryFee : FloristDeliveryFee[] = [];
   customerLocation = new google.maps.LatLng(0,0);
-
+  floristLocation = new google.maps.LatLng(0,0);
   constructor(
     private http: HttpClient,
     private datepipe: DatePipe
@@ -133,7 +133,7 @@ export class RestApiService {
   getFlorist(): Observable<Florist[]> {
     return this.http.get<Florist[]>(this.apiURL + '/florist/getAll')
       .pipe(
-        retry(0),
+        retry(1),
         catchError(this.handleError)
       )
   }
@@ -244,15 +244,15 @@ export class RestApiService {
       )
   }
 
-  calculateDeliveryFee(distance :any){
+  calculateDeliveryFee(distance :any):Observable<any>{
     let params = new HttpParams;
    // distance = Number(distance);
     params = params.append('distance', distance);
-    return this.http.get(this.apiURL + '/calculation/calculateDeliveryFee', { params: params})
-      .pipe(
-        retry(1),
-        catchError(this.handleError)
-      )
+    return this.http.get(this.apiURL + '/calculation/calculateDeliveryFee', { params: params});
+      // .pipe(
+      //   retry(1),
+      //   catchError(this.handleError)
+      //)
   }
 
   getCheckFlowerFormulaDetail(formulaId: any, flowerId: any): Observable<FlowerFormulaDetail[]> {
@@ -338,23 +338,86 @@ export class RestApiService {
     return deg * (Math.PI / 180)
   }
 
+  findFloristLocation(floristDeliveryFee : FloristDeliveryFee[])
+  {
+    for (let j=0 ;j < floristDeliveryFee.length ; j++)
+    {
+    this.geocoder.geocode({ 'address' : floristDeliveryFee[j].address }, (results, status) => {
+      if (status === "OK") {
+        if(results != null)
+        {
+          floristDeliveryFee[j].location = results[0].geometry.location;
+        }
+      } else {
+        alert("Geocode was not successful for the following reason: " + status);
+      }
+    });//End find florist location 
+    }
+
+    return floristDeliveryFee;
+  }
+
+  calculateDistanceFromFloristAddress(address: string, floristAddress: string) {
+    let distance = 0;
+    this.floristDeliveryFee = [];
+    let deliveryFee = 0;
+
+    if (address!='')
+    {
+      
+     //find customer location latlang 
+     this.geocoder.geocode({ 'address' : address }, (cusAddress, status) => {
+      if (status === "OK") {
+      if(cusAddress != null)
+     { this.customerLocation = cusAddress[0].geometry.location;}
+      }
+      else
+      {
+          alert("Geocode was not successful for the following reason: " + status);
+      }
+
+    });
+   
+    //find florist Latlang
+      this.geocoder.geocode({ 'address' : floristAddress }, (floristAddressResult, status) => {
+        if (status === "OK") {
+        if(floristAddressResult != null)
+       { this.floristLocation = floristAddressResult[0].geometry.location;}
+        }
+        else
+        {
+            alert("Geocode was not successful for the following reason: " + status);
+        }
+  
+      });
+     
+        //calculatedistance
+       
+        let R = 6371; // Radius of the earth in km
+        let dLat = this.deg2rad(this.customerLocation.lat() - this.floristLocation.lat());  // deg2rad below
+        let dLng = this.deg2rad(this.customerLocation.lng() - this.floristLocation.lng()); 
+        let a =
+          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos(this.deg2rad(this.floristLocation.lat())) * Math.cos(this.deg2rad(this.customerLocation.lat() )) *
+          Math.sin(dLng / 2) * Math.sin(dLng / 2)
+          ;
+        let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        let d = R * c; // Distance in km
+        //use 'd' for distance
+        console.log('distance: ', d);
+        distance = Math.round(d);
+        //floristDeliveryFeeResult.
+}//end address != null
+  
+return distance;
+}
+
   calculateDistance(address: string, floristId: any) {
 
     if (address!='')
     {
       this.floristDeliveryFee = [];
-        //find customer location latlang 
-        this.geocoder.geocode({ 'address' : address }, (cusAddress, status) => {
-          if (status === "OK") {
-          if(cusAddress != null)
-         { this.customerLocation = cusAddress[0].geometry.location;}
-          }
-          else
-          {
-              alert("Geocode was not successful for the following reason: " + status);
-          }
-
-        });
+        
         //find all florist
         this.getFlorist().subscribe((data: Florist[]) => {
           for (let i = 0; i < data.length; i++) {
@@ -382,23 +445,27 @@ export class RestApiService {
             floristDeliveryFeeResult.name = data[i].name;
             this.floristDeliveryFee.push(floristDeliveryFeeResult); 
           }//End for all florists
-       
 
-        //find florist location
+     //find customer location latlang 
+     this.geocoder.geocode({ 'address' : address }, (cusAddress, status) => {
+      if (status === "OK") {
+      if(cusAddress != null)
+     { this.customerLocation = cusAddress[0].geometry.location;}
+      }
+      else
+      {
+          alert("Geocode was not successful for the following reason: " + status);
+      }
 
-        for (let j=0 ;j < this.floristDeliveryFee.length ; j++)
-        {
-        this.geocoder.geocode({ 'address' : this.floristDeliveryFee[j].address }, (results, status) => {
-          if (status === "OK") {
-            if(results != null)
-            {
-              this.floristDeliveryFee[j].location = results[0].geometry.location;
-            }
-          } else {
-            alert("Geocode was not successful for the following reason: " + status);
-          }
-        });//End find florist location 
-        }
+    });
+
+    //find florist location
+    this.floristDeliveryFee = this.findFloristLocation(this.floristDeliveryFee);
+
+        });//End get all florist
+
+   
+     
         //calculatedistance
         for (let i=0 ;i < this.floristDeliveryFee.length ; i++)
         {
@@ -429,7 +496,7 @@ export class RestApiService {
           }
         }) //End calculate fee
       }//end for this.floristDeliveryFee 
-    });//End get all florist
+
 }//end address != null
   
 return this.floristDeliveryFee;

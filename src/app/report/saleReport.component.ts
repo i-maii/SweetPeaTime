@@ -19,6 +19,7 @@ import { ThisReceiver } from '@angular/compiler';
    
   salesOrders: SalesOrderDetailListDto[] = [];
   numberOfOrder: number = 0;
+  totalAmount: number = 0;
   displayedColumns: string[] = [];
   dataSource: any;
   searchFilter = new FormControl();
@@ -39,6 +40,7 @@ import { ThisReceiver } from '@angular/compiler';
         this.restApiService.searchListSalesOrder(this.currentDate,this.endDate).subscribe((data: SalesOrderDetailListDto[]) => {
           for (let i = 0; i < data.length; i++) {
             this.salesOrders.push(data[i]);
+            this.totalAmount = this.totalAmount + data[i].flowerPrice;
           }
           console.log(this.salesOrders);
           this.numberOfOrder = data.length;
@@ -53,7 +55,9 @@ import { ThisReceiver } from '@angular/compiler';
       }
 
       searchSaleReport() {}
-
+      getTotalAmount() {
+        return this.totalAmount;
+      }
 
       customFilterPredicate() {
         const myFilterPredicate = function (data: SalesOrderDetailListDto, filter: string): boolean {
