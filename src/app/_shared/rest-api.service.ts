@@ -351,12 +351,16 @@ export class RestApiService {
     return deg * (Math.PI / 180)
   }
 
-  async calculateDistanceFromFloristAddress(address: string, floristAddress: string) {
+  async calculateDistanceFromFloristId(address: string, floristId: Number) {
     let distance = 0;
     this.floristDeliveryFee = [];
     let deliveryFee = 0;
 
     if (address != '') {
+
+      this.florists = await this.getFlorist().toPromise();
+
+
 
       //find customer location latlang 
       this.customerLocation = new Promise((resolve, reject) => {
@@ -378,7 +382,7 @@ export class RestApiService {
       //find florist Latlang
       this.floristLocation = new Promise((resolve, reject) => {
         this.geocoder.geocode({
-          'address': floristAddress
+          'address': this.florists.find(f=>f.id == floristId)?.address
         }, (results, status) => {
           if (status === google.maps.GeocoderStatus.OK) {
             const latLng = new google.maps.LatLng({

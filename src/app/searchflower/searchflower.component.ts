@@ -48,7 +48,8 @@ export class SearchflowerComponent implements OnInit {
     priceTo: new FormControl(''),
     address: new FormControl(''),
     size: new FormControl(''),
-    florist: new FormControl('')
+    florist: new FormControl(''),
+    floristId: new FormControl('')
   });
 
   constructor(private restApiService: RestApiService) { }
@@ -64,6 +65,7 @@ export class SearchflowerComponent implements OnInit {
           id: number,
           position: number,
           florist: string,
+          floristId: number,
           name: string,
           size: string,
           pattern: string,
@@ -77,6 +79,7 @@ export class SearchflowerComponent implements OnInit {
           id: 0,
           position: 0,
           florist: '',
+          floristId: 0,
           name: '',
           size: '',
           pattern: '',
@@ -117,6 +120,7 @@ export class SearchflowerComponent implements OnInit {
             id: number,
             position: number,
             florist: string,
+            floristId: number,
             name: string,
             size: string,
             pattern: string,
@@ -130,6 +134,7 @@ export class SearchflowerComponent implements OnInit {
             id: 0,
             position: 0,
             florist: '',
+            floristId: 0,
             name: '',
             size: '',
             pattern: '',
@@ -143,6 +148,7 @@ export class SearchflowerComponent implements OnInit {
           resultRow.id = data[i].id;
           resultRow.position = i;
           resultRow.florist = "ซงหนิงหนิง";
+          resultRow.floristId = 0;
           resultRow.name = data[i].name;
           resultRow.size = data[i].size;
           resultRow.pattern = data[i].pattern;
@@ -238,7 +244,7 @@ export class SearchflowerComponent implements OnInit {
           let d = R * c; // Distance in km
           //use 'd' for distance
           console.log('distance: ', d);
-          alert('distance: ' + d);
+        //  alert('distance: ' + d);
           //  this.floristDeliveryFee[i].distance = Math.round(d);         //floristDeliveryFeeResult.
 
         }
@@ -254,103 +260,6 @@ export class SearchflowerComponent implements OnInit {
     return d;
   }
 
-  //        for (let i = 0; i < this.floristDeliveryFee.length; i++) {
-
-  //        this.restApiService.calculateDeliveryFee(this.floristDeliveryFee[i].distance).subscribe((deliveryFeeResult) => {
-
-  //          this.floristDeliveryFee[i].deliveryFee = Number(deliveryFeeResult);
-  //          if(isNaN(this.floristDeliveryFee[i].deliveryFee))
-  //         {
-  //           this.floristDeliveryFee[i].deliveryFee = 0;
-  //        }
-  //        }) //End calculate fee
-  // }
-  //}
-
-  //   calculateDistance(address: string, floristId: any) {
-
-  //     if (address!='')
-  //     {
-  //       this.floristDeliveryFee = [];
-  //         //find customer location latlang 
-  //         this.geocoder.geocode({ 'address' : address }, (cusAddress, status) => {
-  //           if(cusAddress != null)
-  //          { this.customerLocation = cusAddress[0].geometry.location;}
-  //         });
-  //         //find all florist
-  //         this.restApiService.getFlorist().subscribe((data: Florist[]) => {
-  //           for (let i = 0; i < data.length; i++) {
-
-  //             let floristDeliveryFeeResult: {
-  //               id: number,
-  //               floristId: number,
-  //               name: string,
-  //               address: string,
-  //               location: google.maps.LatLng,
-  //               distance : number,
-  //               deliveryFee: number,
-  //             } = 
-  //             {
-  //               id: 0,
-  //               floristId: 0,
-  //               name: '',
-  //               address: '',
-  //               location: new google.maps.LatLng(0, 0),
-  //               distance: 0,
-  //               deliveryFee: 0,
-  //             };
-  //             floristDeliveryFeeResult.floristId = data[i].id;
-  //             floristDeliveryFeeResult.address = data[i].address;
-  //             floristDeliveryFeeResult.name = data[i].name;
-  //             this.floristDeliveryFee.push(floristDeliveryFeeResult); 
-  //           }//End for all florists
-  //         });//Enf get all florist
-
-  //         //find florist location
-  //         for (let j=0 ;j < this.floristDeliveryFee.length ; j++)
-  //         {
-  //         this.geocoder.geocode({ 'address' : this.floristDeliveryFee[j].address }, (results, status) => {
-  //           if(results != null)
-  //           {
-  //             this.floristDeliveryFee[j].location = results[0].geometry.location;
-  //           }
-  //         });//End find florist location 
-  //         }
-  //         //calculatedistance
-  //         for (let i=0 ;i < this.floristDeliveryFee.length ; i++)
-  //         {
-  //         let R = 6371; // Radius of the earth in km
-  //         let dLat = this.deg2rad(this.customerLocation.lat() - this.floristDeliveryFee[i].location.lat());  // deg2rad below
-  //         let dLng = this.deg2rad(this.customerLocation.lng() - this.floristDeliveryFee[i].location.lng()); 
-  //         let a =
-  //           Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-  //           Math.cos(this.deg2rad(this.floristDeliveryFee[i].location.lat())) * Math.cos(this.deg2rad(this.customerLocation.lat() )) *
-  //           Math.sin(dLng / 2) * Math.sin(dLng / 2)
-  //           ;
-  //         let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  //         let d = R * c; // Distance in km
-  //         //use 'd' for distance
-  //         console.log('distance: ', d);
-  //         this.floristDeliveryFee[i].distance = Math.round(d);
-  //         //floristDeliveryFeeResult.
-  //       }
-
-  //         for (let i = 0; i < this.floristDeliveryFee.length; i++) {
-
-  //         this.restApiService.calculateDeliveryFee(this.floristDeliveryFee[i].distance).subscribe((deliveryFeeResult) => {
-
-  //           this.floristDeliveryFee[i].deliveryFee = Number(deliveryFeeResult);
-  //           if(isNaN(this.floristDeliveryFee[i].deliveryFee))
-  //           {
-  //             this.floristDeliveryFee[i].deliveryFee = 0;
-  //           }
-  //         }) //End calculate fee
-  //       }//end for this.floristDeliveryFee 
-  // }//end address != null
-
-  // return this.floristDeliveryFee;
-  // }
-
   deg2rad(deg: number) {
     return deg * (Math.PI / 180)
   }
@@ -364,7 +273,10 @@ export class SearchflowerComponent implements OnInit {
     this.florists = await this.restApiService.getFlorist().toPromise();
     this.floristDeliveryFee = [];
 
-
+    if(this.searchFlowerForm.value.florist != '')
+    {
+      this.searchFlowerForm.value.floristId = Number(this.florists.find(f => f.name == this.searchFlowerForm.value.florist)?.id);
+    }
     this.restApiService.searchFlowerFormula(this.searchFlowerForm.value).subscribe(async (data: FlowerFormula[]) => {
       console.log(this.searchFlowerForm.value);
 
@@ -376,6 +288,7 @@ export class SearchflowerComponent implements OnInit {
             id: number,
             position: number,
             florist: string,
+            floristId: number,
             name: string,
             size: string,
             pattern: string,
@@ -389,6 +302,7 @@ export class SearchflowerComponent implements OnInit {
             id: 0,
             position: 0,
             florist: '',
+            floristId: 0,
             name: '',
             size: '',
             pattern: '',
@@ -401,11 +315,12 @@ export class SearchflowerComponent implements OnInit {
           };
           searchResult.id = data[i].id;
           searchResult.position = i;
-          if (isNaN(this.searchFlowerForm.value.floristId)) {
-            searchResult.florist = "";
+          if (this.searchFlowerForm.value.florist == '') {
+            searchResult.florist = '';
           }
           else {
-            searchResult.florist = String(this.florists.find(f => this.f.id == this.searchFlowerForm.value.floristId)?.name);
+            searchResult.florist = String(this.florists.find(f => f.id == this.searchFlowerForm.value.floristId)?.name);
+            searchResult.floristId = this.searchFlowerForm.value.floristId;
           }
 
 
@@ -431,33 +346,31 @@ export class SearchflowerComponent implements OnInit {
         if (this.searchFlowerForm.value.date != '') {
           recieveDate = this.searchFlowerForm.value.date;
         }
-        //totalPrice = 0;
-        //   price.push(Number(this.searchFlowerFormulaResult[i].price));
-        //if (price.length > 0) {
+       
         // check if florist==null
-        if (this.searchFlowerFormulaResult[i].florist == "") {
+        if (this.searchFlowerFormulaResult[i].florist == '') {
           if (this.searchFlowerFormulaResult[i].pattern == 'เกาหลี') {
             this.searchFlowerFormulaResult[i].florist = 'ซงหนิงหนิง';
+            this.searchFlowerFormulaResult[i].floristId = Number(this.florists.find(f => f.name == this.searchFlowerFormulaResult[i].florist)?.id);
+
             //find quantity availbale for Nink           
-            //  this.searchFlowerFormulaResult[i].deliveryFee = Number(this.floristDeliveryFee.find(f => f.name === 'ซงหนิงหนิง')?.deliveryFee);
-
-          } else {//แบบทั่วไป{
+            this.restApiService.getFlowerAvailableFromCurrentStock(data[i].id,  this.searchFlowerFormulaResult[i].floristId, recieveDate).subscribe((result) => {
+            this.searchFlowerFormulaResult[i].quantityAvailable = result;})
+          } 
+          else {//แบบทั่วไป{
             this.searchFlowerFormulaResult[i].florist = 'หนึ่ง';
-            //find quantity available for neung
-            this.restApiService.getFlowerAvailableFromCurrentStock(data[i].id, 2, recieveDate).subscribe((result) => {
-              this.searchFlowerFormulaResult[i].quantityAvailable = result;
-            })
+            this.searchFlowerFormulaResult[i].floristId = Number(this.florists.find(f => f.name == this.searchFlowerFormulaResult[i].florist)?.id);
 
-            // this.restApiService.calculateTotalPrice(this.searchFlowerFormulaResult[i].deliveryFee , price).subscribe((totalPrice) => {
-            //   this.searchFlowerFormulaResult[i].position = i + 1;
-            //  // this.searchFlowerFormulaResult[i].deliveryFee = this.deliveryFee;
-            //   this.searchFlowerFormulaResult[i].totalPrice = Number(totalPrice);
-            // })
+            //find quantity available for neung
+            this.restApiService.getFlowerAvailableFromCurrentStock(data[i].id,  this.searchFlowerFormulaResult[i].floristId, recieveDate).subscribe((result) => {
+              this.searchFlowerFormulaResult[i].quantityAvailable = result;})
+
             //Add new row for show other florist
             let resultRow: {
               id: number,
               position: number,
               florist: string,
+              floristId: number,
               name: string,
               size: string,
               pattern: string,
@@ -471,6 +384,7 @@ export class SearchflowerComponent implements OnInit {
               id: 0,
               position: 0,
               florist: '',
+              floristId: 0,
               name: '',
               size: '',
               pattern: '',
@@ -484,6 +398,7 @@ export class SearchflowerComponent implements OnInit {
             resultRow.id = this.searchFlowerFormulaResult[i].id;
             resultRow.position = i;
             resultRow.florist = "ซงหนิงหนิง";
+            resultRow.floristId = Number(this.florists.find(f => f.name == this.searchFlowerFormulaResult[i].florist)?.id);
             resultRow.name = this.searchFlowerFormulaResult[i].name;
             resultRow.size = this.searchFlowerFormulaResult[i].size;
             resultRow.pattern = this.searchFlowerFormulaResult[i].pattern;
@@ -492,39 +407,24 @@ export class SearchflowerComponent implements OnInit {
             resultRow.occasion = this.searchFlowerFormulaResult[i].occasion;
             resultRow.quantityAvailable = this.searchFlowerFormulaResult[i].quantityAvailable;
 
-
-            //     if(this.floristDeliveryFee.length != 0)
-            //     {
-            //      resultRow.deliveryFee =  Number(this.floristDeliveryFee.find(f=> f.name === 'ซงหนิงหนิง')?.deliveryFee);
-            //  //   })
-            //     this.restApiService.calculateTotalPrice(resultRow.deliveryFee , price).subscribe((totalPrice) => {
-            //       //this.searchFlowerFormulaResult[i].totalPrice = Number(totalPrice);
-            //       resultRow.totalPrice = Number(totalPrice);
-            //       // this.price= [];
-            //     })
-            //   }
-
             //find quantity availble for nink
-            this.restApiService.getFlowerAvailableFromCurrentStock(data[i].id, 1, recieveDate).subscribe((result) => {
+            this.restApiService.getFlowerAvailableFromCurrentStock(data[i].id, resultRow.floristId, recieveDate).subscribe((result) => {
               resultRow.quantityAvailable = result;
             })
-
             this.searchFlowerFormulaFlorist.push(resultRow);
-
           }
         }//end if florist from screen == null
         else //find florist from screen
         {
-          //find available quantity for florist 
-          this.restApiService.getFlowerAvailableFromCurrentStock(data[i].id, 1, recieveDate).subscribe((result) => {
+          //find available quantity for florist from screen
+          let floristId = 0;
+          floristId = Number(this.florists.find(f => f.name == this.searchFlowerForm.value.florist)?.id)
+          this.restApiService.getFlowerAvailableFromCurrentStock(data[i].id, floristId, recieveDate).subscribe((result) => {
             this.searchFlowerFormulaResult[i].quantityAvailable = result;
           })
-          //find delivery Fee
-          //find total price
         }
-        //}//End If price.lenght > 0
-        // this.price = [];
-      } // Enf for this.searchFlowerFormulaResult.length
+  
+      } // End for this.searchFlowerFormulaResult.length
 
       //Merge result from all florist
       this.searchFlowerFormulaResult = this.searchFlowerFormulaResult.concat(this.searchFlowerFormulaFlorist);
@@ -533,9 +433,9 @@ export class SearchflowerComponent implements OnInit {
 
       if (this.searchFlowerForm.value.address != '') {
         for (let i = 0; i < this.florists.length; i++) {
-          distance = await this.restApiService.calculateDistanceFromFloristAddress(this.searchFlowerForm.value.address, this.florists[i].address);
+          distance = await this.restApiService.calculateDistanceFromFloristId(this.searchFlowerForm.value.address, this.florists[i].id);
 
-          alert('distance customer = ' + distance);
+        //  alert('distance customer = ' + distance);
           if (distance > 0) {
             let floristDeliveryFeeResult: {
               id: number,
@@ -574,6 +474,10 @@ export class SearchflowerComponent implements OnInit {
 
 
         this.deliveryFee = Number(this.floristDeliveryFee.find(f => f.name === this.searchFlowerFormulaResult[i].florist)?.deliveryFee);
+       if(isNaN(this.deliveryFee ))
+       {
+        this.deliveryFee = 0;
+       }
         console.log(this.searchFlowerFormulaResult[i].florist + ' ' + this.deliveryFee);
         this.searchFlowerFormulaResult[i].position = i + 1;
         this.searchFlowerFormulaResult[i].deliveryFee = this.deliveryFee;
