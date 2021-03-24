@@ -350,7 +350,7 @@ export class RestApiService {
   deg2rad(deg: number) {
     return deg * (Math.PI / 180)
   }
-
+  
   async calculateDistanceFromFloristAddress(address: string, floristAddress: string) {
     let distance = 0;
     this.floristDeliveryFee = [];
