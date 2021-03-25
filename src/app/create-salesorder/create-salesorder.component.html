@@ -81,7 +81,7 @@
                     <div class="col-3">
                         <mat-form-field class="create-form-full-width" appearance="fill">
                             <mat-label>ที่อยู่ผู้รับ</mat-label>
-                            <input matInput type="text" placeholder="123 abc" formControlName="receiverAddress">
+                            <input matInput type="text" placeholder="123 abc" formControlName="receiverAddress" (change)="getPrice()">
                         </mat-form-field>
                     </div>
                     <div class="col-3">

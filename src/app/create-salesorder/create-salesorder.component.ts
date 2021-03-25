@@ -53,6 +53,9 @@ export class CreateSalesorderComponent implements OnInit {
   flowerMultipleDtoList = new FormArray([]);
   arr: any;
   priceOfOrders: PriceOfOrders[] = [];
+  distance: number = 0;
+  deliveryFee: number = 0;
+  totalPrice: number = 0;
 
   constructor(
     private restApiService: RestApiService,
@@ -187,7 +190,7 @@ export class CreateSalesorderComponent implements OnInit {
     this.getPrice();
   }
 
-  getPrice() {
+  async getPrice() {
     this.priceOfOrders = [];
 
     for (let i = 0; i < this.salesOrderForm.controls.flowerMultipleDtoList.value.length; i++) {
@@ -209,13 +212,21 @@ export class CreateSalesorderComponent implements OnInit {
     if (this.priceOfOrders.length != 0) {
       this.restApiService.getSalesOrderPrice(this.priceOfOrders).subscribe((data: SalesOrderPrice) => {
         this.salesOrderForm.controls["flowerPrice"].setValue(data.flowerPrice);
-        this.salesOrderForm.controls["deliveryFee"].setValue(data.feePrice);
-        this.salesOrderForm.controls["totalPrice"].setValue(data.totalPrice);
+        // this.salesOrderForm.controls["deliveryFee"].setValue(data.feePrice);
+        // this.salesOrderForm.controls["totalPrice"].setValue(data.totalPrice);
       });
+    }
+    
+    if(this.salesOrderForm.controls["receiverAddress"].value !== '' && this.salesOrderForm.controls["florist"].value !== '') {
+      this.distance = await this.restApiService.calculateDistanceFromFloristId(this.salesOrderForm.controls["receiverAddress"].value, this.salesOrderForm.controls["florist"].value);
+      this.deliveryFee = await this.restApiService.calculateDeliveryFee(this.distance).toPromise(); 
+      this.salesOrderForm.controls["deliveryFee"].setValue(this.deliveryFee);
+      this.totalPrice = this.salesOrderForm.controls["flowerPrice"].value + this.deliveryFee;
+      this.salesOrderForm.controls["totalPrice"].setValue(this.totalPrice);
     }
   }
 
-  orderTotalChange(row: number): void {
+  async orderTotalChange(row: number) {
     let floristId = 0;
     let totalOrder = 0;
     let formulaId = 0;
@@ -251,13 +262,21 @@ export class CreateSalesorderComponent implements OnInit {
     if (this.priceOfOrders.length != 0) {
       this.restApiService.getSalesOrderPrice(this.priceOfOrders).subscribe((data: SalesOrderPrice) => {
         this.salesOrderForm.controls["flowerPrice"].setValue(data.flowerPrice);
-        this.salesOrderForm.controls["deliveryFee"].setValue(data.feePrice);
-        this.salesOrderForm.controls["totalPrice"].setValue(data.totalPrice);
+        // this.salesOrderForm.controls["deliveryFee"].setValue(data.feePrice);
+        // this.salesOrderForm.controls["totalPrice"].setValue(data.totalPrice);
       });
+    }
+
+    if(this.salesOrderForm.controls["receiverAddress"].value !== '' && this.salesOrderForm.controls["florist"].value !== '') {
+      this.distance = await this.restApiService.calculateDistanceFromFloristId(this.salesOrderForm.controls["receiverAddress"].value, this.salesOrderForm.controls["florist"].value);
+      this.deliveryFee = await this.restApiService.calculateDeliveryFee(this.distance).toPromise(); 
+      this.salesOrderForm.controls["deliveryFee"].setValue(this.deliveryFee);
+      this.totalPrice = this.salesOrderForm.controls["flowerPrice"].value + this.deliveryFee;
+      this.salesOrderForm.controls["totalPrice"].setValue(this.totalPrice);
     }
   }
 
-  floristChange(): void {
+  async floristChange() {
     let floristId = 0;
     let formulaId = 0;
     let totalOrder = 0;
@@ -292,9 +311,17 @@ export class CreateSalesorderComponent implements OnInit {
     if (this.priceOfOrders.length != 0) {
       this.restApiService.getSalesOrderPrice(this.priceOfOrders).subscribe((data: SalesOrderPrice) => {
         this.salesOrderForm.controls["flowerPrice"].setValue(data.flowerPrice);
-        this.salesOrderForm.controls["deliveryFee"].setValue(data.feePrice);
-        this.salesOrderForm.controls["totalPrice"].setValue(data.totalPrice);
+        // this.salesOrderForm.controls["deliveryFee"].setValue(data.feePrice);
+        // this.salesOrderForm.controls["totalPrice"].setValue(data.totalPrice);
       });
+    }
+
+    if(this.salesOrderForm.controls["receiverAddress"].value !== '' && this.salesOrderForm.controls["florist"].value !== '') {
+      this.distance = await this.restApiService.calculateDistanceFromFloristId(this.salesOrderForm.controls["receiverAddress"].value, this.salesOrderForm.controls["florist"].value);
+      this.deliveryFee = await this.restApiService.calculateDeliveryFee(this.distance).toPromise(); 
+      this.salesOrderForm.controls["deliveryFee"].setValue(this.deliveryFee);
+      this.totalPrice = this.salesOrderForm.controls["flowerPrice"].value + this.deliveryFee;
+      this.salesOrderForm.controls["totalPrice"].setValue(this.totalPrice);
     }
   }
 }

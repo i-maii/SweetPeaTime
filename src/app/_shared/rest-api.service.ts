@@ -31,7 +31,6 @@ export class RestApiService {
 
   apiURL = environment.apiUrl;
   geocoder = new google.maps.Geocoder();
-  florists: Florist[] = [];
   floristDeliveryFee : FloristDeliveryFee[] = [];
   customerLocation: Promise<google.maps.LatLng> | undefined;
   floristLocation: Promise<google.maps.LatLng> | undefined;
@@ -132,6 +131,14 @@ export class RestApiService {
 
   getFlorist(): Observable<Florist[]> {
     return this.http.get<Florist[]>(this.apiURL + '/florist/getAll')
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
+  }
+
+  getFloristById(id: number): Observable<Florist> {
+    return this.http.get<Florist>(this.apiURL + '/florist/getById?id=' + id)
       .pipe(
         retry(1),
         catchError(this.handleError)
@@ -351,16 +358,15 @@ export class RestApiService {
     return deg * (Math.PI / 180)
   }
 
-  async calculateDistanceFromFloristId(address: string, floristId: Number) {
+  async calculateDistanceFromFloristId(address: string, floristId: number) {
     let distance = 0;
     this.floristDeliveryFee = [];
     let deliveryFee = 0;
+    let florist: Florist;
 
     if (address != '') {
 
-      this.florists = await this.getFlorist().toPromise();
-
-
+      florist = await this.getFloristById(floristId).toPromise();
 
       //find customer location latlang 
       this.customerLocation = new Promise((resolve, reject) => {
@@ -379,10 +385,11 @@ export class RestApiService {
         })
       });
 
+      console.log(florist.address);
       //find florist Latlang
       this.floristLocation = new Promise((resolve, reject) => {
         this.geocoder.geocode({
-          'address': this.florists.find(f=>f.id == floristId)?.address
+          'address': florist.address
         }, (results, status) => {
           if (status === google.maps.GeocoderStatus.OK) {
             const latLng = new google.maps.LatLng({
