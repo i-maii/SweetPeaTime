@@ -3,6 +3,8 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { AuthService } from '../_services/auth.service';
+import { User } from '../_models/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'main-nav',
@@ -10,20 +12,29 @@ import { AuthService } from '../_services/auth.service';
   styleUrls: ['./main-nav.component.css']
 })
 export class MainNavComponent {
-  username = localStorage.getItem('username');
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),
       shareReplay()
     );
 
+  currentUser: User | undefined;
+  username = this.authService.currentUserValue.username;
+
   constructor(
-    private breakpointObserver: BreakpointObserver,
-    private authService: AuthService
-  ) {}
+      private breakpointObserver: BreakpointObserver,
+      private router: Router,
+      private authService: AuthService
+  ) {
+      this.authService.currentUser.subscribe(x => this.currentUser = x);
+  }
+
+  get isAdmin() {
+      return this.currentUser && this.currentUser.role === 'Admin';
+  }
 
   onLogout() {
     this.authService.logout();
+    this.router.navigate(['/login']);
   }
-
 }

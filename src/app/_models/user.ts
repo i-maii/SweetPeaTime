@@ -1,4 +1,6 @@
 export class User {
-    username!: string;
-    password: string | undefined;
+    id: number | null;
+    username: string | null;
+    password: string | null;
+    role: string | null;
 }

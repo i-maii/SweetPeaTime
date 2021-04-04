@@ -16,7 +16,7 @@ const routes: Routes = [
   {
     path: '',
     component: HomeLayoutComponent, 
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     children: [
       {
         path: '',
@@ -27,7 +27,7 @@ const routes: Routes = [
   {
     path: '',
     component: HomeLayoutComponent, 
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'salesorder',
@@ -38,7 +38,7 @@ const routes: Routes = [
   {
     path: '',
     component: HomeLayoutComponent, 
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'createSalesorder',
@@ -49,7 +49,7 @@ const routes: Routes = [
   {
     path: '',
     component: HomeLayoutComponent, 
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'searchflower',
@@ -70,6 +70,7 @@ const routes: Routes = [
   {
     path: '',
     component: HomeLayoutComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'promotion',
@@ -80,6 +81,7 @@ const routes: Routes = [
   {
     path: '',
     component: HomeLayoutComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'stock',
@@ -90,12 +92,14 @@ const routes: Routes = [
   {
     path: '',
     component: HomeLayoutComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'report',
         component: SaleReportComponent
       }
-    ]
+    ],
+    data: { roles: ['Admin'] }
   }
 ];
 
