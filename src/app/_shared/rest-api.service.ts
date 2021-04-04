@@ -22,6 +22,7 @@ import { PromotionDetailDto } from "../interface/promotion-detail-dto";
 import { PromotionDetailCurrentDto } from "../interface/promotion-detail-current-dto";
 import { PriceOfOrders } from '../interface/priceOfOrders';
 import { FloristDeliveryFee } from '../interface/FloristDeliveryFee';
+import { User } from '../_models/user';
 
 
 @Injectable({
@@ -185,6 +186,14 @@ export class RestApiService {
 
   getSalesOrderPrice(priceOfOrders: PriceOfOrders[]): Observable<any> {
     return this.http.post<SalesOrderPrice>(this.apiURL + '/flowerFormula/priceOfSalesOrder', priceOfOrders, { observe: 'body' });
+  }
+
+  getSuggestPromotionDetailLog(): Observable<PromotionDetailLog[]> {
+    return this.http.get<PromotionDetailLog[]>(this.apiURL + '/promotionDetailLog/suggest')
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
   }
 
   getCurrentPromotionDetailLog(): Observable<PromotionDetailLog[]> {

@@ -114,22 +114,86 @@ export class PromotionComponent implements OnInit {
       this.dataSourceNormalCurrentDto = new MatTableDataSource<PromotionDetailCurrentDto>(this.promotionDetailsCurrentDtos);
     });
   }
+  
+  IMAGE_PATH = [
+    { path: 'flower_1.png', url: 'https://i.ibb.co/sJV6ZxJ/flower-1.png' },
+    { path: 'flower_2.png', url: 'https://i.ibb.co/Bn0c2kV/flower-2.png' },
+    { path: 'flower_3.png', url: 'https://i.ibb.co/hV35KVK/flower-3.png' },
+    { path: 'flower_4.png', url: 'https://i.ibb.co/wsJVzbY/flower-4.png' },
+    { path: 'flower_5.png', url: 'https://i.ibb.co/qj98V9D/flower-5.png' },
+    { path: 'flower_6.png', url: 'https://i.ibb.co/ZKkJ7ZV/flower-6.png' },
+    { path: 'flower_7.png', url: 'https://i.ibb.co/SmQhwrZ/flower-7.png' },
+    { path: 'flower_8.png', url: 'https://i.ibb.co/x3ckyPX/flower-8.png' },
+    { path: 'flower.jpg', url: 'https://i.ibb.co/FnQHL4L/flower.jpg' },
+  ];
+
+  shareAll(promotionDetail: PromotionDetail[]) {
+    console.log(promotionDetail);
+    Swal.fire({
+      title: 'ต้องการแชร์โปรโมชั่นทั้งหมดใช่ไหม?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'ยกเลิก',
+      confirmButtonText: 'ใช่'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.shareToFacebookAll(promotionDetail).then((response) => {
+          if (response === 4) {
+            Swal.fire(
+              'Good job!',
+              'แชร์โปรโมชั่นสำเร็จ',
+              'success'
+            )
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'เกิดข้อผิดพลาด',
+            });
+          }
+        });
+      }
+    })
+  }
+
+  async shareToFacebookAll(promotionDetail: PromotionDetail[]) {
+    let cnt = 0;
+    for (let pd of promotionDetail) {
+      let splitted = pd.flowerFormula.imagePath.split('/');
+      let index = this.IMAGE_PATH.findIndex(i => i.path === splitted[2]);
+      let message = pd.flowerFormula.name + '\nราคา ' + pd.price + ' บาท\nสอบถามเพิ่มเติม Line : @sweetpeatimes';
+
+      const params = {
+        access_token: 'EAADbQlCqvIEBAIfkqfz0PZB3I1Ii1PU0CzaR6yBSLSpoKWqSS7UEeoJntVflJTHLZBvzh2nUxlsgsnDgJNmBXZATDHUWjmHn9fz5GMWtXPwOK9HQkLYMFGz1rgfqpQHF0pp8UHdbqMpvKRMfoK1KM4XMARLW6Uf7VzUf4ITKPuz2mWzLKdGEQ7ZBm2gAULu8ZAZCjgNj4NRlVJyoaTqvCQ',
+        message: message,
+        url: this.IMAGE_PATH[index].url
+      };
+
+      await new Promise((resolve: any) => {
+        FB.api('/110423627789182/photos', 'post', params, (response: any) => {
+          if (response.error) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'เกิดข้อผิดพลาด',
+            });
+
+            console.log(response.error.message);
+          } else {
+            cnt++;
+          }
+          resolve();
+        });
+      });
+    }
+    return cnt;
+  }
 
   shareToFacebook(formulaName: string, price: number, imagePath: string) {
-    const IMAGE_PATH = [
-      { path: 'flower_1.png', url: 'https://i.ibb.co/sJV6ZxJ/flower-1.png' },
-      { path: 'flower_2.png', url: 'https://i.ibb.co/Bn0c2kV/flower-2.png' },
-      { path: 'flower_3.png', url: 'https://i.ibb.co/hV35KVK/flower-3.png' },
-      { path: 'flower_4.png', url: 'https://i.ibb.co/wsJVzbY/flower-4.png' },
-      { path: 'flower_5.png', url: 'https://i.ibb.co/qj98V9D/flower-5.png' },
-      { path: 'flower_6.png', url: 'https://i.ibb.co/ZKkJ7ZV/flower-6.png' },
-      { path: 'flower_7.png', url: 'https://i.ibb.co/SmQhwrZ/flower-7.png' },
-      { path: 'flower_8.png', url: 'https://i.ibb.co/x3ckyPX/flower-8.png' },
-      { path: 'flower.jpg', url: 'https://i.ibb.co/FnQHL4L/flower.jpg' },
-    ];
-
     let splitted = imagePath.split('/');
-    let index = IMAGE_PATH.findIndex(i => i.path === splitted[2]);
+    let index = this.IMAGE_PATH.findIndex(i => i.path === splitted[2]);
 
     let message = formulaName + '\nราคา ' + price + ' บาท\nสอบถามเพิ่มเติม Line : @sweetpeatimes';
     Swal.fire({
@@ -143,9 +207,9 @@ export class PromotionComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         const params = {
-          access_token: 'EAADbQlCqvIEBAOkQE880IJ2tuG1c3VRPFGKCptKZCrcqeZBfyWFZC0fZCqZBORy5ThRwQS0oulXoFLZB9qL4JzfMNRRdegYgDtBeaMWU4ZAcjCgUaqrL9hZAs15v0ZBKb15NG2k9yVUv93aW4P1YJws05EPGrZArhZAHxOXPwXyRAyn3tMtSjBfZCUT0z6q6HMCrK9oWROhlmk8awVBA1BfGOtBE',
+          access_token: 'EAADbQlCqvIEBAIfkqfz0PZB3I1Ii1PU0CzaR6yBSLSpoKWqSS7UEeoJntVflJTHLZBvzh2nUxlsgsnDgJNmBXZATDHUWjmHn9fz5GMWtXPwOK9HQkLYMFGz1rgfqpQHF0pp8UHdbqMpvKRMfoK1KM4XMARLW6Uf7VzUf4ITKPuz2mWzLKdGEQ7ZBm2gAULu8ZAZCjgNj4NRlVJyoaTqvCQ',
           message: message,
-          url: IMAGE_PATH[index].url
+          url: this.IMAGE_PATH[index].url
         };
         
         FB.api('/110423627789182/photos', 'post', params, (response: any) => {

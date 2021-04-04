@@ -10,7 +10,7 @@
       <a mat-list-item routerLinkActive="active" routerLink="/searchflower">สอบถามข้อมูลช่อดอกไม้</a>
       <a mat-list-item routerLinkActive="active" routerLink="/promotion">โปรโมชั่น</a>
       <a mat-list-item routerLinkActive="active" routerLink="/stock">จัดการสต๊อก</a>
-      <a mat-list-item routerLinkActive="active" routerLink="/report">รายงาน</a>
+      <a mat-list-item routerLinkActive="active" routerLink="/report" *ngIf="isAdmin">รายงาน</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -18,9 +18,9 @@
       <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <!-- <span [ngClass]="{ hide: !(isHandset$ | async) }">{{username}}</span> -->
+      <div class="user">สวัสดี, {{username}}</div>
       <span class="spacer"></span>
-        <a mat-button (click)="onLogout()"><b>ออกจากระบบ</b></a>
+      <a mat-button (click)="onLogout()"><b>ออกจากระบบ</b></a>
       <!-- <span>SweetPeaTimes</span> -->
     </mat-toolbar>
     <!-- Add Content Here -->

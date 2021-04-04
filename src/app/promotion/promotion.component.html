@@ -171,22 +171,27 @@
                         <div>สถานที่   : {{promotionDetail.florist.locationName}}</div>
                     </mat-card-content>
                     <mat-card-actions>
-                        <button mat-mini-fab color="primary" (click)="shareToFacebook(promotionDetail.flowerFormula.name,promotionDetail.price,promotionDetail.flowerFormula.imagePath)">
-                          <mat-icon>facebook</mat-icon>
-                        </button>  
-                        <button mat-mini-fab color="warn">
-                          IG
-                        </button>
-                        <button mat-mini-fab color="basic" (click)="getIdFlowerReplace(promotionDetail.id)">
-                          <mat-icon>delete</mat-icon>
-                        </button>   
-                    </mat-card-actions>
+                      <div class="row">
+                        <div class="col-3"></div>
+                        <div class="col-3">
+                          <button mat-mini-fab color="primary" (click)="shareToFacebook(promotionDetail.flowerFormula.name,promotionDetail.price,promotionDetail.flowerFormula.imagePath)">
+                            <mat-icon>facebook</mat-icon>
+                          </button>
+                        </div>
+                        <div class="col-3">
+                          <button mat-mini-fab color="basic" (click)="getIdFlowerReplace(promotionDetail.id)">
+                            <mat-icon>delete</mat-icon>
+                          </button>   
+                        </div>
+                        <div class="col-3"></div>
+                      </div>
+                      </mat-card-actions>
                 </mat-card>
             </div>
           </div>     
           
         <p></p>
-        <button mat-flat-button color="primary">
+        <button mat-flat-button color="primary" (click)="shareAll(promotionDetails)">
             แชร์
         </button> 
       </mat-card>

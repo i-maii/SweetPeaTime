@@ -1,4 +1,3 @@
-import { coerceNumberProperty } from '@angular/cdk/coercion';
 import { Component, OnInit } from '@angular/core';
 import { PromotionDetail } from '../interface/promotion-detail';
 import { PromotionDetailLog } from '../interface/promotion-detail-log';
@@ -24,7 +23,7 @@ export class DashboardComponent implements OnInit {
       }
     });
 
-    this.restApiService.getNormalPromotionDetailLog().subscribe((data: PromotionDetailLog[]) => {
+    this.restApiService.getSuggestPromotionDetailLog().subscribe((data: PromotionDetailLog[]) => {
       for (let i = 0; i < 4; i++) {
         this.promotionDetailLogs.push(data[i]);
       }

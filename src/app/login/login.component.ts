@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { first } from 'rxjs/operators';
+import Swal from 'sweetalert2';
 import { AuthService } from '../_services/auth.service';
 
 @Component({
@@ -13,8 +16,13 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService
-  ) { }
+    private authService: AuthService,
+    private router: Router
+  ) { 
+    if (this.authService.currentUserValue) {
+      this.router.navigate(['/']);
+    }
+  }
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -32,7 +40,22 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      this.authService.login(this.form.value);
+      this.authService.login(this.form.value)
+        .pipe(first())
+        .subscribe(
+          data => {
+            this.router.navigate(['/']);
+          },
+          error => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'ชื่อผู้ใช้หรือรหัสผิด',
+            }).then((result) => {
+              window.location.reload();
+            });;
+          }
+        );
     }
     this.formSubmitAttempt = true;
   }
