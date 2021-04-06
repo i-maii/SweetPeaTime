@@ -88,7 +88,7 @@
                         <mat-form-field appearance="fill" class="date-picker-form-fill">
                             <mat-label>วันที่รับ</mat-label>
                             <input matInput [matDatepicker]="datepicker2" placeholder="2021-02-15" type="text"
-                                formControlName="receiveDateTime" (dateChange)="floristChange()">
+                                formControlName="receiveDateTime" (dateChange)="receiveDateChange()">
                             <mat-datepicker-toggle matSuffix [for]="datepicker2"></mat-datepicker-toggle>
                             <mat-datepicker #datepicker2>
                                 <mat-datepicker-actions>
