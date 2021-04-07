@@ -45,6 +45,11 @@ import { StockComponent } from './stock/stock.component';
 import { DeleteStockComponent } from './stock/delete-stock/delete-stock.component';
 import { AddStockComponent } from './stock/add-stock/add-stock.component';
 import { SaleReportComponent } from './report/saleReport.component';
+import { SaleReportSummaryComponent } from './report/saleReportSummary.component';
+import { ChartsModule } from 'ng2-charts';
+import { StockReportComponent } from './stockReport/stockReport.component';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -65,7 +70,9 @@ import { SaleReportComponent } from './report/saleReport.component';
     AddStockComponent,
     PromotionReplaceDialogComponent,
     PromotionSuccessDialogComponent,
-    SaleReportComponent
+    SaleReportComponent,
+    SaleReportSummaryComponent,
+    StockReportComponent
   ],
   imports: [
     BrowserModule,
@@ -104,6 +111,7 @@ import { SaleReportComponent } from './report/saleReport.component';
     FlexLayoutModule,
     NgbModule,
     MatRadioModule,
+    ChartsModule
   ],
   providers: [AuthService, AuthGuard, DatePipe],
   bootstrap: [AppComponent]

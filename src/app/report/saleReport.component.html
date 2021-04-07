@@ -2,9 +2,11 @@
 <form [formGroup]="saleReportForm" (ngSubmit)="searchSaleReport()">  
 
     <div class="main-div">
- 
-    <h1 mat-dialog-title>รายงานการขาย</h1>
 
+    <h1 mat-dialog-title>รายงานการขาย</h1>
+    <br>
+   <button mat-stroked-button type="button" (click)="btnClick();" >รายงานสรุปยอดขายประจำปี </button>
+<br>
     <mat-form-field appearance="fill">
         <mat-label>วันที่เริ่ม</mat-label>
         <input matInput [matDatepicker]="startDate" formControlName ="startDate">
@@ -18,68 +20,62 @@
         <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
       <mat-datepicker #endDate></mat-datepicker>
     </mat-form-field>
+  
+    <mat-form-field appearance="fill">
+      <mat-label>ช่าง</mat-label>
+      <mat-select type="text" formControlName="florist">
+        <mat-option *ngFor="let florist of florists" [value]="florist.id">
+          {{florist.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
     <br>
   <button mat-stroked-button type="submit">Search </button>
 </div>
-  </form>  
+
+<div class="searchResult">
   
-
-
-
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
             <!-- No. Column -->
             <ng-container matColumnDef="id">
                 <th mat-header-cell *matHeaderCellDef> ลำดับ </th>
                 <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-                <td mat-footer-cell *matFooterCellDef>  </td>
-                <td mat-footer-cell *matFooterCellDef>  </td>
-                <td mat-footer-cell *matFooterCellDef>  </td>
+
             </ng-container>
 
             <!-- ReceiverDateTime Column -->
             <ng-container matColumnDef="status">
                 <th mat-header-cell *matHeaderCellDef> สถานะ </th>
                 <td mat-cell *matCellDef="let element"> {{element.status}} </td>
-                <td mat-footer-cell *matFooterCellDef>  </td>
-                <td mat-footer-cell *matFooterCellDef>  </td>
-                <td mat-footer-cell *matFooterCellDef>  </td>
+
             </ng-container>
 
             <!-- DeliveryDateTime Column -->
             <ng-container matColumnDef="date">
                 <th mat-header-cell *matHeaderCellDef> วันที่ </th>
                 <td mat-cell *matCellDef="let element"> {{element.date | date:'yyyy-MM-dd'}} </td>
-                <td mat-footer-cell *matFooterCellDef>  </td>
-                <td mat-footer-cell *matFooterCellDef>  </td>
-                <td mat-footer-cell *matFooterCellDef>  </td>
+
             </ng-container>
 
             <!-- CustomerName Column -->
             <ng-container matColumnDef="customerName">
                 <th mat-header-cell *matHeaderCellDef> ชื่อผู้สั่ง </th>
                 <td mat-cell *matCellDef="let element"> {{element.customerName}} </td>
-                <td mat-footer-cell *matFooterCellDef>  </td>
-                <td mat-footer-cell *matFooterCellDef>  </td>
-                <td mat-footer-cell *matFooterCellDef>  </td>
+
             </ng-container>
 
             <!-- CustomerLineFb Column -->
             <ng-container matColumnDef="customerLineFb">
                 <th mat-header-cell *matHeaderCellDef> Line/FB </th>
                 <td mat-cell *matCellDef="let element"> {{element.customerLineFb}} </td>
-                <td mat-footer-cell *matFooterCellDef>  </td>
-                <td mat-footer-cell *matFooterCellDef>  </td>
-                <td mat-footer-cell *matFooterCellDef>  </td>
+
             </ng-container>
 
             <!-- ReceiverName Column -->
             <ng-container matColumnDef="receiverName">
                 <th mat-header-cell *matHeaderCellDef> ชื่อผู้รับ </th>
                 <td mat-cell *matCellDef="let element"> {{element.receiverName}} </td>
-                <td mat-footer-cell *matFooterCellDef>  </td>
-                <td mat-footer-cell *matFooterCellDef>  </td>
-                <td mat-footer-cell *matFooterCellDef>  </td>
             </ng-container>
 
             <!-- FlowerFormula Column -->
@@ -91,20 +87,12 @@
                         <br /> <!-- Use br if you want to display the roles vertically -->
                     </ng-container>
                 </td>
-                <td mat-footer-cell *matFooterCellDef> Total Revenue </td>
-                <td mat-footer-cell *matFooterCellDef> Cost </td>
-                <td mat-footer-cell *matFooterCellDef> Profit </td>
-
             </ng-container>
 
               <!-- price Column -->
               <ng-container matColumnDef="totalPrice">
                 <th mat-header-cell *matHeaderCellDef> จำนวนเงิน </th>
-                <td mat-cell *matCellDef="let element"> {{element.flowerPrice}} </td>
-                <td mat-footer-cell *matFooterCellDef> {{getTotalAmount()}} </td>
-                <td mat-footer-cell *matFooterCellDef>  test</td>
-                <td mat-footer-cell *matFooterCellDef> test </td>
-                
+                <td mat-cell *matCellDef="let element"> {{element.flowerPrice}} </td>   
             </ng-container>
 
                <!-- florist Column -->
@@ -116,37 +104,35 @@
                         <br /> <!-- Use br if you want to display the roles vertically -->
                     </ng-container>
                 </td>
-                <td mat-footer-cell *matFooterCellDef>  </td>
-                <td mat-footer-cell *matFooterCellDef>  </td>
-                <td mat-footer-cell *matFooterCellDef>  </td>
             </ng-container>
-
-             <!-- Checkbox Column -->
-             <ng-container matColumnDef="selectDel">
-                <th mat-header-cell *matHeaderCellDef></th>
-                <td mat-cell *matCellDef="let row">
-                </td>
-            </ng-container>
-
-             <!-- cost column -->
-  <ng-container matColumnDef="cost">
-    <td mat-footer-cell *matFooterCellDef colspan="7" align="left">
-Cost    </td>
-  </ng-container>
-
-   <!-- proft column -->
-   <ng-container matColumnDef="profit">
-    <td mat-footer-cell *matFooterCellDef colspan ="7" align="left">
-      Profit          Value </td>
     
-  </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+            <!-- <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
             <tr mat-footer-row *matFooterRowDef="displayedColumns"> test</tr>
-            <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+            <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr> -->
             <!-- <tr mat-footer-row *matFooterRowDef="['cost']" class="example-second-footer-row"></tr>
             <tr mat-footer-row *matFooterRowDef="['profit']" class="example-second-footer-row"></tr> -->
 
 
         </table>
+
+        <mat-form-field appearance="fill">
+            <mat-label>รวมยอดขาย</mat-label>
+            <input matInput [value]="totalAmount" formControlName="totalAmount">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>รวมต้นทุน</mat-label>
+            <input matInput [value]="totalCost" formControlName="totalCost">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>รวมกำไร</mat-label>
+            <input matInput [value]="totalProfit" formControlName="totalProfit">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>รวมค่าช่าง</mat-label>
+            <input matInput [value]="totalFloristFee" formControlName="totalFloristFee">
+          </mat-form-field>
+        </div>
+        </form>  
+    

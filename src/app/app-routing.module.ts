@@ -11,7 +11,8 @@ import { AuthGuard } from './_helpers/auth.guard';
 import { SearchflowerComponent } from './searchflower/searchflower.component';
 import { StockComponent } from './stock/stock.component';
 import { SaleReportComponent } from './report/saleReport.component';
-
+import { SaleReportSummaryComponent } from './report/saleReportSummary.component';
+import { StockReportComponent } from './stockReport/stockReport.component';
 const routes: Routes = [
   {
     path: '',
@@ -94,6 +95,28 @@ const routes: Routes = [
       {
         path: 'report',
         component: SaleReportComponent
+      }
+    ]
+  }
+  ,
+  {
+    path: '',
+    component: HomeLayoutComponent,
+    children: [
+      {
+        path: 'saleSummary',
+        component: SaleReportSummaryComponent
+      }
+    ]
+  }
+  ,
+  {
+    path: '',
+    component: HomeLayoutComponent,
+    children: [
+      {
+        path: 'stockReport',
+        component: StockReportComponent
       }
     ]
   }
