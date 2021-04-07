@@ -9,6 +9,7 @@ import { PromotionDetailDto } from "../interface/promotion-detail-dto";
 import { PromotionDetailCurrentDto } from "../interface/promotion-detail-current-dto";
 import Swal from 'sweetalert2';
 import { FormControl } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
 export interface DialogData {
   images: 'test';
@@ -50,11 +51,15 @@ export class PromotionComponent implements OnInit {
   count: any;
   allQuantity: any;
   weeklyPromotion: number = 20;
+  datepipe: any;
+  stockDate: String | undefined;
+  lot: String | undefined;
 
   //constructor(public dialog: MatDialog) {}
   constructor(
-    private restApiService: RestApiService, public dialog: MatDialog,
+    private restApiService: RestApiService, public dialog: MatDialog
   ) { }
+
 
   ngOnInit(): void {
     this.restApiService.getCurrentPromotion().subscribe((data: PromotionDetail[]) => {
@@ -95,22 +100,38 @@ export class PromotionComponent implements OnInit {
       this.dataSourceNormalDto = new MatTableDataSource<PromotionDetailDto>(this.promotionDetailsDtos);
     });*/
 
-    this.restApiService.getPromotion().subscribe((data: PromotionDetail[]) => {
+    this.restApiService.getPromotionDetailLog().subscribe((data: PromotionDetailLog[]) => {
+      for (let i = 0; i < data.length; i++) {
+        this.promotionDetailLogsNormal.push(data[i]);
+      }
+      this.displayedColumnsNormal = ['flowername', 'size', 'unit', 'profit', 'totalprofit', 'price', 'lot', 'location', 'imageUrl', 'add'];
+      this.dataSourceNormal = new MatTableDataSource<PromotionDetailLog>(this.promotionDetailLogsNormal);
+    });
+
+    this.restApiService.getPromotionDetailLogRemain().subscribe((data: PromotionDetailLog[]) => {
+      for (let i = 0; i < data.length; i++) {
+        this.promotionDetailLogsCurrent.push(data[i]);
+      }
+      this.displayedColumnsNormalCurrentDto = ['flowername', 'size', 'unit', 'profit', 'totalprofit', 'price', 'lot', 'location', /*'quantityFlower', 'stock', */'imageUrl', 'add'];
+      this.dataSourceNormalCurrentDto = new MatTableDataSource<PromotionDetailLog>(this.promotionDetailLogsCurrent);
+    });
+
+    /*this.restApiService.getPromotion().subscribe((data: PromotionDetail[]) => {
       for (let i = 0; i < data.length; i++) {
         this.promotionDetailList.push(data[i]);
         console.log(data[i]);
       }
       this.displayedColumnsNormal = ['flowername', 'size', 'unit', 'profit', 'totalprofit', 'price', 'location', 'imageUrl', 'add'];
       this.dataSourceNormal = new MatTableDataSource<PromotionDetail>(this.promotionDetailList);
-    });
+    });*/
 
-    this.restApiService.getPromotionSuggest().subscribe((data: PromotionDetailCurrentDto[]) => {
+    /*this.restApiService.getPromotionSuggest().subscribe((data: PromotionDetailCurrentDto[]) => {
       for (let i = 0; i < data.length; i++) {
         this.promotionDetailsCurrentDtos.push(data[i]);
       }
       this.displayedColumnsNormalCurrentDto = ['flowername', 'size', 'unit', 'profit', 'totalprofit', 'price', 'location', 'quantityFlower', 'stock', 'imageUrl', 'add'];
       this.dataSourceNormalCurrentDto = new MatTableDataSource<PromotionDetailCurrentDto>(this.promotionDetailsCurrentDtos);
-    });
+    });*/
 
     
   }
@@ -139,6 +160,13 @@ export class PromotionComponent implements OnInit {
 
   calculateTotalProfit(profit: any, unit: any) {
     return this.totalprofit = profit * unit;
+  }
+
+  
+  setFormatDateLotStock(lotStock: any) {
+    console.log(lotStock + 1);
+    this.stockDate = lotStock.substring(0, 10);
+    return this.lot = this.stockDate;
   }
 
   showQuantity(flowerQuantity: any,unit: any) {

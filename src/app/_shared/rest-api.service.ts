@@ -319,6 +319,22 @@ export class RestApiService {
     });
   }
 
+  getPromotionDetailLog(): Observable<PromotionDetailLog[]> {
+    return this.http.get<PromotionDetailLog[]>(this.apiURL + '/promotionDetailLog/promotionDetailLog')
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
+  }
+
+  getPromotionDetailLogRemain(): Observable<PromotionDetailLog[]> {
+    return this.http.get<PromotionDetailLog[]>(this.apiURL + '/promotionDetailLog/promotionDetailLogRemain')
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
+  }
+
   handleError(error: HttpErrorResponse) {
     window.alert(error.error);
     return throwError(error.message);
