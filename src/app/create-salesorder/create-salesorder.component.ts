@@ -303,7 +303,9 @@ export class CreateSalesorderComponent implements OnInit {
   }
 
   async floristChange() {
-    this.restApiService.getFlowerFormula().subscribe((data: FlowerFormula[]) => {
+    let floristId = this.salesOrderForm.controls["florist"].value;
+    this.restApiService.getFlowerFormula(floristId).subscribe((data: FlowerFormula[]) => {
+      this.flowerFormulas = [];
       for (let i = 0; i < data.length; i++) {
         this.flowerFormulas.push(data[i]);
       }

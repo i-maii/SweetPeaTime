@@ -46,8 +46,8 @@ export class RestApiService {
     })
   }
 
-  getFlowerFormula(): Observable<FlowerFormula[]> {
-    return this.http.get<FlowerFormula[]>(this.apiURL + '/flowerFormula/getflowerFormula')
+  getFlowerFormula(floristId : number): Observable<FlowerFormula[]> {
+    return this.http.get<FlowerFormula[]>(this.apiURL + '/flowerFormula/getflowerFormula/?floristId='+ floristId)
       .pipe(
         retry(1),
         catchError(this.handleError)
