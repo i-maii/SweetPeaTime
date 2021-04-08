@@ -14,4 +14,6 @@ export interface PromotionDetailLog {
     sequence: number;
     promotionType: string;
     florist: Florist;
+    lotStock: Date;
+    totalProfit: number;
 }

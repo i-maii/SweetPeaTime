@@ -22,7 +22,7 @@ import { PromotionDetailCurrentDto } from "../interface/promotion-detail-current
 import { PriceOfOrders } from '../interface/priceOfOrders';
 import { FloristDeliveryFee } from '../interface/FloristDeliveryFee';
 import { FloristFee } from '../interface/floristFee';
-
+import { ChangeStock } from '../interface/change-stock';
 
 @Injectable({
   providedIn: 'root'
@@ -524,6 +524,22 @@ export class RestApiService {
     }//end address != null
 
     return distance;
+  }
+
+  getPromotionDetailLog(): Observable<PromotionDetailLog[]> {
+    return this.http.get<PromotionDetailLog[]>(this.apiURL + '/promotionDetailLog/promotionDetailLog')
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
+  }
+
+  getPromotionDetailLogRemain(): Observable<PromotionDetailLog[]> {
+    return this.http.get<PromotionDetailLog[]>(this.apiURL + '/promotionDetailLog/promotionDetailLogRemain')
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
   }
 
   handleError(error: HttpErrorResponse) {
