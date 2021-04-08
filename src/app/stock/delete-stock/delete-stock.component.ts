@@ -68,13 +68,57 @@ export class DeleteStockComponent implements OnInit {
       .subscribe(resp => {
         if (resp['status'] === 200) {
           this.dialogRef.close();
-          Swal.fire(
-            'Good job!',
-            'ตัดสต๊อกสำเร็จ',
-            'success'
-          ).then((result) => {
-            window.location.reload();
-          });
+          let changeHtml = "";
+          let inactiveHtml = "";
+          console.log(resp.body.length);
+          for (let i=0; i<resp.body.length; i++) {
+            if (resp.body[i].status === 'inactive') {
+              inactiveHtml += "<div>" + resp.body[i].formulaName + "</div>";
+            } else if (resp.body[i].status === 'change') {
+              changeHtml += "<div>" + resp.body[i].formulaName + " จาก <b>" + resp.body[i].beforeQuantity + " ช่อ</b> เหลือ <b>" + resp.body[i].remainQuantity + " ช่อ</b>" + "</div>";
+            } 
+          }
+          console.log(changeHtml);
+          console.log(inactiveHtml);
+          if (inactiveHtml !== "" && changeHtml !== "") {
+            Swal.fire({
+              title: 'ไม่สามารถทำโปรโมชั่นนี้ได้แล้ว เนื่องจากจำนวนดอกไม้ไม่เพียงพอ',
+              html: inactiveHtml,
+              icon: 'success'
+            }).then((result) => {
+              Swal.fire({
+                title: 'มีการเปลี่ยนแปลงจำนวนช่อโปรโมชั่น',
+                html: changeHtml,
+                icon: 'success'
+              }).then((result) => {
+                window.location.reload();
+              });
+            });
+          } else if (inactiveHtml === "" && changeHtml !== "") {
+            Swal.fire({
+              title: 'มีการเปลี่ยนแปลงจำนวนช่อโปรโมชั่น',
+              html: changeHtml,
+              icon: 'success'
+            }).then((result) => {
+              window.location.reload();
+            });
+          } else if (inactiveHtml !== "" && changeHtml === "") {
+            Swal.fire({
+              title: 'ไม่สามารถทำโปรโมชั่นนี้ได้แล้ว เนื่องจากจำนวนดอกไม้ไม่เพียงพอ',
+              html: inactiveHtml,
+              icon: 'success'
+            }).then((result) => {
+              window.location.reload();
+            });
+          } else {
+            Swal.fire(
+              'Good job!',
+              'ตัดสต๊อกสำเร็จ',
+              'success'
+            ).then((result) => {
+              window.location.reload();
+            });
+          }
         } else {
           Swal.fire({
             icon: 'error',

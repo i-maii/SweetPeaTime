@@ -20,6 +20,7 @@ import { FlowerFormulaDetail } from "../interface/flower-formula-detail";
 import { PromotionDetailDto } from "../interface/promotion-detail-dto";
 import { PromotionDetailCurrentDto } from "../interface/promotion-detail-current-dto";
 import { PriceOfOrders } from '../interface/priceOfOrders';
+import { ChangeStock } from '../interface/change-stock';
 
 @Injectable({
   providedIn: 'root'
@@ -262,7 +263,7 @@ export class RestApiService {
   }
 
   deleteStock(stock: DeleteStock[]): Observable<any> {
-    return this.http.post(this.apiURL + '/stock/deleteStock', stock, { observe: 'response'});
+    return this.http.post(this.apiURL + '/stock/deleteStock', stock, { observe: 'response' });
   }
 
   addStock(stock: AddStock[]): Observable<any> {
