@@ -18,11 +18,10 @@ import { Flower } from '../interface/flower';
 import { DeleteStock } from '../interface/delete-stock';
 import { AddStock } from '../interface/add-stock';
 import { FlowerFormulaDetail } from "../interface/flower-formula-detail";
-import { PromotionDetailDto } from "../interface/promotion-detail-dto";
 import { PromotionDetailCurrentDto } from "../interface/promotion-detail-current-dto";
 import { PriceOfOrders } from '../interface/priceOfOrders';
 import { FloristDeliveryFee } from '../interface/FloristDeliveryFee';
-import { User } from '../_models/user';
+import { FloristFee } from '../interface/floristFee';
 
 
 @Injectable({
@@ -79,11 +78,41 @@ export class RestApiService {
   }
 
 
-  searchListSalesOrder(startDate: any, endDate: any): Observable<SalesOrderDetailListDto[]> {
+  searchListSalesOrder(startDate: any, endDate: any, floristId: any): Observable<SalesOrderDetailListDto[]> {
     let params = new HttpParams;
-    params = params.append('startDate', startDate);
-    params = params.append('endDate', endDate);
-    return this.http.get<SalesOrderDetailListDto[]>(this.apiURL + '/salesOrder/searchSalesOrderDetailListDto')
+    if(startDate == '')
+    {
+      params = params.append('startDate', "");
+
+    }
+    else
+    {
+      params = params.append('startDate', this.datepipe.transform(startDate, 'yy-MM-dd') + "");
+
+    }
+    if(endDate == '')
+    {
+      params = params.append('endDate', "");
+
+    }
+    else
+    {
+      params = params.append('endDate', this.datepipe.transform(endDate, 'yy-MM-dd') + "");
+ 
+    }
+
+    if (floristId == null)
+    {
+      params = params.append('floristId', "");
+    }
+    else
+    {
+      params = params.append('floristId', floristId);
+
+    }
+    //params = params.append('startDate', this.datepipe.transform(startDate, 'yy-MM-dd') + "");
+    //params = params.append('endDate', this.datepipe.transform(startDate, 'yy-MM-dd') + "");
+    return this.http.get<SalesOrderDetailListDto[]>(this.apiURL + '/salesOrder/searchSalesOrderDetailListDto',{ params: params })
       .pipe(
         retry(1),
         catchError(this.handleError)
@@ -145,6 +174,19 @@ export class RestApiService {
         catchError(this.handleError)
       )
   }
+  getfloristFeeBySize(floristId: any, size: any): Observable<FloristFee[]> {
+    let params = new HttpParams;
+  
+      params = params.append('floristId', floristId);
+  
+      params = params.append('size', size);
+  
+    return this.http.get<FloristFee[]>(this.apiURL + '/florist/getFloristFeeBySize',{ params: params })
+      .pipe(
+        retry(1),
+        catchError(this.handleError) 
+      )
+  }
 
   getFlowerAvailable(formulaId: number, floristId: number, orderDate: Date): Observable<number> {
     let params = new HttpParams;
@@ -165,7 +207,7 @@ export class RestApiService {
     let params = new HttpParams;
     params = params.append('formulaId', formulaId + "");
     params = params.append('floristId', floristId + "");
-    params = params.append('orderDate', this.datepipe.transform(orderDate, 'yyyy-MM-dd') + "");
+    params = params.append('orderDate', this.datepipe.transform(orderDate, 'yy-MM-dd') + "");
     // console.log(params);
     return this.http.get<number>(this.apiURL + '/flowerFormulaDetail/getFormulaDetailFromStock', {
       params: params
@@ -246,6 +288,58 @@ export class RestApiService {
 
   getStock(): Observable<Stock[]> {
     return this.http.get<Stock[]>(this.apiURL + '/stock')
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
+  }
+
+  getStockByLot(startDate: any, endDate: any): Observable<Stock[]> {
+    let params = new HttpParams;
+    if(startDate == '')
+    {
+      params = params.append('startDate', "");
+    }
+    else
+    {
+      params = params.append('startDate', this.datepipe.transform(startDate, 'yy-MM-dd') + "");
+    }
+    if(endDate == '')
+    {
+      params = params.append('endDate', "");
+    }
+    else
+    {
+      params = params.append('endDate', this.datepipe.transform(endDate, 'yy-MM-dd') + "");
+    }
+
+    return this.http.get<Stock[]>(this.apiURL + '/stock/getStockByLot',{ params: params })
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
+  }
+
+  getStockByDate(startDate: any, endDate: any): Observable<Stock[]> {
+    let params = new HttpParams;
+    if(startDate == '')
+    {
+      params = params.append('startDate', "");
+    }
+    else
+    {
+      params = params.append('startDate', this.datepipe.transform(startDate, 'yy-MM-dd') + "");
+    }
+    if(endDate == '')
+    {
+      params = params.append('endDate', "");
+    }
+    else
+    {
+      params = params.append('endDate', this.datepipe.transform(endDate, 'yy-MM-dd') + "");
+    }
+
+    return this.http.get<Stock[]>(this.apiURL + '/stock/getStockByDate',{ params: params })
       .pipe(
         retry(1),
         catchError(this.handleError)
