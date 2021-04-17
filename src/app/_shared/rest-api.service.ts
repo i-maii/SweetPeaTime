@@ -221,6 +221,14 @@ export class RestApiService {
       )
   }
 
+  getAllPromotion(): Observable<PromotionDetail[]> {
+    return this.http.get<PromotionDetail[]>(this.apiURL + '/promotionDetail/getAllPromotion')
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
+  }
+
   getSalesOrderPrice(priceOfOrders: PriceOfOrders[]): Observable<any> {
     return this.http.post<SalesOrderPrice>(this.apiURL + '/flowerFormula/priceOfSalesOrder', priceOfOrders, { observe: 'body' });
   }
@@ -511,6 +519,17 @@ export class RestApiService {
     }//end address != null
 
     return distance;
+  }
+
+  getFormulaDetailsFromFormulaId(formulaId: any): Observable<FlowerFormulaDetail[]> {
+    let params = new HttpParams;
+    params = params.append('formulaId', formulaId + "");
+    return this.http.get<FlowerFormulaDetail[]>(this.apiURL + '/flowerFormulaDetail/getFormulaDetailsFromFormulaId', {
+      params: params
+    }).pipe(
+      retry(1),
+      catchError(this.handleError)
+    )
   }
 
   handleError(error: HttpErrorResponse) {
