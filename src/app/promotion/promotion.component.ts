@@ -187,7 +187,7 @@ export class PromotionComponent implements OnInit {
       let message = pd.flowerFormula.name + '\nราคา ' + pd.price + ' บาท\nสอบถามเพิ่มเติม Line : @sweetpeatimes';
 
       const params = {
-        access_token: 'EAADbQlCqvIEBAIfkqfz0PZB3I1Ii1PU0CzaR6yBSLSpoKWqSS7UEeoJntVflJTHLZBvzh2nUxlsgsnDgJNmBXZATDHUWjmHn9fz5GMWtXPwOK9HQkLYMFGz1rgfqpQHF0pp8UHdbqMpvKRMfoK1KM4XMARLW6Uf7VzUf4ITKPuz2mWzLKdGEQ7ZBm2gAULu8ZAZCjgNj4NRlVJyoaTqvCQ',
+        access_token: 'EAADbQlCqvIEBAIN0N1mid4T4O7jLtp6VcFlZAl4zlfd2rBSaZAGap2ceMDjUxPtHAi0GgqnP8suLZCz2iyLqh9rlEN7ZBDsbOANDrtydabVfc26HEZAHFtMINlA0rwGyq4ZC00V4F2wGV04vfnb1tJLQAHLWw2VY39HAeizgbybp1prlSVZC9t2j79w8ZAchNcolzbpveuEjZA7EmR1Lsnmg0',
         message: message,
         url: this.IMAGE_PATH[index].url
       };
@@ -228,7 +228,7 @@ export class PromotionComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         const params = {
-          access_token: 'EAADbQlCqvIEBAIfkqfz0PZB3I1Ii1PU0CzaR6yBSLSpoKWqSS7UEeoJntVflJTHLZBvzh2nUxlsgsnDgJNmBXZATDHUWjmHn9fz5GMWtXPwOK9HQkLYMFGz1rgfqpQHF0pp8UHdbqMpvKRMfoK1KM4XMARLW6Uf7VzUf4ITKPuz2mWzLKdGEQ7ZBm2gAULu8ZAZCjgNj4NRlVJyoaTqvCQ',
+          access_token: 'EAADbQlCqvIEBAIN0N1mid4T4O7jLtp6VcFlZAl4zlfd2rBSaZAGap2ceMDjUxPtHAi0GgqnP8suLZCz2iyLqh9rlEN7ZBDsbOANDrtydabVfc26HEZAHFtMINlA0rwGyq4ZC00V4F2wGV04vfnb1tJLQAHLWw2VY39HAeizgbybp1prlSVZC9t2j79w8ZAchNcolzbpveuEjZA7EmR1Lsnmg0',
           message: message,
           url: this.IMAGE_PATH[index].url
         };

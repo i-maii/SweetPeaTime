@@ -11,7 +11,7 @@
       <a mat-list-item routerLinkActive="active" routerLink="/promotion">โปรโมชั่น</a>
       <a mat-list-item routerLinkActive="active" routerLink="/stock">จัดการสต๊อก</a>
       <a mat-list-item routerLinkActive="active" routerLink="/report" *ngIf="isAdmin">รายงาน</a>
-      <a mat-list-item routerLinkActive="active" routerLink="/stockReport">รายงานดอกไม้หมดอายุ</a>
+      <a mat-list-item routerLinkActive="active" routerLink="/stockReport" *ngIf="isAdmin">รายงานดอกไม้หมดอายุ</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
