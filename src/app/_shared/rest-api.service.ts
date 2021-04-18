@@ -175,14 +175,15 @@ export class RestApiService {
         catchError(this.handleError)
       )
   }
-  getfloristFeeBySize(floristId: any, size: any): Observable<FloristFee[]> {
+  
+  getfloristFeeBySize(floristId: any, size: any): Observable<FloristFee> {
     let params = new HttpParams;
   
       params = params.append('floristId', floristId);
   
       params = params.append('size', size);
   
-    return this.http.get<FloristFee[]>(this.apiURL + '/florist/getFloristFeeBySize',{ params: params })
+    return this.http.get<FloristFee>(this.apiURL + '/florist/getFloristFeeBySize',{ params: params })
       .pipe(
         retry(1),
         catchError(this.handleError) 
@@ -221,6 +222,14 @@ export class RestApiService {
 
   getCurrentPromotion(): Observable<PromotionDetail[]> {
     return this.http.get<PromotionDetail[]>(this.apiURL + '/promotionDetail/currentPromotion')
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
+  }
+
+  getAllPromotion(): Observable<PromotionDetail[]> {
+    return this.http.get<PromotionDetail[]>(this.apiURL + '/promotionDetail/getAllPromotion')
       .pipe(
         retry(1),
         catchError(this.handleError)
@@ -549,6 +558,17 @@ export class RestApiService {
         retry(1),
         catchError(this.handleError)
       )
+  }
+  
+  getFormulaDetailsFromFormulaId(formulaId: any): Observable<FlowerFormulaDetail[]> {
+    let params = new HttpParams;
+    params = params.append('formulaId', formulaId + "");
+    return this.http.get<FlowerFormulaDetail[]>(this.apiURL + '/flowerFormulaDetail/getFormulaDetailsFromFormulaId', {
+      params: params
+    }).pipe(
+      retry(1),
+      catchError(this.handleError)
+    )
   }
 
   handleError(error: HttpErrorResponse) {

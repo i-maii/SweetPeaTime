@@ -8,7 +8,7 @@ export interface StockReport {
     unit: string,
     lot: Date,
     florist: Florist,
-    expireDate : Date
+    expireDate : number
     inPromotionQty : number,
     inPromotionSoldQty : number
     waste : number

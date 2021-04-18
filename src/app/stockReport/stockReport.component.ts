@@ -7,6 +7,10 @@ import { StockReport } from '../interface/stockReport';
 import { Stock } from '../interface/stock';
 import { Flower } from '../interface/flower';
 import { Florist } from '../interface/florist';
+import { PromotionDetail } from '../interface/promotion-detail';
+import { PromotionDetailLog } from '../interface/promotion-detail-log';
+import { FlowerFormulaDetail } from '../interface/flower-formula-detail';
+import { FlowerFormula } from '../interface/flower-formula';
 
 @Component({
     selector: 'stockReport',
@@ -20,9 +24,12 @@ export class StockReportComponent implements OnInit {
     dataSource: any;
     stockReport: StockReport[] = [];
     stock: Stock[] = [];
-    
+    promotionDetails: PromotionDetail[] = [];
+    formulaDetails: FlowerFormulaDetail[] = [];
+
 
     flowers = [
+        { value: '0', viewValue: '' },
         { value: '1', viewValue: 'กุหลาบขาว' },
         { value: '2', viewValue: 'กุหลาบแดง' },
         { value: '3', viewValue: 'กุหลาบชมพู' },
@@ -32,6 +39,7 @@ export class StockReportComponent implements OnInit {
       ];
 
       month = [
+        {value: '0', viewValue: '' },
           {value: '1', viewValue: 'มกราคม' },
           {value: '2', viewValue: 'กุมภาพันธ์' },
           {value: '3', viewValue: 'มีนาคม' },
@@ -55,17 +63,78 @@ export class StockReportComponent implements OnInit {
       constructor(
         private restApiService: RestApiService,
       ) { }
-    ngOnInit(): void {
+    async ngOnInit(): Promise<void> {
+      this.stockReport = [];
         this.displayedColumns = ['id', 'flower', 'florist','lot', 'expireDate', 'quantity','inPromotionQty', 'inPromotionSoldQty' ,'waste','unit'];
-        
+       
+        this.promotionDetails = await this.restApiService.getCurrentPromotion().toPromise();
+
+        // this.restApiService.getCurrentPromotion().subscribe(async (data: PromotionDetail[]) => {
+        //   for (let i = 0; i < data.length; i++) {
+        //     this.promotionDetails.push(data[i]);
+        //   }
+        // });
+        console.log( 'Promotion Detail' +this.formulaDetails);
+
+        //TODO find flower in flower formula detail  get formuladetial from formulaId in promotion
+        for (let i = 0; i < this.promotionDetails.length; i++)
+        {
+          this.restApiService.getFormulaDetailsFromFormulaId(this.promotionDetails[i].flowerFormula.id).subscribe(async (data: FlowerFormulaDetail[]) => {
+            for (let j = 0; j < data.length; j++) {
+              this.formulaDetails.push(data[j]);
+            }
+          });
+        }
+
+        console.log( 'formola Detail' +this.formulaDetails);
         this.restApiService.getStockByDate('01-01-2021','12-31-2021').subscribe(async(stockResult: Stock[]) => {
             for (let i = 0; i < stockResult.length; i++) {
                 this.stock.push(stockResult[i]);
               //  this.stock = this.totalAmount + data[i].flowerPrice;
-                var expireDate = new Date();
+                var expireDate = new Date(stockResult[i].lot);
+               expireDate.setDate(expireDate.getDate() + stockResult[i].flower.lifeTime);
+              /// expireDate.setDate(result);
+              //  console.log('expire = ' + expireDate);
+               // expireDate.
                // expireDate.setDate( stockResult[i].lot.getDate() + 1);
 //this.addDays(new Date(this.gDetailDS.activeFrom),this.gDetailDS.activeNoDays)
+//console.log('expire'+ expireDate.getDate())
+var lot = new Date(stockResult[i].lot);
+var expireDays = Number(expireDate.getDay());
+var currentDate =  new Date();
+var currentDays = Number(currentDate.getDay());
+var lifeTime = 0;
+var promotionQty = 0;
+var promotionSoldQty = 0;
+var formulaDetailsFilter: FlowerFormulaDetail[] = [];
+var promotionDetailsFilter: PromotionDetail[] = [];
 
+
+if (expireDays - currentDays < 0 )
+{
+  lifeTime = 0;
+} 
+else
+{
+  lifeTime = expireDays - currentDays;
+}
+//TODO formulaDetailFilter =  filter by flower 
+//console.log('flower name = ' + stockResult[i].flower.flowerName);
+ formulaDetailsFilter = this.formulaDetails.filter(p=>p.flower.flowerName == stockResult[i].flower.flowerName);
+
+ for(let j= 0; j < formulaDetailsFilter.length ; j++)
+ {
+    promotionQty = promotionQty +  formulaDetailsFilter[j].quantity;
+    promotionDetailsFilter = this.promotionDetails.filter(f=>f.flowerFormula.id==formulaDetailsFilter[j].flowerFormula.id)
+    if (promotionDetailsFilter != null)
+    {
+    promotionSoldQty = promotionDetailsFilter[0].quantitySold * formulaDetailsFilter[j].quantity;
+    }
+ }
+
+////console.log('promoQty = '+ promotionQty + 'SoldQty = ' + promotionSoldQty)
+
+//console.log('expire = ' + expireDays + 'today = ' + currentDays)
               let stockItem: {
                 id: number;
                 flower: Flower;
@@ -73,7 +142,7 @@ export class StockReportComponent implements OnInit {
                 unit: string;
                 lot: Date;
                 florist: Florist;
-                expireDate : Date;
+                expireDate : number;
                 inPromotionQty : number;
                 inPromotionSoldQty : number;
                 waste : number;
@@ -84,16 +153,19 @@ export class StockReportComponent implements OnInit {
                 unit: stockResult[i].unit,
                 lot: stockResult[i].lot,
                 florist: stockResult[i].florist,
-                expireDate : expireDate,
-                inPromotionQty : 0,
-                inPromotionSoldQty : 0,
-                waste : 0
+                expireDate : lifeTime,
+                inPromotionQty : promotionQty,
+                inPromotionSoldQty : promotionSoldQty,
+                waste : stockResult[i].deleteQty
               };
               this.stockReport.push(stockItem);
-
-
+              promotionSoldQty = 0;
+              promotionQty = 0;
+              promotionDetailsFilter = [];
+              formulaDetailsFilter = [];
               }
-
+             // console.log(this.promotionDetails);
+             this.stockReport = this.stockReport.sort((a, b) => b.waste - a.waste);
 
         this.dataSource = new MatTableDataSource<StockReport>(this.stockReport);
         })
@@ -101,7 +173,125 @@ export class StockReportComponent implements OnInit {
     }
 
     searchStockReport()
-    {}
+    {
+  //  var dateString = (this.stockReportForm.value.month).toString() + '-01-2021'; 
+  this.stockReport = [];
+    var fromDate = new Date();
+    var toDate = new Date();
+
+      var m = fromDate.getMonth(); //current month
+      var y = fromDate.getFullYear(); //current year
+      
+      if(this.stockReportForm.value.month == null || this.stockReportForm.value.month == 0)
+      {
+        fromDate = new Date(y,0,1);
+        toDate = new Date(y,12,0);
+
+      }
+      else
+      {
+      fromDate = new Date(y,this.stockReportForm.value.month-1,1);
+      toDate = new Date(y,this.stockReportForm.value.month,0);
+      }
+      this.restApiService.getStockByDate(fromDate,toDate).subscribe(async(stockResult: Stock[]) => {
+        for (let i = 0; i < stockResult.length; i++) {
+            this.stock.push(stockResult[i]);
+          //  this.stock = this.totalAmount + data[i].flowerPrice;
+            var expireDate = new Date(stockResult[i].lot);
+           expireDate.setDate(expireDate.getDate() + stockResult[i].flower.lifeTime);
+
+var lot = new Date(stockResult[i].lot);
+var expireDays = Number(expireDate.getDay());
+var currentDate =  new Date();
+var currentDays = Number(currentDate.getDay());
+var lifeTime = 0;
+var promotionQty = 0;
+var promotionSoldQty = 0;
+var formulaDetailsFilter: FlowerFormulaDetail[] = [];
+var promotionDetailsFilter: PromotionDetail[] = [];
 
 
+if (expireDays - currentDays < 0 )
+{
+lifeTime = 0;
+} 
+else
+{
+lifeTime = expireDays - currentDays;
+}
+
+
+
+//TODO formulaDetailFilter =  filter by flower 
+//console.log('flower name = ' + stockResult[i].flower.flowerName);
+formulaDetailsFilter = this.formulaDetails.filter(p=>p.flower.flowerName == stockResult[i].flower.flowerName);
+
+for(let j= 0; j < formulaDetailsFilter.length ; j++)
+{
+promotionQty = promotionQty +  formulaDetailsFilter[j].quantity;
+promotionDetailsFilter = this.promotionDetails.filter(f=>f.flowerFormula.id==formulaDetailsFilter[j].flowerFormula.id)
+if (promotionDetailsFilter != null)
+{
+promotionSoldQty = promotionDetailsFilter[0].quantitySold * formulaDetailsFilter[j].quantity;
+}
+
+}
+//console.log('promoQty = '+ promotionQty + 'SoldQty = ' + promotionSoldQty)
+
+          let stockItem: {
+            id: number;
+            flower: Flower;
+            quantity: number;
+            unit: string;
+            lot: Date;
+            florist: Florist;
+            expireDate : number;
+            inPromotionQty : number;
+            inPromotionSoldQty : number;
+            waste : number;
+          } = {
+            id: stockResult[i].id,
+            flower: stockResult[i].flower,
+            quantity: stockResult[i].quantity,
+            unit: stockResult[i].unit,
+            lot: stockResult[i].lot,
+            florist: stockResult[i].florist,
+            expireDate : lifeTime,
+            inPromotionQty : promotionQty,
+            inPromotionSoldQty : promotionSoldQty,
+            waste : stockResult[i].deleteQty
+          };
+          this.stockReport.push(stockItem);
+          promotionSoldQty = 0;
+          promotionQty = 0;
+          promotionDetailsFilter = [];
+          formulaDetailsFilter = [];
+          }
+
+          if (this.stockReportForm.value.flower != null && this.stockReportForm.value.flower != 0)
+          {
+            if(this.stockReport.length > 0)
+            {
+          this.stockReport = this.stockReport.filter(d=>d.flower.flowerName.includes(this.stockReportForm.value.flower));    
+            }
+            else
+            {
+              this.dataSource = new MatTableDataSource<StockReport>(this.stockReport);
+            }
+
+          }
+          else
+          {
+          this.dataSource = new MatTableDataSource<StockReport>(this.stockReport);
+          }
+          this.stockReport = this.stockReport.sort((a, b) => b.waste - a.waste);
+
+          this.dataSource = new MatTableDataSource<StockReport>(this.stockReport);
+
+    })
+    }
+}
+
+function getDifferenceInDays(lot: Date, expireDate: Date): number {
+    throw new Error('Function not implemented.');
 }
