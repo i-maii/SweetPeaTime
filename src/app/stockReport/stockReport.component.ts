@@ -29,6 +29,7 @@ export class StockReportComponent implements OnInit {
 
 
     flowers = [
+        { value: '0', viewValue: '' },
         { value: '1', viewValue: 'กุหลาบขาว' },
         { value: '2', viewValue: 'กุหลาบแดง' },
         { value: '3', viewValue: 'กุหลาบชมพู' },
@@ -38,6 +39,7 @@ export class StockReportComponent implements OnInit {
       ];
 
       month = [
+        {value: '0', viewValue: '' },
           {value: '1', viewValue: 'มกราคม' },
           {value: '2', viewValue: 'กุมภาพันธ์' },
           {value: '3', viewValue: 'มีนาคม' },
@@ -117,7 +119,7 @@ else
   lifeTime = expireDays - currentDays;
 }
 //TODO formulaDetailFilter =  filter by flower 
-console.log('flower name = ' + stockResult[i].flower.flowerName);
+//console.log('flower name = ' + stockResult[i].flower.flowerName);
  formulaDetailsFilter = this.formulaDetails.filter(p=>p.flower.flowerName == stockResult[i].flower.flowerName);
 
  for(let j= 0; j < formulaDetailsFilter.length ; j++)
@@ -130,7 +132,7 @@ console.log('flower name = ' + stockResult[i].flower.flowerName);
     }
  }
 
-console.log('promoQty = '+ promotionQty + 'SoldQty = ' + promotionSoldQty)
+////console.log('promoQty = '+ promotionQty + 'SoldQty = ' + promotionSoldQty)
 
 //console.log('expire = ' + expireDays + 'today = ' + currentDays)
               let stockItem: {
@@ -154,7 +156,7 @@ console.log('promoQty = '+ promotionQty + 'SoldQty = ' + promotionSoldQty)
                 expireDate : lifeTime,
                 inPromotionQty : promotionQty,
                 inPromotionSoldQty : promotionSoldQty,
-                waste : 0
+                waste : stockResult[i].deleteQty
               };
               this.stockReport.push(stockItem);
               promotionSoldQty = 0;
@@ -163,6 +165,8 @@ console.log('promoQty = '+ promotionQty + 'SoldQty = ' + promotionSoldQty)
               formulaDetailsFilter = [];
               }
              // console.log(this.promotionDetails);
+             this.stockReport = this.stockReport.sort((a, b) => b.waste - a.waste);
+
         this.dataSource = new MatTableDataSource<StockReport>(this.stockReport);
         })
 
@@ -170,7 +174,26 @@ console.log('promoQty = '+ promotionQty + 'SoldQty = ' + promotionSoldQty)
 
     searchStockReport()
     {
-      this.restApiService.getStockByDate('01-01-2021','12-31-2021').subscribe(async(stockResult: Stock[]) => {
+  //  var dateString = (this.stockReportForm.value.month).toString() + '-01-2021'; 
+  this.stockReport = [];
+    var fromDate = new Date();
+    var toDate = new Date();
+
+      var m = fromDate.getMonth(); //current month
+      var y = fromDate.getFullYear(); //current year
+      
+      if(this.stockReportForm.value.month == null || this.stockReportForm.value.month == 0)
+      {
+        fromDate = new Date(y,0,1);
+        toDate = new Date(y,12,0);
+
+      }
+      else
+      {
+      fromDate = new Date(y,this.stockReportForm.value.month-1,1);
+      toDate = new Date(y,this.stockReportForm.value.month,0);
+      }
+      this.restApiService.getStockByDate(fromDate,toDate).subscribe(async(stockResult: Stock[]) => {
         for (let i = 0; i < stockResult.length; i++) {
             this.stock.push(stockResult[i]);
           //  this.stock = this.totalAmount + data[i].flowerPrice;
@@ -200,7 +223,7 @@ lifeTime = expireDays - currentDays;
 
 
 //TODO formulaDetailFilter =  filter by flower 
-console.log('flower name = ' + stockResult[i].flower.flowerName);
+//console.log('flower name = ' + stockResult[i].flower.flowerName);
 formulaDetailsFilter = this.formulaDetails.filter(p=>p.flower.flowerName == stockResult[i].flower.flowerName);
 
 for(let j= 0; j < formulaDetailsFilter.length ; j++)
@@ -213,7 +236,7 @@ promotionSoldQty = promotionDetailsFilter[0].quantitySold * formulaDetailsFilter
 }
 
 }
-console.log('promoQty = '+ promotionQty + 'SoldQty = ' + promotionSoldQty)
+//console.log('promoQty = '+ promotionQty + 'SoldQty = ' + promotionSoldQty)
 
           let stockItem: {
             id: number;
@@ -227,7 +250,7 @@ console.log('promoQty = '+ promotionQty + 'SoldQty = ' + promotionSoldQty)
             inPromotionSoldQty : number;
             waste : number;
           } = {
-            id: i+1,
+            id: stockResult[i].id,
             flower: stockResult[i].flower,
             quantity: stockResult[i].quantity,
             unit: stockResult[i].unit,
@@ -236,7 +259,7 @@ console.log('promoQty = '+ promotionQty + 'SoldQty = ' + promotionSoldQty)
             expireDate : lifeTime,
             inPromotionQty : promotionQty,
             inPromotionSoldQty : promotionSoldQty,
-            waste : 0
+            waste : stockResult[i].deleteQty
           };
           this.stockReport.push(stockItem);
           promotionSoldQty = 0;
@@ -245,13 +268,28 @@ console.log('promoQty = '+ promotionQty + 'SoldQty = ' + promotionSoldQty)
           formulaDetailsFilter = [];
           }
 
-      this.dataSource = new MatTableDataSource<StockReport>(this.stockReport);
+          if (this.stockReportForm.value.flower != null && this.stockReportForm.value.flower != 0)
+          {
+            if(this.stockReport.length > 0)
+            {
+          this.stockReport = this.stockReport.filter(d=>d.flower.flowerName.includes(this.stockReportForm.value.flower));    
+            }
+            else
+            {
+              this.dataSource = new MatTableDataSource<StockReport>(this.stockReport);
+            }
+
+          }
+          else
+          {
+          this.dataSource = new MatTableDataSource<StockReport>(this.stockReport);
+          }
+          this.stockReport = this.stockReport.sort((a, b) => b.waste - a.waste);
+
+          this.dataSource = new MatTableDataSource<StockReport>(this.stockReport);
+
     })
-
-
     }
-
-
 }
 
 function getDifferenceInDays(lot: Date, expireDate: Date): number {

@@ -9,4 +9,5 @@ export interface Stock {
     lot: Date,
     florist: Florist
     flowerPrice: FlowerPrice
+    deleteQty: number
 }

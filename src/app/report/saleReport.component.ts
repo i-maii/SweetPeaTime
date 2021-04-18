@@ -29,7 +29,7 @@ import { FloristFee } from '../interface/floristFee';
   totalFloristFee: number = 0;
   displayedColumns: string[] = [];
   dataSource: any;
-  floristFee: FloristFee[] =[];
+  floristFee: FloristFee | undefined ;
   searchFilter = new FormControl();
   saleReportForm = new FormGroup({
     startDate: new FormControl(),
@@ -107,9 +107,9 @@ import { FloristFee } from '../interface/floristFee';
             this.totalAmount = this.totalAmount + data[i].flowerPrice;
             this.floristFee = await this.restApiService.getfloristFeeBySize(data[i].salesOrderDetails[0].florist.id, data[i].salesOrderDetails[0].flowerFormula.size).toPromise();
            // this.floristFee = floristFeeResult;
-            if(this.floristFee.length > 0)
+            if(this.floristFee != null)
             {
-            this.totalFloristFee = this.totalFloristFee + this.floristFee[0].fee;
+            this.totalFloristFee = this.totalFloristFee + this.floristFee.fee;
             }
           }
           //console.log('order='+this.salesOrders);

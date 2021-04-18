@@ -169,14 +169,14 @@ export class RestApiService {
       )
   }
 
-  getfloristFeeBySize(floristId: any, size: any): Observable<FloristFee[]> {
+  getfloristFeeBySize(floristId: any, size: any): Observable<FloristFee> {
     let params = new HttpParams;
   
       params = params.append('floristId', floristId);
   
       params = params.append('size', size);
   
-    return this.http.get<FloristFee[]>(this.apiURL + '/florist/getFloristFeeBySize',{ params: params })
+    return this.http.get<FloristFee>(this.apiURL + '/florist/getFloristFeeBySize',{ params: params })
       .pipe(
         retry(1),
         catchError(this.handleError) 
