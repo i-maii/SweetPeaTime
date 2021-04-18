@@ -4,7 +4,6 @@
   <div class="col-md-8">
     <mat-card class="promotion-card">
       <mat-card-title>โปรโมชั่นแนะนำจากดอกไม้ที่ใกล้หมดอายุ</mat-card-title>
-      
       <table mat-table id="promotion_suggest" class="mat-elevation-z8" [dataSource]="dataSourceNormal">
         
         <ng-container matColumnDef="flowername">
@@ -55,92 +54,30 @@
             </td>
         </ng-container>
 
-        <ng-container matColumnDef="add">
-          <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let promotionDetailLogsNormal">
-            <button mat-mini-fab color="accent" aria-label="Example icon button with a plus one icon"
-                    (click)="openDialogReplaceFlower(promotionDetailLogsNormal.flowerFormula.imagePath,
-                    promotionDetailLogsNormal.size,
-                    promotionDetailLogsNormal.price,
-                    promotionDetailLogsNormal.flowerFormula.name,
-                    promotionDetailLogsNormal.quantity,
-                    promotionDetailLogsNormal.florist.name,
-                    promotionDetailLogsNormal.profit,
-                    cntPromotion)" >
-              <mat-icon>forward</mat-icon>
-            </button>
-          </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="displayedColumnsNormal"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumnsNormal;"></tr>
-      </table>
-
-      <!--
-      <table mat-table id="promotion_suggest" class="mat-elevation-z8" [dataSource]="dataSourceNormal">
-        
-        <ng-container matColumnDef="flowername">
-          <th mat-header-cell *matHeaderCellDef> ชื่อช่อดอกไม้ </th>
-          <td mat-cell *matCellDef="let promotionDetails"> {{promotionDetails.flowerFormula.name}} </td> 
-        </ng-container>
-        
-        <ng-container matColumnDef="size">
-        <th mat-header-cell *matHeaderCellDef> ขนาด </th>
-          <td mat-cell *matCellDef="let promotionDetails"> {{promotionDetails.flowerFormula.size}} </td>
-        </ng-container>
-        
-        <ng-container matColumnDef="unit">
-          <th mat-header-cell *matHeaderCellDef> จำนวนช่อ </th> 
-          <td mat-cell *matCellDef="let promotionDetails"> {{promotionDetails.quantity}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="profit">
-          <th mat-header-cell *matHeaderCellDef> กำไร </th>
-          <td mat-cell *matCellDef="let promotionDetails"> {{promotionDetails.profit}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="totalprofit">
-          <th mat-header-cell *matHeaderCellDef> กำไรรวม </th>
-          <td mat-cell *matCellDef="let promotionDetails">  {{calculateTotalProfit(promotionDetails.profit, promotionDetails.quantity)}} <td>
-        </ng-container>
-
-        <ng-container matColumnDef="price">
-          <th mat-header-cell *matHeaderCellDef> ราคาขาย </th>
-          <td mat-cell *matCellDef="let promotionDetails"> {{promotionDetails.price}} </td>
-        </ng-container>
-      
-        <ng-container matColumnDef="location">
-          <th mat-header-cell *matHeaderCellDef> สถานที่ </th>
-          <td mat-cell *matCellDef="let promotionDetails"> {{promotionDetails.florist.name}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="imageUrl">
+        <div *ngFor="let numberPromotion of displayedMaxPromotion">
+          <ng-container matColumnDef="add">
             <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let promotionDetails">
-              <img class="flower" src={{promotionDetails.flowerFormula.imagePath}}/>
+            <td mat-cell *matCellDef="let promotionDetailLogsNormal">
+              <button mat-mini-fab color="accent" aria-label="Example icon button with a plus one icon"
+                      (click)="openDialogReplaceFlower(promotionDetailLogsNormal.flowerFormula.imagePath,
+                      promotionDetailLogsNormal.flowerFormula.size,
+                      promotionDetailLogsNormal.price,
+                      promotionDetailLogsNormal.flowerFormula.name,
+                      promotionDetailLogsNormal.quantity,
+                      promotionDetailLogsNormal.florist.name,
+                      promotionDetailLogsNormal.profit,
+                      cntPromotion,
+                      numberPromotion)" >
+                <mat-icon>forward</mat-icon>
+              </button>
             </td>
-        </ng-container>
+          </ng-container>
+      </div>
 
-        <ng-container matColumnDef="add">
-          <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let promotionDetails">
-            <button mat-mini-fab color="accent" aria-label="Example icon button with a plus one icon"
-                    (click)="openDialogReplaceFlower(promotionDetails.flowerFormula.imagePath,
-                    promotionDetails.size,
-                    promotionDetails.price,
-                    promotionDetails.flowerFormula.name,
-                    promotionDetails.quantity,
-                    promotionDetails.florist.name,
-                    promotionDetails.profit,
-                    cntPromotion)" >
-              <mat-icon>forward</mat-icon>
-            </button>
-          </td>
-        </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumnsNormal"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumnsNormal;"></tr>
       </table>
-      -->
-
+      <!----Promotion Remain---->
       <p></p>
         <mat-card-title>โปรโมชั่นแนะนำจากดอกไม้ในสต๊อก</mat-card-title>
         
@@ -148,67 +85,75 @@
         
           <ng-container matColumnDef="flowername">
             <th mat-header-cell *matHeaderCellDef> ชื่อช่อดอกไม้ </th>
-            <td mat-cell *matCellDef="let promotionDetailLogsCurrent"> {{promotionDetailLogsCurrent.flowerFormula.name}} </td> 
+            <td mat-cell *matCellDef="let promotionDetailsCurrentDtos"> {{promotionDetailsCurrentDtos.formulaName}} </td> 
           </ng-container>
           
           <ng-container matColumnDef="size">
           <th mat-header-cell *matHeaderCellDef> ขนาด </th>
-            <td mat-cell *matCellDef="let promotionDetailLogsCurrent"> {{promotionDetailLogsCurrent.flowerFormula.size}} </td>
+            <td mat-cell *matCellDef="let promotionDetailsCurrentDtos"> {{promotionDetailsCurrentDtos.size}} </td>
           </ng-container>
           
           <ng-container matColumnDef="unit">
             <th mat-header-cell *matHeaderCellDef> จำนวนช่อ </th> 
-            <td mat-cell *matCellDef="let promotionDetailLogsCurrent"> {{promotionDetailLogsCurrent.quantity}} </td>
+            <td mat-cell *matCellDef="let promotionDetailsCurrentDtos"> {{promotionDetailsCurrentDtos.quantity}} </td>
           </ng-container>
   
           <ng-container matColumnDef="profit">
             <th mat-header-cell *matHeaderCellDef> กำไร </th>
-            <td mat-cell *matCellDef="let promotionDetailLogsCurrent"> {{promotionDetailLogsCurrent.profit}} </td>
+            <td mat-cell *matCellDef="let promotionDetailsCurrentDtos"> {{promotionDetailsCurrentDtos.profit}} </td>
           </ng-container>
   
           <ng-container matColumnDef="totalprofit">
             <th mat-header-cell *matHeaderCellDef> กำไรรวม </th>
-            <td mat-cell *matCellDef="let promotionDetailLogsCurrent"> {{calculateTotalProfit(promotionDetailLogsCurrent.profit, promotionDetailLogsCurrent.quantity)}} <td>
+            <td mat-cell *matCellDef="let promotionDetailsCurrentDtos"> {{calculateTotalProfit(promotionDetailsCurrentDtos.profit, promotionDetailsCurrentDtos.quantity)}} <td>
           </ng-container>
   
           <ng-container matColumnDef="price">
             <th mat-header-cell *matHeaderCellDef> ราคาขาย </th>
-            <td mat-cell *matCellDef="let promotionDetailLogsCurrent"> {{promotionDetailLogsCurrent.price}} </td>
+            <td mat-cell *matCellDef="let promotionDetailsCurrentDtos"> {{promotionDetailsCurrentDtos.price}} </td>
           </ng-container>
 
-          <ng-container matColumnDef="lot">
-            <th mat-header-cell *matHeaderCellDef> lot </th>
-            <td mat-cell *matCellDef="let promotionDetailLogsCurrent"> {{setFormatDateLotStock(promotionDetailLogsCurrent.lotStock)}} </td>
-          </ng-container>
-        
           <ng-container matColumnDef="location">
             <th mat-header-cell *matHeaderCellDef> สถานที่ </th>
-            <td mat-cell *matCellDef="let promotionDetailLogsCurrent"> {{promotionDetailLogsCurrent.florist.name}}  </td>
+            <td mat-cell *matCellDef="let promotionDetailsCurrentDtos"> {{promotionDetailsCurrentDtos.locationName}}  </td>
+          </ng-container>
+
+          <ng-container matColumnDef="quantityFlower">
+            <th mat-header-cell *matHeaderCellDef> จำนวนดอกไม้ </th>
+            <td mat-cell *matCellDef="let promotionDetailsCurrentDtos"> {{promotionDetailsCurrentDtos.quantityFlower}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="stock">
+            <th mat-header-cell *matHeaderCellDef> สต็อก </th>
+            <td mat-cell *matCellDef="let promotionDetailsCurrentDtos"> {{promotionDetailsCurrentDtos.stock}} </td>
           </ng-container>
   
           <ng-container matColumnDef="imageUrl">
               <th mat-header-cell *matHeaderCellDef></th>
-              <td mat-cell *matCellDef="let promotionDetailLogsCurrent">
-                <img class="flower" src={{promotionDetailLogsCurrent.flowerFormula.imagePath}}/>
+              <td mat-cell *matCellDef="let promotionDetailsCurrentDtos">
+                <img class="flower" src={{promotionDetailsCurrentDtos.image}}/>
               </td>
           </ng-container>
   
-          <ng-container matColumnDef="add">
-            <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let promotionDetailLogsCurrent">
-              <button mat-mini-fab color="accent" aria-label="Example icon button with a plus one icon"
-                      (click)="openDialogReplaceFlower(promotionDetailLogsCurrent.flowerFormula.imagePath,
-                      promotionDetailLogsCurrent.size,
-                      promotionDetailLogsCurrent.price,
-                      promotionDetailLogsCurrent.flowerFormula.name,
-                      promotionDetailLogsCurrent.quantity,
-                      promotionDetailLogsCurrent.florist.name,
-                      promotionDetailLogsCurrent.profit,
-                      cntPromotion)" >
-                <mat-icon>forward</mat-icon>
-              </button>
-            </td>
-          </ng-container>
+          <div *ngFor="let numberPromotion of displayedMaxPromotion">
+            <ng-container matColumnDef="add">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let promotionDetailsCurrentDtos">
+                <button mat-mini-fab color="accent" aria-label="Example icon button with a plus one icon"
+                        (click)="openDialogReplaceFlower(promotionDetailsCurrentDtos.image,
+                        promotionDetailsCurrentDtos.size,
+                        promotionDetailsCurrentDtos.price,
+                        promotionDetailsCurrentDtos.formulaName,
+                        promotionDetailsCurrentDtos.quantity,
+                        promotionDetailsCurrentDtos.locationName,
+                        promotionDetailsCurrentDtos.profit,
+                        cntPromotion,
+                        numberPromotion)" >
+                  <mat-icon>forward</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+          </div>
   
           <tr mat-header-row *matHeaderRowDef="displayedColumnsNormalCurrentDto"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumnsNormalCurrentDto;"></tr>
@@ -235,7 +180,6 @@
                         <div>จำนวนช่อ : {{promotionDetail.quantity}}</div>
                         <div>ราคาขาย : {{promotionDetail.price}}</div>
                         <div>กำไร : {{promotionDetail.profit}}</div>
-                        <!-- <div>กำไรรวม : {{promotionDetail.profit}}</div> -->
                         <div>กำไรรวม : {{calculateTotalProfit(promotionDetail.profit, promotionDetail.quantity)}}</div>
                         <div>สถานที่   : {{promotionDetail.florist.locationName}}</div>
                     </mat-card-content>

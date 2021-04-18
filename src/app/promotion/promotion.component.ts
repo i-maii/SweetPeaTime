@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FlowerFormulaDetail } from '../interface/flower-formula-detail';
 import { PromotionDetailDto } from "../interface/promotion-detail-dto";
 import { PromotionDetailCurrentDto } from "../interface/promotion-detail-current-dto";
+import { Configurations } from '../interface/configurations';
 import Swal from 'sweetalert2';
 import { FormControl } from '@angular/forms';
 import { DatePipe } from '@angular/common';
@@ -30,6 +31,7 @@ export class PromotionComponent implements OnInit {
   stockQuantity: FlowerFormulaDetail[] = [];
   promotionDetailsDtos: PromotionDetailDto[] = [];
   promotionDetailsCurrentDtos: PromotionDetailCurrentDto[] = [];
+  configurations: Configurations[] = [];
 
   promotionDetailList: PromotionDetail[] = [];
 
@@ -37,6 +39,7 @@ export class PromotionComponent implements OnInit {
   displayedColumnsNormal: string[] = [];
   displayedColumnsNormalDto: string[] = [];
   displayedColumnsNormalCurrentDto: string[] = [];
+  displayedMaxPromotion: string[] = [];
 
   dataSource: any;
   dataSourceNormal: any;
@@ -54,6 +57,7 @@ export class PromotionComponent implements OnInit {
   datepipe: any;
   stockDate: String | undefined;
   lot: String | undefined;
+  maxPromotion: String | undefined;
 
   //constructor(public dialog: MatDialog) {}
   constructor(
@@ -71,37 +75,12 @@ export class PromotionComponent implements OnInit {
       }
     });
 
-    /*this.restApiService.getNormalPromotionDetailLog().subscribe((data: PromotionDetailLog[]) => {
-      for (let i = 0; i < data.length; i++) {
-        this.promotionDetailLogsNormal.push(data[i]);
+    this.restApiService.getMaxPromotion().subscribe((maxPromotion: Configurations[]) => {
+      for (let i = 0; i < maxPromotion.length; i++) {
+        this.displayedMaxPromotion.push(maxPromotion[i].value);
       }
-      this.displayedColumnsNormal = ['flowername', 'size', 'unit', 'profit', 'totalprofit', 'price', 'location', 'imageUrl', 'add'];
-      this.dataSourceNormal = new MatTableDataSource<PromotionDetailLog>(this.promotionDetailLogsNormal);
     });
-
-    this.restApiService.getCurrentPromotionDetailLog().subscribe((data: PromotionDetailLog[]) => {
-      for (let i = 0; i < data.length; i++) {
-        this.promotionDetailLogsCurrent.push(data[i]);
-      }
-      this.displayedColumns = ['flowername', 'size', 'unit', 'profit', 'totalprofit', 'price', 'location', 'totalFlower', 'stock', 'imageUrl', 'add'];
-      this.dataSource = new MatTableDataSource<PromotionDetailLog>(this.promotionDetailLogsCurrent);
-      //console.log();
-    });
-
-    this.restApiService.getCheckFlowerFormulaDetail("8", "27").subscribe((data: FlowerFormulaDetail[]) => {
-      for (let i = 0; i < data.length; i++) {
-        this.flowerQuantity.push(data[i]);
-      }
-    });*/
-
-    /*this.restApiService.getPromotion().subscribe((data: PromotionDetailDto[]) => {
-      for (let i = 0; i < data.length; i++) {
-        this.promotionDetailsDtos.push(data[i]);
-      }
-      this.displayedColumnsNormalDto = ['flowername', 'size', 'unit', 'profit', 'totalprofit', 'price', 'location', 'imageUrl', 'add'];
-      this.dataSourceNormalDto = new MatTableDataSource<PromotionDetailDto>(this.promotionDetailsDtos);
-    });*/
-
+    
     this.restApiService.getPromotionDetailLog().subscribe((data: PromotionDetailLog[]) => {
       for (let i = 0; i < data.length; i++) {
         this.promotionDetailLogsNormal.push(data[i]);
@@ -110,30 +89,14 @@ export class PromotionComponent implements OnInit {
       this.dataSourceNormal = new MatTableDataSource<PromotionDetailLog>(this.promotionDetailLogsNormal);
     });
 
-    this.restApiService.getPromotionDetailLogRemain().subscribe((data: PromotionDetailLog[]) => {
-      for (let i = 0; i < data.length; i++) {
-        this.promotionDetailLogsCurrent.push(data[i]);
-      }
-      this.displayedColumnsNormalCurrentDto = ['flowername', 'size', 'unit', 'profit', 'totalprofit', 'price', 'lot', 'location', /*'quantityFlower', 'stock', */'imageUrl', 'add'];
-      this.dataSourceNormalCurrentDto = new MatTableDataSource<PromotionDetailLog>(this.promotionDetailLogsCurrent);
-    });
-
-    /*this.restApiService.getPromotion().subscribe((data: PromotionDetail[]) => {
-      for (let i = 0; i < data.length; i++) {
-        this.promotionDetailList.push(data[i]);
-        console.log(data[i]);
-      }
-      this.displayedColumnsNormal = ['flowername', 'size', 'unit', 'profit', 'totalprofit', 'price', 'location', 'imageUrl', 'add'];
-      this.dataSourceNormal = new MatTableDataSource<PromotionDetail>(this.promotionDetailList);
-    });*/
-
-    /*this.restApiService.getPromotionSuggest().subscribe((data: PromotionDetailCurrentDto[]) => {
+    this.restApiService.getPromotionDetailLogRemainQuantity().subscribe((data: PromotionDetailCurrentDto[]) => {
       for (let i = 0; i < data.length; i++) {
         this.promotionDetailsCurrentDtos.push(data[i]);
       }
       this.displayedColumnsNormalCurrentDto = ['flowername', 'size', 'unit', 'profit', 'totalprofit', 'price', 'location', 'quantityFlower', 'stock', 'imageUrl', 'add'];
       this.dataSourceNormalCurrentDto = new MatTableDataSource<PromotionDetailCurrentDto>(this.promotionDetailsCurrentDtos);
-    });*/
+    });
+
   }
   
   IMAGE_PATH = [
@@ -279,7 +242,7 @@ export class PromotionComponent implements OnInit {
   }
 
   setFormatDateLotStock(lotStock: any) {
-    console.log(lotStock + 1);
+    //console.log(lotStock + 1);
     this.stockDate = lotStock.substring(0, 10);
     return this.lot = this.stockDate;
   }
@@ -309,8 +272,8 @@ export class PromotionComponent implements OnInit {
     });
   }
 
-  openDialogReplaceFlower(pathimg: any, size: any, price: any, name: any, unit: any, location: any, profit: any, cntPromotion: any) {
-    if (cntPromotion == 4) {
+  openDialogReplaceFlower(pathimg: any, size: any, price: any, name: any, unit: any, location: any, profit: any, cntPromotion: any, numberPromotion: any) {
+    if (cntPromotion == numberPromotion) {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -404,39 +367,60 @@ export class PromotionUnitDialogComponent {
   }
 
   replaceFlower() {
-    this.restApiService.recalculatePromotion(this.data.flowername, this.data.flowerprice, this.data.location, this.data.profit, this.quantity.value)
-    .subscribe(resp => {
-      if (resp['status'] === 200) {
-        text: 'Test'
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'เกิดข้อผิดพลาด',
-        });
-      }
-    });
-
-    console.log(this.data);
-    this.restApiService.addPromotion(this.data.flowername, this.data.flowerprice, this.data.location, this.data.profit, this.quantity.value)
-    .subscribe(resp => {
-      if (resp['status'] === 200) {
-        this.dialogRef.close();
-        Swal.fire(
-          'Good job!',
-          'เพิ่มโปรโมชั่นสำเร็จ',
-          'success'
+    // console.log("flowerunit " + this.data.flowerunit);
+    // console.log("quantity " + this.quantity.value);
+    if(this.quantity.value > this.data.flowerunit){
+      Swal.fire(
+          'error',
+          'จำนวนช่อที่เลือกไม่ถูกต้อง',
+          'error'
         ).then((result) => {
-          window.location.reload();
+            window.location.reload();
+      });
+    }else if (this.quantity.value < 1){
+      Swal.fire(
+          'error',
+          'จำนวนช่อที่เลือกไม่ถูกต้อง',
+          'error'
+        ).then((result) => {
+            window.location.reload();
+      });
+    }
+    else{
+      this.restApiService.recalculatePromotion(this.data.flowername, this.data.flowerprice, this.data.location, this.data.profit, this.quantity.value)
+      .subscribe(resp => {
+        if (resp['status'] === 200) {
+          text: 'จำนวนช่อที่เลือกไม่ถูกต้อง'
+        } 
+        else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'เกิดข้อผิดพลาด',
+          });
+        }
+      });
+
+      this.restApiService.addPromotion(this.data.flowername, this.data.flowerprice, this.data.location, this.data.profit, this.quantity.value)
+      .subscribe(resp => {
+        if (resp['status'] === 200) {
+          this.dialogRef.close();
+          Swal.fire(
+            'Good job!',
+            'เพิ่มโปรโมชั่นสำเร็จ',
+            'success'
+          ).then((result) => {
+              window.location.reload();
         });
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'เกิดข้อผิดพลาด',
-        });
-      }
-    });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'เกิดข้อผิดพลาด',
+          });
+        }
+      });
+    }
   }
 }
 
