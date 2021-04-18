@@ -23,6 +23,7 @@ import { PriceOfOrders } from '../interface/priceOfOrders';
 import { FloristDeliveryFee } from '../interface/FloristDeliveryFee';
 import { FloristFee } from '../interface/floristFee';
 import { ChangeStock } from '../interface/change-stock';
+import { Configurations } from '../interface/configurations';
 
 @Injectable({
   providedIn: 'root'
@@ -534,8 +535,16 @@ export class RestApiService {
       )
   }
 
-  getPromotionDetailLogRemain(): Observable<PromotionDetailLog[]> {
-    return this.http.get<PromotionDetailLog[]>(this.apiURL + '/promotionDetailLog/promotionDetailLogRemain')
+  getPromotionDetailLogRemainQuantity(): Observable<PromotionDetailCurrentDto[]> {
+    return this.http.get<PromotionDetailCurrentDto[]>(this.apiURL + '/promotionDetailLog/promotionDetailLogRemainQuantity')
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
+  }
+
+  getMaxPromotion(): Observable<Configurations[]> {
+    return this.http.get<Configurations[]>(this.apiURL + '/promotionDetail/maxPromotion')
       .pipe(
         retry(1),
         catchError(this.handleError)

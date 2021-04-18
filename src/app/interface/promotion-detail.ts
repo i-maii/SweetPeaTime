@@ -14,4 +14,5 @@ export interface PromotionDetail {
     expiryDate: Date;
     florist: Florist;
     type: string;
+    lotStock: Date;
   }
