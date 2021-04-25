@@ -26,7 +26,7 @@ export class StockReportComponent implements OnInit {
     stock: Stock[] = [];
     promotionDetails: PromotionDetail[] = [];
     formulaDetails: FlowerFormulaDetail[] = [];
-
+    flower: Flower[] = [];
 
     flowers = [
         { value: '0', viewValue: '' },
@@ -65,8 +65,41 @@ export class StockReportComponent implements OnInit {
       ) { }
     async ngOnInit(): Promise<void> {
       this.stockReport = [];
-        this.displayedColumns = ['id', 'flower', 'florist','lot', 'expireDate', 'quantity','inPromotionQty', 'inPromotionSoldQty' ,'waste','unit'];
+        this.displayedColumns = ['id', 'flower', 'florist','inPromotionQty', 'inPromotionSoldQty' ,'waste','unit'];
        
+        this.flower =  await this.restApiService.getFlower().toPromise();
+        //filter distince
+        this.flower  = this.flower.filter((thing, i, arr) => arr.findIndex(t => t.flowerCategory === thing.flowerCategory) === i);
+        let flowerItem: {
+          id: number;
+          flowerName: string;
+          mainCategory: string;
+          isStock: boolean;
+          lifeTime: number;
+          unit: string;
+          isFreeze: boolean;
+          flowerCategory: string;
+          flowerType: string;
+          capacity: number;
+        }=
+        {
+          id : -1,
+          flowerName: '',
+          mainCategory: '',
+          isStock: false,
+          lifeTime: 0,
+          unit: '',
+          isFreeze: false,
+          flowerCategory: '',
+          flowerType: '',
+          capacity: 0
+          };
+       
+          this.flower.splice(0,0,flowerItem);
+          this.flower = this.flower.sort((a, b) => a.id - b.id);;
+
+
+
         this.promotionDetails = await this.restApiService.getCurrentPromotion().toPromise();
 
         // this.restApiService.getCurrentPromotion().subscribe(async (data: PromotionDetail[]) => {
@@ -122,15 +155,15 @@ else
 //console.log('flower name = ' + stockResult[i].flower.flowerName);
  formulaDetailsFilter = this.formulaDetails.filter(p=>p.flower.flowerName == stockResult[i].flower.flowerName);
 
- for(let j= 0; j < formulaDetailsFilter.length ; j++)
- {
-    promotionQty = promotionQty +  formulaDetailsFilter[j].quantity;
-    promotionDetailsFilter = this.promotionDetails.filter(f=>f.flowerFormula.id==formulaDetailsFilter[j].flowerFormula.id)
-    if (promotionDetailsFilter != null)
-    {
-    promotionSoldQty = promotionDetailsFilter[0].quantitySold * formulaDetailsFilter[j].quantity;
-    }
- }
+//  for(let j= 0; j < formulaDetailsFilter.length ; j++)
+//  {
+//     promotionQty = promotionQty +  formulaDetailsFilter[j].quantity;
+//     promotionDetailsFilter = this.promotionDetails.filter(f=>f.flowerFormula.id==formulaDetailsFilter[j].flowerFormula.id)
+//     if (promotionDetailsFilter != null)
+//     {
+//     promotionSoldQty = promotionDetailsFilter[0].quantitySold * formulaDetailsFilter[j].quantity;
+//     }
+//  }
 
 ////console.log('promoQty = '+ promotionQty + 'SoldQty = ' + promotionSoldQty)
 
@@ -165,9 +198,32 @@ else
               formulaDetailsFilter = [];
               }
              // console.log(this.promotionDetails);
-             this.stockReport = this.stockReport.sort((a, b) => b.waste - a.waste);
 
-        this.dataSource = new MatTableDataSource<StockReport>(this.stockReport);
+             //Combine flowername
+             var flowerUnique = this.stockReport.filter((thing, i, arr) => arr.findIndex(t => t.flower.flowerName === thing.flower.flowerName) === i);
+             
+             //this.flower  = this.flower.filter((thing, i, arr) => arr.findIndex(t => t.flowerCategory === thing.flowerCategory) === i);
+             for (let i = 0; i < flowerUnique.length; i++) 
+             {
+                flowerUnique[i].waste = 0;
+                var flowerNameItem = this.stockReport.filter( j=>j.flower.flowerName== flowerUnique[i].flower.flowerName)
+
+                for(let k = 0; k < flowerNameItem.length; k++)
+                {
+                  flowerUnique[i].waste = flowerUnique[i].waste + flowerNameItem[k].waste;
+                  flowerUnique[i].inPromotionQty = flowerUnique[i].inPromotionQty + flowerNameItem[k].inPromotionQty;
+                  flowerUnique[i].inPromotionSoldQty = flowerUnique[i].inPromotionSoldQty + flowerNameItem[k].inPromotionSoldQty;
+                }
+             }
+              
+             flowerUnique = flowerUnique.sort((a,b)=> b.waste - a.waste);
+             this.stockReport = this.stockReport.sort((a, b) => b.waste - a.waste);
+             for (let i = 0; i < this.stockReport.length; i++) 
+             {
+                 this.stockReport[i].id = i+1;
+             } 
+             this.dataSource = new MatTableDataSource<StockReport>(flowerUnique);
+      //  this.dataSource = new MatTableDataSource<StockReport>(this.stockReport);
         })
 
     }
@@ -175,7 +231,7 @@ else
     searchStockReport()
     {
   //  var dateString = (this.stockReportForm.value.month).toString() + '-01-2021'; 
-  this.stockReport = [];
+    this.stockReport = [];
     var fromDate = new Date();
     var toDate = new Date();
 
@@ -268,11 +324,15 @@ promotionSoldQty = promotionDetailsFilter[0].quantitySold * formulaDetailsFilter
           formulaDetailsFilter = [];
           }
 
-          if (this.stockReportForm.value.flower != null && this.stockReportForm.value.flower != 0)
+          if (this.stockReportForm.value.flower != null && this.stockReportForm.value.flower != '')
           {
             if(this.stockReport.length > 0)
             {
-          this.stockReport = this.stockReport.filter(d=>d.flower.flowerName.includes(this.stockReportForm.value.flower));    
+              this.stockReport = this.stockReport.filter(d=>d.flower.flowerName.includes(this.stockReportForm.value.flower));    
+              for (let i = 0; i < this.stockReport.length; i++) 
+              {
+                  this.stockReport[i].id = i+1;
+              }    
             }
             else
             {
@@ -282,10 +342,17 @@ promotionSoldQty = promotionDetailsFilter[0].quantitySold * formulaDetailsFilter
           }
           else
           {
+            for (let i = 0; i < this.stockReport.length; i++) 
+            {
+                this.stockReport[i].id = i+1;
+            } 
           this.dataSource = new MatTableDataSource<StockReport>(this.stockReport);
           }
           this.stockReport = this.stockReport.sort((a, b) => b.waste - a.waste);
-
+          for (let i = 0; i < this.stockReport.length; i++) 
+          {
+              this.stockReport[i].id = i+1;
+          } 
           this.dataSource = new MatTableDataSource<StockReport>(this.stockReport);
 
     })

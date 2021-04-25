@@ -22,9 +22,9 @@ async
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>ดอกไม้</mat-label>
-        <mat-select type="text" formControlName="name" multiple>
-          <mat-option *ngFor="let flower of flower" [value]="flower.viewValue">
-            {{flower.viewValue}}
+        <mat-select type="text" formControlName="name">
+          <mat-option *ngFor="let flower of flower" [value]="flower.flowerCategory">
+            {{flower.flowerCategory}}
           </mat-option>
         </mat-select>
       </mat-form-field>

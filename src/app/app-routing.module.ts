@@ -13,6 +13,8 @@ import { StockComponent } from './stock/stock.component';
 import { SaleReportComponent } from './report/saleReport.component';
 import { SaleReportSummaryComponent } from './report/saleReportSummary.component';
 import { StockReportComponent } from './stockReport/stockReport.component';
+import { PromotionReportComponent } from './promotionReport/promotionReport.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -121,6 +123,17 @@ const routes: Routes = [
       {
         path: 'stockReport',
         component: StockReportComponent
+      }
+    ]
+  }
+  ,
+  {
+    path: '',
+    component: HomeLayoutComponent,
+    children: [
+      {
+        path: 'promotionReport',
+        component: PromotionReportComponent
       }
     ]
   }

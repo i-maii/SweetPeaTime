@@ -431,6 +431,33 @@ export class RestApiService {
       )
   }
 
+  getPromotionByDate(startDate:any , endDate: any): Observable<PromotionDetail[]> {
+    let params = new HttpParams;
+    if(startDate == '')
+    {
+      params = params.append('startDate', "");
+    }
+    else
+    {
+      params = params.append('startDate', this.datepipe.transform(startDate, 'yy-MM-dd') + "");
+    }
+    if(endDate == '')
+    {
+      params = params.append('endDate', "");
+    }
+    else
+    {
+      params = params.append('endDate', this.datepipe.transform(endDate, 'yy-MM-dd') + "");
+    }
+
+    return this.http.get<PromotionDetail[]>(this.apiURL + '/promotionDetail/getPromotionByDate', {
+      params: params})
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
+  }
+
   getPromotionSuggest(): Observable<PromotionDetailCurrentDto[]> {
     return this.http.get<PromotionDetailCurrentDto[]>(this.apiURL + '/promotionDetail/getPromotionSuggest')
       .pipe(

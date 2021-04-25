@@ -11,6 +11,7 @@ import { FloristDeliveryFee } from '../interface/FloristDeliveryFee';
 import { isNull } from '@angular/compiler/src/output/output_ast';
 import { DecimalPipe, formatNumber } from '@angular/common';
 import { ignoreElements } from 'rxjs/operators';
+import { Flower } from '../interface/flower';
 //import { isNull } from '@angular/compiler/src/output/output_ast';
 @Component({
   selector: 'searchflower',
@@ -34,6 +35,7 @@ export class SearchflowerComponent implements OnInit {
   flowerFormulas: FlowerFormula[] = [];
   geocoder = new google.maps.Geocoder();
   florists: Florist[] = [];
+  flower: Flower[] =[];
   floristDeliveryFee: FloristDeliveryFee[] = [];
   customerLocation = new google.maps.LatLng(0, 0);
   searchFlowerForm = new FormGroup({
@@ -56,9 +58,42 @@ export class SearchflowerComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.searchFlowerFormulaFlorist = [];
     this.flowerFormula = [];
+
+   this.flower =  await this.restApiService.getFlower().toPromise();
+     //filter distince
+     this.flower  = this.flower.filter((thing, i, arr) => arr.findIndex(t => t.flowerCategory === thing.flowerCategory) === i);
+       
+   let flowerItem: {
+    id: number;
+    flowerName: string;
+    mainCategory: string;
+    isStock: boolean;
+    lifeTime: number;
+    unit: string;
+    isFreeze: boolean;
+    flowerCategory: string;
+    flowerType: string;
+    capacity: number;
+  }=
+  {
+    id : -1,
+    flowerName: '',
+    mainCategory: '',
+    isStock: false,
+    lifeTime: 0,
+    unit: '',
+    isFreeze: false,
+    flowerCategory: '',
+    flowerType: '',
+    capacity: 0
+    };
+ 
+    this.flower.splice(0,0,flowerItem);
+    this.flower = this.flower.sort((a, b) => a.id - b.id);;
+
     this.restApiService.searchAllFlowerFormula().subscribe((data: FlowerFormula[]) => {
       for (let i = 0; i < data.length; i++) {
         let searchResult: {
@@ -186,14 +221,14 @@ export class SearchflowerComponent implements OnInit {
     { value: '3', viewValue: 'ดอกไม้แห้ง' }
   ];
 
-  flower = [
-    { value: '1', viewValue: 'กุหลาบขาว' },
-    { value: '2', viewValue: 'กุหลาบแดง' },
-    { value: '3', viewValue: 'กุหลาบชมพู' },
-    { value: '4', viewValue: 'กุหลาบมาแชล' },
-    { value: '5', viewValue: 'ทานตะวัน' },
-    { value: '6', viewValue: 'ไฮเดนเยีย' }
-  ];
+  // flower = [
+  //   { value: '1', viewValue: 'กุหลาบขาว' },
+  //   { value: '2', viewValue: 'กุหลาบแดง' },
+  //   { value: '3', viewValue: 'กุหลาบชมพู' },
+  //   { value: '4', viewValue: 'กุหลาบมาแชล' },
+  //   { value: '5', viewValue: 'ทานตะวัน' },
+  //   { value: '6', viewValue: 'ไฮเดนเยีย' }
+  // ];
 
   occasion = [
     { value: '1', viewValue: 'Congratulations' },
