@@ -48,7 +48,7 @@ import { SaleReportComponent } from './report/saleReport.component';
 import { SaleReportSummaryComponent } from './report/saleReportSummary.component';
 import { ChartsModule } from 'ng2-charts';
 import { StockReportComponent } from './stockReport/stockReport.component';
-
+import { PromotionReportComponent } from './promotionReport/promotionReport.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +72,8 @@ import { StockReportComponent } from './stockReport/stockReport.component';
     PromotionSuccessDialogComponent,
     SaleReportComponent,
     SaleReportSummaryComponent,
-    StockReportComponent
+    StockReportComponent,
+    PromotionReportComponent
   ],
   imports: [
     BrowserModule,
