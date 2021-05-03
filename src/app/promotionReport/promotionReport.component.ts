@@ -14,14 +14,40 @@ import { PromotionDetailDto } from '../interface/promotion-detail-dto';
 import { Florist } from '../interface/florist';
 import { FlowerFormula } from '../interface/flower-formula';
 import { SaleReportSummaryByFlowerformula } from '../interface/saleReportSummarybyFlowerformula';
-import { months } from 'moment';
+import { Moment, months } from 'moment';
 import { Stock } from '../interface/stock';
 import { PromotionDetail } from '../interface/promotion-detail';
-
+import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import {MatDatepicker} from '@angular/material/datepicker';
+import * as moment from 'moment';
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'YYYY',
+  },
+  display: {
+    dateInput: 'YYYY',
+    monthYearLabel: 'YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'YYYY',
+  },
+};
 @Component({
     selector: 'saleSummary',
     templateUrl: './promotionReport.component.html',
-    styleUrls: ['./promotionReport.component.css']
+    styleUrls: ['./promotionReport.component.css'],
+    providers: [
+      // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
+      // application's root module. We provide it at the component level here, due to limitations of
+      // our example generation script.
+      {
+        provide: DateAdapter,
+        useClass: MomentDateAdapter,
+        deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+      },
+  
+      {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+    ]
   })
   
 
@@ -115,6 +141,83 @@ dataSource: any;
     data: this.totalProfitByMonth,  
     label: 'กำไร'        
     })
+
+  }
+  date = new FormControl(moment());
+
+  chosenYearHandler(normalizedYear: Moment,datepicker: MatDatepicker<Moment>) {
+    const ctrlValue = this.date.value;
+    ctrlValue.year(normalizedYear.year());
+    this.date.setValue(ctrlValue);
+    datepicker.close();
+
+this.barChartData = [];
+    var promotionSalePerMonth: PromotionDetail[];
+    var costMonth : Stock[];
+    this.totalPromotionOrderByMonth = [];
+    this.promotonDetailList = [];
+    this.stockByLot = [];
+    this.totalCostByMonth = [];
+
+    var y = Number(this.date.value.format('YYYY'));
+
+    this.restApiService.getPromotionByDate('01-01-'+y, '12-31-'+y).subscribe(async (data: PromotionDetail[]) => {
+      for (let i = 0; i < data.length; i++) {
+        this.promotonDetailList.push(data[i]);
+      }
+  
+      //Calculate Month 1
+
+      for (let j = 0; j< 12 ; j++)
+      {
+
+        promotionSalePerMonth = this.promotonDetailList.filter(item => {let date = new Date(item.expiryDate);
+        return (date.getMonth()) == j});
+
+        this.totalPromotionOrderByMonth[j] = 0;
+        for(let i =0; i < promotionSalePerMonth.length ; i++)
+        {
+          this.totalPromotionOrderByMonth[j] = this.totalPromotionOrderByMonth[j] + (promotionSalePerMonth[i].price * promotionSalePerMonth[i].quantitySold);
+        }
+      } 
+    })
+
+    this.restApiService.getStockByLot('01-01-'+y,'12-31-'+y).subscribe(async(stockResult: Stock[]) => {
+      //console.log('stock ='+ stockResult);
+      for (let i = 0; i < stockResult.length; i++) {
+        this.stockByLot.push(stockResult[i]);
+      }
+
+      for (let j = 0; j< 12 ; j++)
+      {
+
+        costMonth = this.stockByLot.filter(stock => {let lot = new Date(stock.lot);
+        return (lot.getMonth()) == j})
+          this.totalCostByMonth[j] = 0;
+          for(let i =0; i < costMonth.length; i++)
+          {
+            if( costMonth[i].flowerPrice != null)
+            {
+            this.totalCostByMonth[j] = this.totalCostByMonth[j] + costMonth[i].flowerPrice.price;
+            }
+          }
+
+       //   this.totalProfitByMonth[j] = this.totalSaleOrderByMonth[j] - this.totalCostByMonth[j];
+
+        }
+
+    })
+
+    this.barChartData.push({             // <-- push value to `ChartData`
+    data: this.totalPromotionOrderByMonth,  
+    label: 'ยอดขายจากโปรโมชั่น'        
+    })
+
+    this.barChartData.push({             // <-- push value to `ChartData`
+    data: this.totalProfitByMonth,  
+    label: 'กำไร'        
+    })
+
 
   }
   selectDatabyMonth(e: any)

@@ -11,11 +11,45 @@ import { PromotionDetail } from '../interface/promotion-detail';
 import { PromotionDetailLog } from '../interface/promotion-detail-log';
 import { FlowerFormulaDetail } from '../interface/flower-formula-detail';
 import { FlowerFormula } from '../interface/flower-formula';
+//import * as _moment from 'moment';
+import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import {MatDatepicker} from '@angular/material/datepicker';
+//import * as moment from 'moment';
+//import { Moment } from 'moment';
+import * as _moment from 'moment';
+import * as moment from 'moment';
+import { Moment } from 'moment';
+//import {default as _rollupMoment, Moment} from 'moment';
 
+//const moment = _rollupMoment || _moment;
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'MM/YYYY',
+  },
+  display: {
+    dateInput: 'MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 @Component({
     selector: 'stockReport',
     templateUrl: './stockReport.component.html',
-    styleUrls: ['./stockReport.component.css']
+    styleUrls: ['./stockReport.component.css'],
+    providers: [
+      // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
+      // application's root module. We provide it at the component level here, due to limitations of
+      // our example generation script.
+      {
+        provide: DateAdapter,
+        useClass: MomentDateAdapter,
+        deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+      },
+  
+      {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+    ]
   })
   
 export class StockReportComponent implements OnInit {
@@ -56,6 +90,7 @@ export class StockReportComponent implements OnInit {
     stockReportForm = new FormGroup({
         flower: new FormControl(),
         month: new FormControl(),
+        date: new FormControl()
       });
       currentDate = new Date();
       endDate = new Date();
@@ -63,6 +98,7 @@ export class StockReportComponent implements OnInit {
       constructor(
         private restApiService: RestApiService,
       ) { }
+
     async ngOnInit(): Promise<void> {
       this.stockReport = [];
         this.displayedColumns = ['id', 'flower', 'florist','inPromotionQty', 'inPromotionSoldQty' ,'waste','unit'];
@@ -227,6 +263,21 @@ else
         })
 
     }
+    date = new FormControl(moment());
+
+    chosenYearHandler(normalizedYear: Moment) {
+      const ctrlValue = this.date.value;
+      ctrlValue.year(normalizedYear.year());
+      this.date.setValue(ctrlValue);
+    }
+  
+    chosenMonthHandler(normalizedMonth: Moment, datepicker: MatDatepicker<Moment>) {
+      const ctrlValue = this.date.value;
+      ctrlValue.month(normalizedMonth.month());
+      this.date.setValue(ctrlValue);
+      this.stockReportForm.value.date = this.date.value; 
+      datepicker.close();
+    }
 
     searchStockReport()
     {
@@ -234,11 +285,18 @@ else
     this.stockReport = [];
     var fromDate = new Date();
     var toDate = new Date();
+    var dateFromScreen = new Date();
 
-      var m = fromDate.getMonth(); //current month
-      var y = fromDate.getFullYear(); //current year
+    dateFromScreen = this.stockReportForm.value.date;
+    var m = Number(this.stockReportForm.value.date.format('M'));
+
+  //  m =  m.format('M').toString();
+     // var m = this.stockReportForm.value.date.getMonth(); //current month
+      //var y = this.stockReportForm.value.date.getFullYear(); //current year
+     // var m = dateFromScreen.getMonth();
+      var y = Number(this.stockReportForm.value.date.format('YYYY'));
       
-      if(this.stockReportForm.value.month == null || this.stockReportForm.value.month == 0)
+      if(this.stockReportForm.value.date == null || this.stockReportForm.value.date == '')
       {
         fromDate = new Date(y,0,1);
         toDate = new Date(y,12,0);
@@ -246,8 +304,8 @@ else
       }
       else
       {
-      fromDate = new Date(y,this.stockReportForm.value.month-1,1);
-      toDate = new Date(y,this.stockReportForm.value.month,0);
+      fromDate = new Date(y,m-1,1);
+      toDate = new Date(y,m,0);
       }
       this.restApiService.getStockByDate(fromDate,toDate).subscribe(async(stockResult: Stock[]) => {
         for (let i = 0; i < stockResult.length; i++) {

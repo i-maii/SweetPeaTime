@@ -14,13 +14,39 @@ import { PromotionDetailDto } from '../interface/promotion-detail-dto';
 import { Florist } from '../interface/florist';
 import { FlowerFormula } from '../interface/flower-formula';
 import { SaleReportSummaryByFlowerformula } from '../interface/saleReportSummarybyFlowerformula';
-import { months } from 'moment';
+import { Moment, months } from 'moment';
 import { Stock } from '../interface/stock';
-
+import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import {MatDatepicker} from '@angular/material/datepicker';
+import * as moment from 'moment';
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'YYYY',
+  },
+  display: {
+    dateInput: 'YYYY',
+    monthYearLabel: 'YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'YYYY',
+  },
+};
 @Component({
     selector: 'saleSummary',
     templateUrl: './saleReportSummary.component.html',
-    styleUrls: ['./saleReportSummary.component.css']
+    styleUrls: ['./saleReportSummary.component.css'],
+    providers: [
+      // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
+      // application's root module. We provide it at the component level here, due to limitations of
+      // our example generation script.
+      {
+        provide: DateAdapter,
+        useClass: MomentDateAdapter,
+        deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+      },
+  
+      {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+    ]
   })
   
 
@@ -45,18 +71,25 @@ dataSource: any;
 
   barChartData: ChartDataSets[] = [];
   stockByLot: Stock[]= [];
+  today = new Date();
+  sixMonthsAgo = new Date();
   // barChartData: ChartDataSets[] = [
   //   { data: [45, 37, 60, 70, 46, 33,0,0,0,0,0,0], label: 'ยอดขาย' },
   //   { data: [45, 37, 60, 70, 46, 33,0,0,0,0,0,0], label: 'กำไร' }
   // ];
+
+  
   constructor(
     private restApiService: RestApiService,
   ) { }
 
   ngOnInit(): void {
-
+    this.today = new Date();
+    this.sixMonthsAgo = new Date();
+    this.sixMonthsAgo.setMonth(this.today.getMonth() - 6);
     var salesOrdersMonth: SalesOrderDetailListDto[];
     var costMonth : Stock[];
+
 
     this.restApiService.searchListSalesOrder('01-01-2021', '12-31-2021', null).subscribe(async (data: SalesOrderDetailListDto[]) => {
       for (let i = 0; i < data.length; i++) {
@@ -116,6 +149,92 @@ dataSource: any;
     label: 'กำไร'        
     })
 
+
+  
+   
+
+  }
+  date = new FormControl(moment());
+
+  chosenYearHandler(normalizedYear: Moment,datepicker: MatDatepicker<Moment>) {
+    const ctrlValue = this.date.value;
+    ctrlValue.year(normalizedYear.year());
+    this.date.setValue(ctrlValue);
+    datepicker.close();
+    var salesOrdersMonth: SalesOrderDetailListDto[];
+    var costMonth : Stock[];
+    this.barChartData = [];
+    this.totalSaleOrderByMonth = [];
+    this.totalProfitByMonth=[];
+    this.salesOrders = [];
+    this.stockByLot = [];
+
+    var y = Number(this.date.value.format('YYYY'));
+    this.restApiService.searchListSalesOrder('01-01-'+y, '12-31-'+y, null).subscribe(async (data: SalesOrderDetailListDto[]) => {
+      for (let i = 0; i < data.length; i++) {
+        this.salesOrders.push(data[i]);
+      }
+  
+      //Calculate Month 1
+
+      for (let j = 0; j< 12 ; j++)
+      {
+
+        salesOrdersMonth = this.salesOrders.filter(item => {let date = new Date(item.date);
+        return (date.getMonth()) == j});
+
+        this.totalSaleOrderByMonth[j] = 0;
+        for(let i =0; i < salesOrdersMonth.length ; i++)
+        {
+          this.totalSaleOrderByMonth[j] = this.totalSaleOrderByMonth[j] + salesOrdersMonth[i].flowerPrice;
+        }
+      } 
+
+    })
+
+    this.restApiService.getStockByLot('01-01-'+y, '12-31-'+y).subscribe(async(stockResult: Stock[]) => {
+      //console.log('stock ='+ stockResult);
+      for (let i = 0; i < stockResult.length; i++) {
+        this.stockByLot.push(stockResult[i]);
+      }
+
+      for (let j = 0; j< 12 ; j++)
+      {
+
+        costMonth = this.stockByLot.filter(stock => {let lot = new Date(stock.lot);
+        return (lot.getMonth()) == j})
+          this.totalCostByMonth[j] = 0;
+          for(let i =0; i < costMonth.length; i++)
+          {
+            if( costMonth[i].flowerPrice != null)
+            {
+            this.totalCostByMonth[j] = this.totalCostByMonth[j] + costMonth[i].flowerPrice.price;
+            }
+          }
+
+          this.totalProfitByMonth[j] = this.totalSaleOrderByMonth[j] - this.totalCostByMonth[j];
+
+        }
+
+    })
+
+    this.barChartData.push({             // <-- push value to `ChartData`
+    data: this.totalSaleOrderByMonth,  
+    label: 'ยอดขาย'        
+    })
+
+    this.barChartData.push({             // <-- push value to `ChartData`
+    data: this.totalProfitByMonth,  
+    label: 'กำไร'        
+    })
+  }
+
+  chosenMonthHandler(normalizedMonth: Moment, datepicker: MatDatepicker<Moment>) {
+    const ctrlValue = this.date.value;
+    ctrlValue.month(normalizedMonth.month());
+    this.date.setValue(ctrlValue);
+   // this.stockReportForm.value.date = this.date.value; 
+    datepicker.close();
   }
   selectDatabyMonth(e: any)
   {
@@ -145,8 +264,10 @@ dataSource: any;
         console.log('label index = '+ clickedElementIndex); 
         dateString = (clickedElementIndex +1).toString() + '-01-2021'; 
         this.fromDate = new Date(dateString);
-        var m = this.fromDate.getMonth(); //current month
-        var y = this.fromDate.getFullYear(); //current year
+        //var m = this.fromDate.getMonth(); //current month
+        //var y = this.fromDate.getFullYear(); //current year
+        var m = Number(this.date.value.format('M'));
+        var y = Number(this.date.value.format('YYYY'));
         
         this.toDate = new Date(y,m+1,0);
       }

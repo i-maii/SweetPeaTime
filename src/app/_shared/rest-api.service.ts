@@ -205,7 +205,7 @@ export class RestApiService {
       )
   }
 
-  getFlowerAvailableFromCurrentStock(formulaId: number, floristId: number, orderDate: Date): Observable<number> {
+  getFlowerAvailableFromCurrentStock(formulaId: number, floristId: number, orderDate: Date): Observable<number>{
     let params = new HttpParams;
     params = params.append('formulaId', formulaId + "");
     params = params.append('floristId', floristId + "");
