@@ -1,5 +1,17 @@
 
+
+
 <div class="chart-wrapper">
+  <mat-form-field appearance="fill">
+    <mat-label>เดือน และ ปี</mat-label>
+    <input matInput [matDatepicker]="dp" [formControl]="date">
+    <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+    <mat-datepicker #dp
+                    startView="multi-year"
+                    (yearSelected)="chosenYearHandler($event,dp)">
+                    <!-- panelClass="example-month-picker"> -->
+    </mat-datepicker>
+  </mat-form-field>
   <canvas baseChart 
   [datasets]="barChartData"
   [labels]="barChartLabels"

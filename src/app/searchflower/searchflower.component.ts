@@ -12,6 +12,9 @@ import { isNull } from '@angular/compiler/src/output/output_ast';
 import { DecimalPipe, formatNumber } from '@angular/common';
 import { ignoreElements } from 'rxjs/operators';
 import { Flower } from '../interface/flower';
+import { PriceOfOrders } from '../interface/priceOfOrders';
+import { SalesOrderPrice } from '../interface/sales-order-price';
+import { async } from 'rxjs';
 //import { isNull } from '@angular/compiler/src/output/output_ast';
 @Component({
   selector: 'searchflower',
@@ -22,7 +25,7 @@ import { Flower } from '../interface/flower';
 export class SearchflowerComponent implements OnInit {
   [x: string]: any;
   currentDate = new Date();
-
+  receiveDate = new Date();
   flowerFormula: FlowerFormula[] = [];
   flowerFormulaSearch: FlowerFormula[] = [];
   displayedColumns: string[] = ['position', 'name', 'quantityAvailable', 'pattern', 'color', 'size', 'occasion', 'florist', 'price', 'deliveryFee', 'totalPrice'];
@@ -53,6 +56,7 @@ export class SearchflowerComponent implements OnInit {
     florist: new FormControl(''),
     floristId: new FormControl('')
   });
+  priceOfFormula: PriceOfOrders[] = [];
 
   constructor(private restApiService: RestApiService) { }
 
@@ -61,7 +65,8 @@ export class SearchflowerComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.searchFlowerFormulaFlorist = [];
     this.flowerFormula = [];
-
+    this.priceOfFormula = [];
+    
    this.flower =  await this.restApiService.getFlower().toPromise();
      //filter distince
      this.flower  = this.flower.filter((thing, i, arr) => arr.findIndex(t => t.flowerCategory === thing.flowerCategory) === i);
@@ -94,8 +99,9 @@ export class SearchflowerComponent implements OnInit {
     this.flower.splice(0,0,flowerItem);
     this.flower = this.flower.sort((a, b) => a.id - b.id);;
 
-    this.restApiService.searchAllFlowerFormula().subscribe((data: FlowerFormula[]) => {
+    this.restApiService.searchAllFlowerFormula().subscribe(async (data: FlowerFormula[]) => {
       for (let i = 0; i < data.length; i++) {
+        this.priceOfFormula = [];
         let searchResult: {
           id: number,
           position: number,
@@ -127,30 +133,33 @@ export class SearchflowerComponent implements OnInit {
         };
         searchResult.id = i;
         searchResult.position = i;
-        searchResult.florist = "ซงหนิง";
+        searchResult.florist = "";
         searchResult.name = data[i].name;
         searchResult.size = data[i].size;
         searchResult.pattern = data[i].pattern;
         searchResult.color = data[i].color;
-        searchResult.price = data[i].price;
+        //searchResult.price = data[i].price;
         searchResult.occasion = data[i].occasion;
         searchResult.quantityAvailable = Number(data[i].quantityAvailable);
         searchResult.deliveryFee = 0;
-        searchResult.totalPrice = data[i].price;
+        //searchResult.totalPrice = data[i].price;
 
         if (data[i].pattern == 'เกาหลี') {
           searchResult.florist = 'ซงหนิงหนิง';
+          searchResult.floristId = 1;
           //find quantity availbale for nink
-          this.restApiService.getFlowerAvailableFromCurrentStock(data[i].id, 1, this.currentDate).subscribe((result) => {
+     //     searchResult.quantityAvailable =  Number( await this.restApiService.getFlowerAvailableFromCurrentStock(data[i].id, 1, this.currentDate));
+          await this.restApiService.getFlowerAvailableFromCurrentStock(data[i].id, 1, this.currentDate).subscribe(async(result) => {
             searchResult.quantityAvailable = result;
           })
         } else {
           searchResult.florist = 'หนึ่ง';
+          searchResult.floristId = 2; 
           //find quantity available for neung
-          this.restApiService.getFlowerAvailableFromCurrentStock(data[i].id, 2, this.currentDate).subscribe((result) => {
+          await this.restApiService.getFlowerAvailableFromCurrentStock(data[i].id, 2, this.currentDate).subscribe(async(result) => {
             searchResult.quantityAvailable = result;
           });
-          //Add new row for new florist
+          //Add new row for new florist nink
           let resultRow: {
             id: number,
             position: number,
@@ -183,24 +192,51 @@ export class SearchflowerComponent implements OnInit {
           resultRow.id = data[i].id;
           resultRow.position = i;
           resultRow.florist = "ซงหนิงหนิง";
-          resultRow.floristId = 0;
+          resultRow.floristId = 1;
           resultRow.name = data[i].name;
           resultRow.size = data[i].size;
           resultRow.pattern = data[i].pattern;
           resultRow.color = data[i].color;
-          resultRow.price = data[i].price;
+          //resultRow.price = data[i].price;
           resultRow.occasion = data[i].occasion;
           resultRow.quantityAvailable = Number(data[i].quantityAvailable);
           resultRow.deliveryFee = 0;
-          resultRow.totalPrice = data[i].price;
+          //resultRow.totalPrice = data[i].price;
 
           //find quantity available for nink
           this.restApiService.getFlowerAvailableFromCurrentStock(data[i].id, 1, this.currentDate).subscribe((result) => {
             resultRow.quantityAvailable = result;
           })
+          this.priceOfFormula = [];
+          this.priceOfFormula.push({
+            formulaId: data[i].id,
+            floristId: resultRow.floristId,
+            totalOrder: 1,
+            receiveDate: this.currentDate
+          });
+          if (this.priceOfFormula.length != 0) {
+            this.restApiService.getSalesOrderPrice(this.priceOfFormula).subscribe((priceResult: SalesOrderPrice) => {
+              resultRow.price = priceResult.flowerPrice;
+              resultRow.totalPrice = priceResult.flowerPrice;
+            });
+          }
           this.searchFlowerFormulaFlorist.push(resultRow);
         }
+        this.priceOfFormula = [];
+        this.priceOfFormula.push({
+          formulaId: searchResult.id,
+          floristId: searchResult.floristId,
+          totalOrder: 1,
+          receiveDate: this.currentDate
+        });
+        if (this.priceOfFormula.length != 0) {
+          this.restApiService.getSalesOrderPrice(this.priceOfFormula).subscribe((priceResult: SalesOrderPrice) => {
+            searchResult.price = priceResult.flowerPrice;
+            searchResult.totalPrice = priceResult.flowerPrice;
+          });
+        }
         this.searchFlowerFormulaResult.push(searchResult);
+        
       }
       this.searchFlowerFormulaResult = this.searchFlowerFormulaResult.concat(this.searchFlowerFormulaFlorist);
       this.searchFlowerFormulaResult.sort((a, b) => a.name.localeCompare(b.name));
@@ -299,21 +335,34 @@ export class SearchflowerComponent implements OnInit {
     return deg * (Math.PI / 180)
   }
 
-  async searchForm() {
+  async searchForm(): Promise<void>  {
     this.searchFlowerFormulaResult = [];
     this.searchFlowerFormulaFlorist = [];
     let distance = 0;
     this.deliveryFee = 0;
+    this.priceOfFormula = [];
+    let maxQty = 0;
+    maxQty = Number(this.searchFlowerForm.value.quantity);
     // this.calculateDistance(this.searchFlowerForm.value.address);
     this.florists = await this.restApiService.getFlorist().toPromise();
     this.floristDeliveryFee = [];
+    this.receiveDate = this.searchFlowerForm.value.date;
 
     if(this.searchFlowerForm.value.florist != '')
     {
       this.searchFlowerForm.value.floristId = Number(this.florists.find(f => f.name == this.searchFlowerForm.value.florist)?.id);
     }
+
+    if(this.searchFlowerForm.value.date != null && this.searchFlowerForm.value.date != '')
+    {
+      this.receiveDate = this.searchFlowerForm.value.date;
+    }
+    else
+    {
+      this.receiveDate = new Date();
+    }
     this.restApiService.searchFlowerFormula(this.searchFlowerForm.value).subscribe(async (data: FlowerFormula[]) => {
-      console.log(this.searchFlowerForm.value);
+    //  console.log(this.searchFlowerForm.value);
 
       this.flowerFormulaSearch = [];
       if (data != null) {
@@ -363,12 +412,11 @@ export class SearchflowerComponent implements OnInit {
           searchResult.size = data[i].size;
           searchResult.pattern = data[i].pattern;
           searchResult.color = data[i].color;
-          searchResult.price = data[i].price;
+          //searchResult.price = data[i].price;
           searchResult.occasion = data[i].occasion;
           searchResult.quantityAvailable = 0;
           searchResult.deliveryFee = 0;
-          searchResult.totalPrice = 0;
-
+          //searchResult.totalPrice = 0;
           this.searchFlowerFormulaResult.push(searchResult);
         }
       }
@@ -378,7 +426,7 @@ export class SearchflowerComponent implements OnInit {
         let price: Array<number> = [];
         let recieveDate: Date;
         recieveDate = this.currentDate;
-        if (this.searchFlowerForm.value.date != '') {
+        if (this.searchFlowerForm.value.date != '' && this.searchFlowerForm.value.date != null) {
           recieveDate = this.searchFlowerForm.value.date;
         }
        
@@ -389,18 +437,19 @@ export class SearchflowerComponent implements OnInit {
             this.searchFlowerFormulaResult[i].floristId = Number(this.florists.find(f => f.name == this.searchFlowerFormulaResult[i].florist)?.id);
 
             //find quantity availbale for Nink           
-            this.restApiService.getFlowerAvailableFromCurrentStock(data[i].id,  this.searchFlowerFormulaResult[i].floristId, recieveDate).subscribe((result) => {
-            this.searchFlowerFormulaResult[i].quantityAvailable = result;})
+            
+            // this.restApiService.getFlowerAvailableFromCurrentStock(this.searchFlowerFormulaResult[i].id,  this.searchFlowerFormulaResult[i].floristId, recieveDate).subscribe(async(result) => {
+            // this.searchFlowerFormulaResult[i].quantityAvailable = result;})
           } 
           else {//แบบทั่วไป{
             this.searchFlowerFormulaResult[i].florist = 'หนึ่ง';
             this.searchFlowerFormulaResult[i].floristId = Number(this.florists.find(f => f.name == this.searchFlowerFormulaResult[i].florist)?.id);
 
             //find quantity available for neung
-            this.restApiService.getFlowerAvailableFromCurrentStock(data[i].id,  this.searchFlowerFormulaResult[i].floristId, recieveDate).subscribe((result) => {
-              this.searchFlowerFormulaResult[i].quantityAvailable = result;})
+            //  this.restApiService.getFlowerAvailableFromCurrentStock(this.searchFlowerFormulaResult[i].id,  this.searchFlowerFormulaResult[i].floristId, recieveDate).subscribe(async(result) => {
+            //   this.searchFlowerFormulaResult[i].quantityAvailable = result;})
 
-            //Add new row for show other florist
+            //Add new row for show other florist Nink
             let resultRow: {
               id: number,
               position: number,
@@ -433,20 +482,38 @@ export class SearchflowerComponent implements OnInit {
             resultRow.id = this.searchFlowerFormulaResult[i].id;
             resultRow.position = i;
             resultRow.florist = "ซงหนิงหนิง";
-            resultRow.floristId = Number(this.florists.find(f => f.name == this.searchFlowerFormulaResult[i].florist)?.id);
+            resultRow.floristId = Number(this.florists.find(f => f.name == 'ซงหนิงหนิง')?.id);
             resultRow.name = this.searchFlowerFormulaResult[i].name;
             resultRow.size = this.searchFlowerFormulaResult[i].size;
             resultRow.pattern = this.searchFlowerFormulaResult[i].pattern;
             resultRow.color = this.searchFlowerFormulaResult[i].color;
-            resultRow.price = this.searchFlowerFormulaResult[i].price;
+            //resultRow.price = this.searchFlowerFormulaResult[i].price;
             resultRow.occasion = this.searchFlowerFormulaResult[i].occasion;
             resultRow.quantityAvailable = this.searchFlowerFormulaResult[i].quantityAvailable;
 
             //find quantity availble for nink
-            this.restApiService.getFlowerAvailableFromCurrentStock(data[i].id, resultRow.floristId, recieveDate).subscribe((result) => {
-              resultRow.quantityAvailable = result;
-            })
-            this.searchFlowerFormulaFlorist.push(resultRow);
+            //  this.restApiService.getFlowerAvailableFromCurrentStock(this.searchFlowerFormulaResult[i].id, resultRow.floristId, recieveDate).subscribe(async(result) => {
+            //   resultRow.quantityAvailable = result;
+            
+           // })
+            this.priceOfFormula = [];
+            this.priceOfFormula.push({
+              formulaId: resultRow.id,
+              floristId: resultRow.floristId,
+              totalOrder: 1,
+              receiveDate: this.recieveDate
+            });
+          //  console.log('price= '+ this.priceOfFormula);
+            if (this.priceOfFormula.length != 0) {
+              this.restApiService.getSalesOrderPrice(this.priceOfFormula).subscribe((priceResult: SalesOrderPrice) => {
+                resultRow.price = priceResult.flowerPrice;
+              });
+            }
+            // if(resultRow.quantityAvailable >= maxQty)
+            // {
+             this.searchFlowerFormulaFlorist.push(resultRow);
+            // }
+         
           }
         }//end if florist from screen == null
         else //find florist from screen
@@ -454,9 +521,10 @@ export class SearchflowerComponent implements OnInit {
           //find available quantity for florist from screen
           let floristId = 0;
           floristId = Number(this.florists.find(f => f.name == this.searchFlowerForm.value.florist)?.id)
-          this.restApiService.getFlowerAvailableFromCurrentStock(data[i].id, floristId, recieveDate).subscribe((result) => {
-            this.searchFlowerFormulaResult[i].quantityAvailable = result;
-          })
+          this.searchFlowerFormulaResult[i].floristId = floristId;
+          //   this.restApiService.getFlowerAvailableFromCurrentStock(this.searchFlowerFormulaResult[i].id, floristId, recieveDate).subscribe(async(result) => {
+          //   this.searchFlowerFormulaResult[i].quantityAvailable = result;
+          // })
         }
   
       } // End for this.searchFlowerFormulaResult.length
@@ -506,38 +574,174 @@ export class SearchflowerComponent implements OnInit {
 
       //calculate price for all result
       for (let i = 0; i < this.searchFlowerFormulaResult.length; i++) {
-
-
+        let index = 0;
+        
         this.deliveryFee = Number(this.floristDeliveryFee.find(f => f.name === this.searchFlowerFormulaResult[i].florist)?.deliveryFee);
        if(isNaN(this.deliveryFee ))
        {
         this.deliveryFee = 0;
        }
-        console.log(this.searchFlowerFormulaResult[i].florist + ' ' + this.deliveryFee);
+       // console.log(this.searchFlowerFormulaResult[i].florist + ' ' + this.deliveryFee);
         this.searchFlowerFormulaResult[i].position = i + 1;
         this.searchFlowerFormulaResult[i].deliveryFee = this.deliveryFee;
-        this.searchFlowerFormulaResult[i].totalPrice = this.searchFlowerFormulaResult[i].price + this.deliveryFee;
-      }
 
-      this.dataSource = new MatTableDataSource<SearchFlowerFormulaResult>(this.searchFlowerFormulaResult);
+        this.priceOfFormula = [];
+        this.priceOfFormula.push({
+          formulaId: this.searchFlowerFormulaResult[i].id,
+          floristId: this.searchFlowerFormulaResult[i].floristId,
+          totalOrder: 1,
+          receiveDate: this.receiveDate
+        });
+      //  console.log('price= '+ this.priceOfFormula);
+        if (this.priceOfFormula.length != 0) {
+          this.restApiService.getSalesOrderPrice(this.priceOfFormula).subscribe(async(priceResult: SalesOrderPrice) => {
+            this.searchFlowerFormulaResult[i].price = priceResult.flowerPrice;
+            this.searchFlowerFormulaResult[i].totalPrice = this.searchFlowerFormulaResult[i].price + this.deliveryFee;
+          });
+        }
+    //  }
+        
+      }//End fot calculate price
+
+      //calculate floweravailable
+      this.searchFlowerFormulaResultFilter = [];
+      let index = 0;
+      for (let k =0; k < this.searchFlowerFormulaResult.length; k++)
+      {
+        if(this.searchFlowerForm.value.date != null && this.searchFlowerForm.value.date != '')
+        {
+          this.receiveDate = this.searchFlowerForm.value.date;
+        }
+        else
+        {
+          this.receiveDate = new Date();
+        }
+         this.restApiService.getFlowerAvailableFromCurrentStock(this.searchFlowerFormulaResult[k].id, this.searchFlowerFormulaResult[k].floristId, this.receiveDate).subscribe(async(result) => {
+         if(result >= maxQty)
+         {
+          this.searchFlowerFormulaResult[k].quantityAvailable = result;
+          let searchResultFilter: {
+            id: number,
+            position: number,
+            florist: string,
+            floristId: number,
+            name: string,
+            size: string,
+            pattern: string,
+            color: string,
+            price: number,
+            occasion: string,
+            quantityAvailable: number,
+            deliveryFee: number,
+            totalPrice: number
+          } = {
+            id: this.searchFlowerFormulaResult[k].id,
+            position: index+1,
+            florist: this.searchFlowerFormulaResult[k].florist,
+            floristId: this.searchFlowerFormulaResult[k].floristId,
+            name: this.searchFlowerFormulaResult[k].name,
+            size: this.searchFlowerFormulaResult[k].size,
+            pattern: this.searchFlowerFormulaResult[k].pattern,
+            color: this.searchFlowerFormulaResult[k].color,
+            price: this.searchFlowerFormulaResult[k].price,
+            occasion: this.searchFlowerFormulaResult[k].occasion,
+            quantityAvailable: this.searchFlowerFormulaResult[k].quantityAvailable,
+            deliveryFee: this.deliveryFee,
+            totalPrice: this.searchFlowerFormulaResult[k].totalPrice
+          };
+          this.searchFlowerFormulaResultFilter.push(searchResultFilter);
+          index++;
+          this.searchFlowerFormulaResultFilter = this.searchFlowerFormulaResultFilter.sort((a, b) => b.price - a.price).sort((a,b)=> b.quantityAvailable - a.quantityAvailable);
+
+          for (let j = 0; j < this.searchFlowerFormulaResultFilter.length; j++)
+          {
+              this.searchFlowerFormulaResultFilter[j].position = j+1;
+          }
+          this.dataSource = new MatTableDataSource<SearchFlowerFormulaResult>(this.searchFlowerFormulaResultFilter);
+
+         }
+         })
+      }
+      //this.filterQuantity();
+
+      //console.warn(this.searchFlowerForm.value);
+      //console.warn(this.dataSource);
+     // console.warn(this.searchFlowerFormulaResultFilter);
       if (this.searchFlowerForm.value.quantity != null && this.searchFlowerForm.value.quantity != '') {
-        this.searchFlowerFormulaResultFilter = this.searchFlowerFormulaResult.filter(result => result.quantityAvailable >= this.searchFlowerForm.value.quantity);
-        //this.dataSource =this.searchFlowerFormulaResult; 
-        this.dataSource = new MatTableDataSource<SearchFlowerFormulaResult>(this.searchFlowerFormulaResultFilter);
-        //for
-        //this.searchFlowerFormulaResult = [];
-        this.dataSource.filteredData = new MatTableDataSource<SearchFlowerFormulaResult>(this.searchFlowerFormulaResultFilter).filteredData;
-
-      }
-      this.dataSource.paginator = this.paginator;
-
-      // this.searchFlowerFomularResult = this.flowerFormulaSearch;
-
-      //  this.dataSource = new MatTableDataSource<FlowerFormula>(this.flowerFormulas);
-
-      console.warn(this.searchFlowerForm.value);
-      console.warn(this.dataSource);
-      console.warn(this.searchFlowerFormulaResultFilter);
+        // this.searchFlowerFormulaResultFilter = this.searchFlowerFormulaResult.filter(result => result.quantityAvailable >= maxQty);
+         //this.dataSource =this.searchFlowerFormulaResult; 
+         this.dataSource = new MatTableDataSource<SearchFlowerFormulaResult>(this.searchFlowerFormulaResultFilter);
+         //for
+         //this.searchFlowerFormulaResult = [];
+         this.dataSource.filteredData = new MatTableDataSource<SearchFlowerFormulaResult>(this.searchFlowerFormulaResultFilter).filteredData;
+  
+       }
+       else
+       {
+  this.dataSource = new MatTableDataSource<SearchFlowerFormulaResult>(this.searchFlowerFormulaResult);
+       }
+       this.dataSource.paginator = this.paginator;
     })
+  }
+
+  filterQuantity()
+  {
+    var maxQty = 0;
+    if(this.searchFlowerForm.value.date != null && this.searchFlowerForm.value.date != '')
+    {
+      this.receiveDate = this.searchFlowerForm.value.date;
+    }
+    else
+    {
+      this.receiveDate = new Date();
+    }
+    if(this.searchFlowerForm.value.quantity != null && this.searchFlowerForm.value.quantity != '')
+    {
+      maxQty = Number(this.searchFlowerForm.value.quantity);
+
+    for(let i = 0; i < this.searchFlowerFormulaResult.length; i++)
+    {
+      this.restApiService.getFlowerAvailableFromCurrentStock(this.searchFlowerFormulaResult[i].id, this.searchFlowerFormulaResult[i].floristId, this.recieveDate).subscribe(async(result) => {
+        this.searchFlowerFormulaResult[i].quantityAvailable = result;
+      
+      if (result >= maxQty)
+      {
+      let searchResultFilter: {
+        id: number,
+        position: number,
+        florist: string,
+        floristId: number,
+        name: string,
+        size: string,
+        pattern: string,
+        color: string,
+        price: number,
+        occasion: string,
+        quantityAvailable: number,
+        deliveryFee: number,
+        totalPrice: number
+      } = {
+        id: this.searchFlowerFormulaResult[i].id,
+        position: i+1,
+        florist: this.searchFlowerFormulaResult[i].florist,
+        floristId: this.searchFlowerFormulaResult[i].floristId,
+        name: this.searchFlowerFormulaResult[i].name,
+        size: this.searchFlowerFormulaResult[i].size,
+        pattern: this.searchFlowerFormulaResult[i].pattern,
+        color: this.searchFlowerFormulaResult[i].color,
+        price: this.searchFlowerFormulaResult[i].price,
+        occasion: this.searchFlowerFormulaResult[i].occasion,
+        quantityAvailable: this.searchFlowerFormulaResult[i].quantityAvailable,
+        deliveryFee: this.deliveryFee,
+        totalPrice: this.searchFlowerFormulaResult[i].totalPrice
+      };
+      this.searchFlowerFormulaResultFilter.push(searchResultFilter);
+    }
+    })
+  }
+    this.dataSource = new MatTableDataSource<SearchFlowerFormulaResult>(this.searchFlowerFormulaResultFilter);
+
+    }
+
   }
 }
