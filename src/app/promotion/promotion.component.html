@@ -8,7 +8,7 @@
         
         <ng-container matColumnDef="flowername">
           <th mat-header-cell *matHeaderCellDef> ชื่อช่อดอกไม้ </th>
-          <td mat-cell *matCellDef="let promotionDetailLogsNormal"> {{promotionDetailLogsNormal.flowerFormula.name}} </td> 
+          <td class="column-formula-main" mat-cell *matCellDef="let promotionDetailLogsNormal"> {{promotionDetailLogsNormal.flowerFormula.name}} </td> 
         </ng-container>
         
         <ng-container matColumnDef="size">
@@ -85,7 +85,7 @@
         
           <ng-container matColumnDef="flowername">
             <th mat-header-cell *matHeaderCellDef> ชื่อช่อดอกไม้ </th>
-            <td mat-cell *matCellDef="let promotionDetailsCurrentDtos"> {{promotionDetailsCurrentDtos.formulaName}} </td> 
+            <td class="column-formula" mat-cell *matCellDef="let promotionDetailsCurrentDtos"> {{promotionDetailsCurrentDtos.formulaName}} </td> 
           </ng-container>
           
           <ng-container matColumnDef="size">
@@ -154,25 +154,23 @@
               </td>
             </ng-container>
           </div>
-  
           <tr mat-header-row *matHeaderRowDef="displayedColumnsNormalCurrentDto"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumnsNormalCurrentDto;"></tr>
         </table>
-
       </mat-card>
       <p></p>
     </div>
-    
-      
+     
     <!-- current promotion -->
     <div class="col-md-4">
     <div>
       <mat-card class="current-card">
         <mat-card-title>โปรโมชั่นปัจจุบัน</mat-card-title>
-        <mat-card-subtitle>เลือกโปรโมชั่นได้สูงสุด 4 โปรโมชั่น</mat-card-subtitle>
+        <mat-card-subtitle>เลือกโปรโมชั่นได้สูงสุด {{cntPromotion}} โปรโมชั่น</mat-card-subtitle>
           <div fxLayout="row wrap" fxLayoutGap="5px grid">
             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="25%" *ngFor="let promotionDetail of promotionDetails">
-                <mat-card class="mat-elevation-z4" >
+                <!--<mat-card class="mat-elevation-z4" > -->
+                <mat-card class="example-card" > 
                     <mat-card-content>{{promotionDetail.flowerFormula.name}}</mat-card-content>
                     <img class="main-image" mat-card-image src={{promotionDetail.flowerFormula.imagePath}}>
                     <mat-card-content>
