@@ -20,10 +20,9 @@ import { AddStock } from '../interface/add-stock';
 import { FlowerFormulaDetail } from "../interface/flower-formula-detail";
 import { PromotionDetailCurrentDto } from "../interface/promotion-detail-current-dto";
 import { PriceOfOrders } from '../interface/priceOfOrders';
-import { FloristDeliveryFee } from '../interface/FloristDeliveryFee';
-import { FloristFee } from '../interface/floristFee';
-import { ChangeStock } from '../interface/change-stock';
 import { Configurations } from '../interface/configurations';
+import { FloristFee } from '../interface/floristFee';
+import { FloristDeliveryFee } from '../interface/floristDeliveryFee';
 
 @Injectable({
   providedIn: 'root'

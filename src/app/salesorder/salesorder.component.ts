@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { RestApiService } from '../_shared/rest-api.service';
-import { SalesOrderDetail } from '../interface/sales-order-detail'
 import { MatDialog } from '@angular/material/dialog';
 import { EditSalesOrderComponent } from './edit-sales-order/edit-sales-order.component';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { SalesOrderElement } from '../interface/sales-order-element';
 import { SalesOrderDetailListDto } from '../interface/sales-order-detail-list-dto';
 
 @Component({
