@@ -69,3 +69,10 @@ mat-card-actions {
 .main-image-list {
     display: block;
 }
+
+.example-card {
+  height: 330px;
+  margin: 4px;
+  object-fit: contain;
+  background: rgb(255, 255, 255);
+}

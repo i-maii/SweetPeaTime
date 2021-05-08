@@ -69,8 +69,20 @@ mat-grid-tile {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
   }
 
+  .column-formula {
+    max-width: 120px;
+  }
+
+  .column-formula-main {
+    max-width: 170px;
+  }
+
   .example-card {
-    max-width: 150px;
+    height: 450px;
+    max-width: 175px;
+    margin: 4px;
+    object-fit: contain;
+    background: rgb(255, 255, 255);
   }
 
   .example-card-dialog {
