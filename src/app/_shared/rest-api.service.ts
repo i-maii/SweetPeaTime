@@ -209,7 +209,7 @@ export class RestApiService {
     let params = new HttpParams;
     params = params.append('formulaId', formulaId + "");
     params = params.append('floristId', floristId + "");
-    params = params.append('orderDate', this.datepipe.transform(orderDate, 'yy-MM-dd') + "");
+    params = params.append('orderDate', this.datepipe.transform(orderDate, 'yyyy-MM-dd') + "");
     // console.log(params);
     return this.http.get<number>(this.apiURL + '/flowerFormulaDetail/getFormulaDetailFromStock', {
       params: params
