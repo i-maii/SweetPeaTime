@@ -31,18 +31,22 @@ import { FloristFee } from '../interface/floristFee';
   dataSource: any;
   floristFee: FloristFee | undefined ;
   searchFilter = new FormControl();
+  currentDate = new Date();
+  endDate = new Date();
+  firstDate = new Date(this.currentDate.getFullYear(),this.currentDate.getMonth(), 1);
+  startDate = new FormControl(this.firstDate);
+  florists: Florist[] = [];
   saleReportForm = new FormGroup({
-    startDate: new FormControl(),
-    endDate: new FormControl(),
+    startDate: new FormControl(this.firstDate),
+    endDate: new FormControl(new Date()),
     totalAmount: new FormControl(),
     totalCost: new FormControl(),
     totalProfit: new FormControl(),
     totalFloristFee: new FormControl(),
     florist: new FormControl('')
   });
-  currentDate = new Date();
-  endDate = new Date();
-  florists: Florist[] = [];
+  
+
   constructor(
     private restApiService: RestApiService,
     public dialog: MatDialog,
@@ -55,37 +59,77 @@ import { FloristFee } from '../interface/floristFee';
   // ];
 
     ngOnInit(): void {
+      this.salesOrders = [];
+      this.totalAmount = 0;
+      this.totalCost = 0;
+      this.totalFloristFee = 0;
+      this.totalProfit = 0;
+      
+      var firstDate = new Date(this.currentDate.getFullYear(),this.currentDate.getMonth(), 1);
+      this.saleReportForm.value.startDate = firstDate;
+      this.saleReportForm.value.startDate = this.endDate;
 
       this.restApiService.getFlorist().subscribe((data: Florist[]) => {
         for (let i = 0; i < data.length; i++) {
           this.florists.push(data[i]);
         }
       });
-        this.restApiService.searchListSalesOrder(this.currentDate,this.endDate, null).subscribe((data: SalesOrderDetailListDto[]) => {
+        this.restApiService.searchListSalesOrder(firstDate,this.endDate, null).subscribe(async (data: SalesOrderDetailListDto[]) => {
           for (let i = 0; i < data.length; i++) {
             this.salesOrders.push(data[i]);
+            this.salesOrders[i].id = i+1;
             this.totalAmount = this.totalAmount + data[i].flowerPrice;
+            this.floristFee = await this.restApiService.getfloristFeeBySize(data[i].salesOrderDetails[0].florist.id, data[i].salesOrderDetails[0].flowerFormula.size).toPromise();
+           // this.floristFee = floristFeeResult;
+            if(this.floristFee != null)
+            {
+            this.totalFloristFee = this.totalFloristFee + this.floristFee.fee;
+            }
+           // this.totalFloristFee = this.salesOrders[i].id
           }
+           //select stock lot and price forcalculate cost
+           this.restApiService.getStockByLot(firstDate,this.endDate).subscribe(async(stockResult: Stock[]) => {
+            //console.log('stock ='+ stockResult);
+            for (let i = 0; i < stockResult.length; i++) {
+              this.stockByLot.push(stockResult[i]);
+              if (stockResult[i].flowerPrice == null)
+              {
+                this.totalCost = this.totalCost ;
+              }
+              else
+              {
+              this.totalCost = this.totalCost + stockResult[i].flowerPrice.price;
+              }
+            }
           console.log('order='+this.salesOrders);
+          this.saleReportForm.value.totalCost = this.totalCost;
+          this.saleReportForm.value.totalProfit = this.totalProfit;
+          this.saleReportForm.value.totalFloristFee = this.totalFloristFee;
           this.numberOfOrder = data.length;
          this.displayedColumns = ['id', 'date', 'status', 'customerName', 'customerLineFb', 'receiverName', 'flowerFormula' ,'totalPrice', 'florist'];
           
-         this.salesOrders = this.salesOrders.filter(s => s.salesOrderDetails.find(f => f.florist.id == this.saleReportForm.value.id))
+        // this.salesOrders = this.salesOrders.filter(s => s.salesOrderDetails.find(f => f.florist.id == this.saleReportForm.value.id))
          
 
          this.dataSource = new MatTableDataSource<SalesOrderDetailListDto>(this.salesOrders);
          // this.searchFilter.valueChanges.subscribe((searchFilterValue) => {
           //  this.dataSource.filter = searchFilterValue;
           //});
+          this.totalProfit = this.totalAmount - this.totalCost;
           this.saleReportForm.value.totalProfit = this.totalAmount;
+          this.saleReportForm.value.totalCost = this.totalCost;
+          this.saleReportForm.value.totalProfit = this.totalProfit;
+          this.saleReportForm.value.totalFloristFee = this.totalFloristFee;
           console.log('order='+this.salesOrders);
           console.log('totalAmount='+this.totalAmount);
+           })
        //   this.dataSource.filterPredicate = this.customFilterPredicate();
         });
       }
 
       searchSaleReport() {
         this.salesOrders = [];
+        this.dataSource = [];
         this.totalAmount = 0;
         this.totalCost = 0;
         this.totalFloristFee = 0;
@@ -104,6 +148,7 @@ import { FloristFee } from '../interface/floristFee';
         this.restApiService.searchListSalesOrder(this.saleReportForm.value.startDate,this.saleReportForm.value.endDate, this.saleReportForm.value.florist).subscribe(async (data: SalesOrderDetailListDto[]) => {
           for (let i = 0; i < data.length; i++) {
             this.salesOrders.push(data[i]);
+            this.salesOrders[i].id = i+1;
             this.totalAmount = this.totalAmount + data[i].flowerPrice;
             this.floristFee = await this.restApiService.getfloristFeeBySize(data[i].salesOrderDetails[0].florist.id, data[i].salesOrderDetails[0].flowerFormula.size).toPromise();
            // this.floristFee = floristFeeResult;
@@ -114,6 +159,9 @@ import { FloristFee } from '../interface/floristFee';
           }
           //console.log('order='+this.salesOrders);
        
+          //select stock lot and price forcalculate cost
+          if ( this.salesOrders.length > 0)
+          {
           this.restApiService.getStockByLot(this.saleReportForm.value.startDate,this.saleReportForm.value.endDate).subscribe(async(stockResult: Stock[]) => {
             //console.log('stock ='+ stockResult);
             for (let i = 0; i < stockResult.length; i++) {
@@ -127,7 +175,7 @@ import { FloristFee } from '../interface/floristFee';
               this.totalCost = this.totalCost + stockResult[i].flowerPrice.price;
               }
             }
-         
+          
         this.totalProfit = this.totalAmount - this.totalCost;
             console.log('Totalcost ='+ this.totalCost);
             console.log('order='+this.salesOrders);
@@ -148,6 +196,7 @@ import { FloristFee } from '../interface/floristFee';
           //});
      
         })
+      }
         })
        //   this.dataSource.filterPredicate = this.customFilterPredicate();
       

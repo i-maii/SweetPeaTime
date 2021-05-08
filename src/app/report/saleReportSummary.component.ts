@@ -345,6 +345,9 @@ dataSource: any;
                   
         console.log(this.saleOrderDetail);
         console.log(this.saleReportSumByformular);
+        this.saleReportSumByformular = Array.from(this.saleReportSumByformular.reduce((m, t) => m.set(t.formulaName, t), new Map()).values());
+      //  this.promotionReportSumByformular = Array.from(this.promotionReportSumByformular.reduce((m, t) => m.set(t.formulaName, t), new Map()).values()); // [ 'A', 'B']
+
         this.saleReportSumByformular.sort((a, b) => b.totalPrice - a.totalPrice);
 
         for( let i=0; i < this.saleReportSumByformular.length; i++)
