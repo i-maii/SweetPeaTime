@@ -58,14 +58,14 @@ export class SalesorderComponent implements OnInit {
   }
 
   deleteSalesorder(row: SalesOrderDetailListDto): void {
-    console.log(row);
-    if (row.status === "ส่งแล้ว") {
+    console.log(row.status);
+    if (row.status == "ส่งแล้ว") {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
         text: 'ไม่สามารถยกเลิกออเดอร์นี้ได้ เนื่องจากสถานะ: ส่งแล้ว'
       })
-    } if (row.status === "ยกเลิกออเดอร์") {
+    } else if (row.status == "ยกเลิกออเดอร์") {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',

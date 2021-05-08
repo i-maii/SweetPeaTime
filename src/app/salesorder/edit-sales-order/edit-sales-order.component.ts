@@ -18,18 +18,18 @@ import { SalesorderComponent } from '../salesorder.component';
   selector: 'edit-sales-order',
   templateUrl: './edit-sales-order.component.html',
   styleUrls: ['./edit-sales-order.component.css'],
-  providers: [{provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]}, {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS}],
+  providers: [{ provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] }, { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }],
 })
 export class EditSalesOrderComponent implements OnInit {
 
   arr: any;
   salesOrderForm: FormGroup;
   statusOrders: StatusOrder[] = [
-    {value: 'จ่ายแล้ว', name: 'จ่ายแล้ว'},
-    {value: 'กำลังจัดช่อดอกไม้', name: 'กำลังจัดช่อดอกไม้'},
-    {value: 'จัดเสร็จแล้ว', name: 'จัดเสร็จแล้ว'},
-    {value: 'ส่งแล้ว', name: 'ส่งแล้ว'},
-    {value: 'ยกเลิกออเดอร์', name: 'ยกเลิกออเดอร์'}
+    { value: 'จ่ายแล้ว', name: 'จ่ายแล้ว' },
+    { value: 'กำลังจัดช่อดอกไม้', name: 'กำลังจัดช่อดอกไม้' },
+    { value: 'จัดเสร็จแล้ว', name: 'จัดเสร็จแล้ว' },
+    { value: 'ส่งแล้ว', name: 'ส่งแล้ว' },
+    { value: 'ยกเลิกออเดอร์', name: 'ยกเลิกออเดอร์' }
   ];
 
   flowerFormulas: FlowerFormula[] = [];
@@ -43,14 +43,14 @@ export class EditSalesOrderComponent implements OnInit {
   salesOrderUpdated: any = {};
   updateSalesOrder!: SalesOrderElement;
   oldStatus: string = "";
-  
+
   constructor(
     public dialogRef: MatDialogRef<SalesorderComponent>,
     @Inject(MAT_DIALOG_DATA) public data: SalesOrderDetailListDto,
     private restApiService: RestApiService,
     private fb: FormBuilder,
     private datepipe: DatePipe,
-  ) { 
+  ) {
     this.salesOrderForm = this.fb.group({
       customerName: this.data.customerName,
       customerPhone: this.data.customerPhone,
@@ -59,7 +59,7 @@ export class EditSalesOrderComponent implements OnInit {
       receiverName: this.data.receiverName,
       receiverPhone: this.data.receiverPhone,
       receiverAddress: this.data.receiverAddress,
-      receiveDateTime: this.datepipe.transform(this.data.receiveDateTime, 'yyyy-MM-dd')+"",
+      receiveDateTime: this.datepipe.transform(this.data.receiveDateTime, 'yyyy-MM-dd') + "",
       flowerPrice: this.data.flowerPrice,
       deliveryFee: this.data.deliveryFee,
       totalPrice: this.data.totalPrice,
@@ -103,35 +103,36 @@ export class EditSalesOrderComponent implements OnInit {
   onUpdate(): void {
     this.updateSalesOrder = this.salesOrderForm.value;
 
-    if(this.oldStatus == "ส่งแล้ว" && (
+    if (this.oldStatus == "ส่งแล้ว" && (
       this.updateSalesOrder.status == "จ่ายแล้ว" ||
-      this.updateSalesOrder.status == "กำลังจัดช่อดอกไม้" || 
-      this.updateSalesOrder.status == "จัดเสร็จแล้ว")) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'ไม่แก้ไขออเดอร์นี้ได้ เนื่องจากสถานะผิดพลาด'
-        }).then((result) => {
-          window.location.reload();
-        });
-      } else {
-        this.dialogRef.close();
-        for (let i=0; i<this.salesOrderForm.controls.flowerMultipleDtoList.value.length; i++) {
-          this.updateSalesOrder.flowerMultipleDtoList[i].flowerFormula = this.salesOrderForm.controls.flowerMultipleDtoList.value[i].flowerFormula.id;
-        }
-        this.updateSalesOrder.flowerPrice = this.salesOrderForm.controls["flowerPrice"].value;
-        this.updateSalesOrder.deliveryFee = this.salesOrderForm.controls["deliveryFee"].value;
-        this.updateSalesOrder.totalPrice = this.salesOrderForm.controls["totalPrice"].value;
-        this.updateSalesOrder.id = this.numberOfOrder;
-        console.log(this.updateSalesOrder);
-        this.restApiService.updateSalesOrder(this.updateSalesOrder);
-        Swal.fire(
-          'Good job!',
-          'แก้ไขออเดอร์สำเร็จ!',
-          'success'
-        ).then((result) => {
-          window.location.reload();
-        });
+      this.updateSalesOrder.status == "กำลังจัดช่อดอกไม้" ||
+      this.updateSalesOrder.status == "จัดเสร็จแล้ว" || 
+      this.updateSalesOrder.status == "ยกเลิกออเดอร์")) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'ไม่สามารถแก้ไขออเดอร์นี้ได้ เนื่องจากส่งดอกไม้เรียบร้อยแล้ว'
+      }).then((result) => {
+        window.location.reload();
+      });
+    } else {
+      this.dialogRef.close();
+      for (let i = 0; i < this.salesOrderForm.controls.flowerMultipleDtoList.value.length; i++) {
+        this.updateSalesOrder.flowerMultipleDtoList[i].flowerFormula = this.salesOrderForm.controls.flowerMultipleDtoList.value[i].flowerFormula.id;
       }
+      this.updateSalesOrder.flowerPrice = this.salesOrderForm.controls["flowerPrice"].value;
+      this.updateSalesOrder.deliveryFee = this.salesOrderForm.controls["deliveryFee"].value;
+      this.updateSalesOrder.totalPrice = this.salesOrderForm.controls["totalPrice"].value;
+      this.updateSalesOrder.id = this.numberOfOrder;
+      console.log(this.updateSalesOrder);
+      this.restApiService.updateSalesOrder(this.updateSalesOrder);
+      Swal.fire(
+        'Good job!',
+        'แก้ไขออเดอร์สำเร็จ!',
+        'success'
+      ).then((result) => {
+        window.location.reload();
+      });
+    }
   }
 }
