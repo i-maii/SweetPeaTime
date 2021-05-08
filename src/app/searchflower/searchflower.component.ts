@@ -1,5 +1,5 @@
 /// <reference types="@types/googlemaps" />
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -7,15 +7,10 @@ import { FlowerFormula } from '../interface/flower-formula';
 import { Florist } from '../interface/florist';
 import { SearchFlowerFormulaResult } from '../interface/searchFlowerFormulaResult';
 import { RestApiService } from '../_shared/rest-api.service';
-import { FloristDeliveryFee } from '../interface/FloristDeliveryFee';
-import { isNull } from '@angular/compiler/src/output/output_ast';
-import { DecimalPipe, formatNumber } from '@angular/common';
-import { ignoreElements } from 'rxjs/operators';
 import { Flower } from '../interface/flower';
 import { PriceOfOrders } from '../interface/priceOfOrders';
 import { SalesOrderPrice } from '../interface/sales-order-price';
-import { async } from 'rxjs';
-//import { isNull } from '@angular/compiler/src/output/output_ast';
+import { FloristDeliveryFee } from '../interface/floristDeliveryFee';
 @Component({
   selector: 'searchflower',
   templateUrl: './searchflower.component.html',

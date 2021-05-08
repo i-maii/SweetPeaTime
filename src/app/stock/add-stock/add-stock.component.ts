@@ -97,9 +97,8 @@ export class AddStockComponent implements OnInit {
   }
   
   onSubmit() {
-    console.log(this.formAddStock.controls.stockInfo.value);
     for (let i = 0; i < this.formAddStock.controls.stockInfo.value.length; i++) {
-      this.formAddStock.controls.stockInfo.value[i].lot = this.formAddStock.controls.stockInfo.value[i].lot._d.toLocaleDateString();
+      this.formAddStock.controls.stockInfo.value[i].lot = this.formAddStock.controls.stockInfo.value[i].lot.format('YYYY-MM-DD');
     }
     console.log(this.formAddStock.controls.stockInfo.value);
     this.restApiService.addStock(this.formAddStock.controls.stockInfo.value)
@@ -128,7 +127,6 @@ export class AddStockComponent implements OnInit {
   }
 
   flowerChange(row: number) {
-    console.log(this.formAddStock.controls.stockInfo.value[row].flower.unit);
     ((this.formAddStock.get('stockInfo') as FormArray).at(row) as FormGroup).get('unit')?.patchValue(this.formAddStock.controls.stockInfo.value[row].flower.unit)
   }
 }
