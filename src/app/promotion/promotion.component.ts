@@ -100,15 +100,39 @@ export class PromotionComponent implements OnInit {
   }
   
   IMAGE_PATH = [
-    { path: 'flower_1.png', url: 'https://i.ibb.co/sJV6ZxJ/flower-1.png' },
-    { path: 'flower_2.png', url: 'https://i.ibb.co/Bn0c2kV/flower-2.png' },
-    { path: 'flower_3.png', url: 'https://i.ibb.co/hV35KVK/flower-3.png' },
-    { path: 'flower_4.png', url: 'https://i.ibb.co/wsJVzbY/flower-4.png' },
-    { path: 'flower_5.png', url: 'https://i.ibb.co/qj98V9D/flower-5.png' },
-    { path: 'flower_6.png', url: 'https://i.ibb.co/ZKkJ7ZV/flower-6.png' },
-    { path: 'flower_7.png', url: 'https://i.ibb.co/SmQhwrZ/flower-7.png' },
-    { path: 'flower_8.png', url: 'https://i.ibb.co/x3ckyPX/flower-8.png' },
-    { path: 'flower.jpg', url: 'https://i.ibb.co/FnQHL4L/flower.jpg' },
+    { path: 'flower01.jpg', url: 'https://i.ibb.co/QD3R9Nd/flower01.jpg' },
+    { path: 'flower02.jpg', url: 'https://i.ibb.co/5WQ5xzq/flower02.jpg' },
+    { path: 'flower03.jpg', url: 'https://i.ibb.co/R0qNvmQ/flower03.jpg' },
+    { path: 'flower04.jpg', url: 'https://i.ibb.co/sb0VDhV/flower04.jpg' },
+    { path: 'flower05.jpg', url: 'https://i.ibb.co/ZcrNpnn/flower05.jpg' },
+    { path: 'flower06.jpg', url: 'https://i.ibb.co/6wYZ2b9/flower06.jpg' },
+    { path: 'flower07.jpg', url: 'https://i.ibb.co/vQqdY3v/flower07.jpg' },
+    { path: 'flower08.jpg', url: 'https://i.ibb.co/Vt5Lm7t/flower08.jpg' },
+    { path: 'flower09.jpg', url: 'https://i.ibb.co/1vKprwS/flower09.jpg' },
+    { path: 'flower10.jpg', url: 'https://i.ibb.co/hmmkMdz/flower10.jpg' },
+    { path: 'flower11.jpg', url: 'https://i.ibb.co/vqHKSkc/flower11.jpg' },
+    { path: 'flower12.jpg', url: 'https://i.ibb.co/Czcp5R4/flower12.jpg' },
+    { path: 'flower13.jpg', url: 'https://i.ibb.co/KKQSGsg/flower13.jpg' },
+    { path: 'flower14.jpg', url: 'https://i.ibb.co/hDCr2Jw/flower14.jpg' },
+    { path: 'flower15.jpg', url: 'https://i.ibb.co/bHfHDrc/flower15.jpg' },
+    { path: 'flower16.jpg', url: 'https://i.ibb.co/4FqZkLB/flower16.jpg' },
+    { path: 'flower17.jpg', url: 'https://i.ibb.co/tDpLsGP/flower17.jpg' },
+    { path: 'flower18.jpg', url: 'https://i.ibb.co/JjR0fqq/flower18.jpg' },
+    { path: 'flower19.jpg', url: 'https://i.ibb.co/XVXvh9N/flower19.jpg' },
+    { path: 'flower20.jpg', url: 'https://i.ibb.co/Gpy34PF/flower20.jpg' },
+    { path: 'flower21.jpg', url: 'https://i.ibb.co/w7hQVSw/flower21.jpg' },
+    { path: 'flower22.jpg', url: 'https://i.ibb.co/0hv2M0f/flower22.jpg' },
+    { path: 'flower23.jpg', url: 'https://i.ibb.co/VJjt2gb/flower23.jpg' },
+    { path: 'flower24.jpg', url: 'https://i.ibb.co/dp3C27h/flower24.jpg' },
+    { path: 'flower25.jpg', url: 'https://i.ibb.co/CVdG6Cg/flower25.jpg' },
+    { path: 'flower26.jpg', url: 'https://i.ibb.co/74B0WMk/flower26.jpg' },
+    { path: 'flower27.jpg', url: 'https://i.ibb.co/BP1fn8t/Processed-with-VSCO-with-al3-preset.jpg' },
+    { path: 'flower28.jpg', url: 'https://i.ibb.co/c8RMx3R/flower28.jpg' },
+    { path: 'flower29.jpg', url: 'https://i.ibb.co/DppqRzn/flower29.jpg' },
+    { path: 'flower30.jpg', url: 'https://i.ibb.co/pdZM2WC/flower30.jpg' },
+    { path: 'flower31.jpg', url: 'https://i.ibb.co/mJf5BqD/flower31.jpg' },
+    { path: 'flower32.jpg', url: 'https://i.ibb.co/DY9njST/flower32.jpg' },
+    { path: 'flower33.jpg', url: 'https://i.ibb.co/tpvj06s/flower33.jpg' },
   ];
 
   shareAll(promotionDetail: PromotionDetail[]) {
@@ -150,7 +174,7 @@ export class PromotionComponent implements OnInit {
       let message = pd.flowerFormula.name + '\nราคา ' + pd.price + ' บาท\nสอบถามเพิ่มเติม Line : @sweetpeatimes';
 
       const params = {
-        access_token: 'EAADbQlCqvIEBAIN0N1mid4T4O7jLtp6VcFlZAl4zlfd2rBSaZAGap2ceMDjUxPtHAi0GgqnP8suLZCz2iyLqh9rlEN7ZBDsbOANDrtydabVfc26HEZAHFtMINlA0rwGyq4ZC00V4F2wGV04vfnb1tJLQAHLWw2VY39HAeizgbybp1prlSVZC9t2j79w8ZAchNcolzbpveuEjZA7EmR1Lsnmg0',
+        access_token: 'EAADbQlCqvIEBAIVP6lrxA2F1ANMZCvHcp66yFQPFH8aeuz1UeXG9Udb8zwJsvgOesWfXemt7MdmZA60BVmOadBXUZCUE5wE8aeRXbZCNp2iz2l2RcQm7VJ5D4cL36MSMpYx8YjRHbR03MJi24IsPRhXBsw39ZB3yZA69kpmEfUrhGjIRDbsd1eugcJPuuZAxVJrT8UHvxejQZBnFTUEDfDm6',
         message: message,
         url: this.IMAGE_PATH[index].url
       };
@@ -191,7 +215,7 @@ export class PromotionComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         const params = {
-          access_token: 'EAADbQlCqvIEBAIN0N1mid4T4O7jLtp6VcFlZAl4zlfd2rBSaZAGap2ceMDjUxPtHAi0GgqnP8suLZCz2iyLqh9rlEN7ZBDsbOANDrtydabVfc26HEZAHFtMINlA0rwGyq4ZC00V4F2wGV04vfnb1tJLQAHLWw2VY39HAeizgbybp1prlSVZC9t2j79w8ZAchNcolzbpveuEjZA7EmR1Lsnmg0',
+          access_token: 'EAADbQlCqvIEBAIVP6lrxA2F1ANMZCvHcp66yFQPFH8aeuz1UeXG9Udb8zwJsvgOesWfXemt7MdmZA60BVmOadBXUZCUE5wE8aeRXbZCNp2iz2l2RcQm7VJ5D4cL36MSMpYx8YjRHbR03MJi24IsPRhXBsw39ZB3yZA69kpmEfUrhGjIRDbsd1eugcJPuuZAxVJrT8UHvxejQZBnFTUEDfDm6',
           message: message,
           url: this.IMAGE_PATH[index].url
         };
