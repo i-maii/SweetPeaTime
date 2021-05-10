@@ -137,10 +137,10 @@ dataSource: any;
     label: 'ยอดขายจากโปรโมชั่น'        
     })
 
-    this.barChartData.push({             // <-- push value to `ChartData`
-    data: this.totalProfitByMonth,  
-    label: 'กำไร'        
-    })
+    // this.barChartData.push({             // <-- push value to `ChartData`
+    // data: this.totalProfitByMonth,  
+    // label: 'กำไร'        
+    // })
 
   }
   date = new FormControl(moment());
@@ -213,10 +213,10 @@ this.barChartData = [];
     label: 'ยอดขายจากโปรโมชั่น'        
     })
 
-    this.barChartData.push({             // <-- push value to `ChartData`
-    data: this.totalProfitByMonth,  
-    label: 'กำไร'        
-    })
+    // this.barChartData.push({             // <-- push value to `ChartData`
+    // data: this.totalProfitByMonth,  
+    // label: 'กำไร'        
+    // })
 
 
   }
