@@ -126,9 +126,13 @@ export class PromotionComponent implements OnInit {
     { path: 'flower24.jpg', url: 'https://i.ibb.co/dp3C27h/flower24.jpg' },
     { path: 'flower25.jpg', url: 'https://i.ibb.co/CVdG6Cg/flower25.jpg' },
     { path: 'flower26.jpg', url: 'https://i.ibb.co/74B0WMk/flower26.jpg' },
+    { path: 'flower27.jpg', url: 'https://i.ibb.co/BP1fn8t/Processed-with-VSCO-with-al3-preset.jpg' },
     { path: 'flower28.jpg', url: 'https://i.ibb.co/c8RMx3R/flower28.jpg' },
     { path: 'flower29.jpg', url: 'https://i.ibb.co/DppqRzn/flower29.jpg' },
     { path: 'flower30.jpg', url: 'https://i.ibb.co/pdZM2WC/flower30.jpg' },
+    { path: 'flower31.jpg', url: 'https://i.ibb.co/mJf5BqD/flower31.jpg' },
+    { path: 'flower32.jpg', url: 'https://i.ibb.co/DY9njST/flower32.jpg' },
+    { path: 'flower33.jpg', url: 'https://i.ibb.co/tpvj06s/flower33.jpg' },
   ];
 
   shareAll(promotionDetail: PromotionDetail[]) {
