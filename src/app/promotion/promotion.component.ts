@@ -100,15 +100,8 @@ export class PromotionComponent implements OnInit {
   }
   
   IMAGE_PATH = [
-    { path: 'flower_1.png', url: 'https://i.ibb.co/sJV6ZxJ/flower-1.png' },
-    { path: 'flower_2.png', url: 'https://i.ibb.co/Bn0c2kV/flower-2.png' },
-    { path: 'flower_3.png', url: 'https://i.ibb.co/hV35KVK/flower-3.png' },
-    { path: 'flower_4.png', url: 'https://i.ibb.co/wsJVzbY/flower-4.png' },
-    { path: 'flower_5.png', url: 'https://i.ibb.co/qj98V9D/flower-5.png' },
-    { path: 'flower_6.png', url: 'https://i.ibb.co/ZKkJ7ZV/flower-6.png' },
-    { path: 'flower_7.png', url: 'https://i.ibb.co/SmQhwrZ/flower-7.png' },
-    { path: 'flower_8.png', url: 'https://i.ibb.co/x3ckyPX/flower-8.png' },
-    { path: 'flower.jpg', url: 'https://i.ibb.co/FnQHL4L/flower.jpg' },
+    { path: 'flower26.jpg', url: 'https://i.ibb.co/74B0WMk/flower26.jpg' },
+    { path: 'flower30.jpg', url: 'https://i.ibb.co/pdZM2WC/flower30.jpg' },
   ];
 
   shareAll(promotionDetail: PromotionDetail[]) {
@@ -150,7 +143,7 @@ export class PromotionComponent implements OnInit {
       let message = pd.flowerFormula.name + '\nราคา ' + pd.price + ' บาท\nสอบถามเพิ่มเติม Line : @sweetpeatimes';
 
       const params = {
-        access_token: 'EAADbQlCqvIEBAIN0N1mid4T4O7jLtp6VcFlZAl4zlfd2rBSaZAGap2ceMDjUxPtHAi0GgqnP8suLZCz2iyLqh9rlEN7ZBDsbOANDrtydabVfc26HEZAHFtMINlA0rwGyq4ZC00V4F2wGV04vfnb1tJLQAHLWw2VY39HAeizgbybp1prlSVZC9t2j79w8ZAchNcolzbpveuEjZA7EmR1Lsnmg0',
+        access_token: 'EAADbQlCqvIEBAIVP6lrxA2F1ANMZCvHcp66yFQPFH8aeuz1UeXG9Udb8zwJsvgOesWfXemt7MdmZA60BVmOadBXUZCUE5wE8aeRXbZCNp2iz2l2RcQm7VJ5D4cL36MSMpYx8YjRHbR03MJi24IsPRhXBsw39ZB3yZA69kpmEfUrhGjIRDbsd1eugcJPuuZAxVJrT8UHvxejQZBnFTUEDfDm6',
         message: message,
         url: this.IMAGE_PATH[index].url
       };
@@ -191,7 +184,7 @@ export class PromotionComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         const params = {
-          access_token: 'EAADbQlCqvIEBAIN0N1mid4T4O7jLtp6VcFlZAl4zlfd2rBSaZAGap2ceMDjUxPtHAi0GgqnP8suLZCz2iyLqh9rlEN7ZBDsbOANDrtydabVfc26HEZAHFtMINlA0rwGyq4ZC00V4F2wGV04vfnb1tJLQAHLWw2VY39HAeizgbybp1prlSVZC9t2j79w8ZAchNcolzbpveuEjZA7EmR1Lsnmg0',
+          access_token: 'EAADbQlCqvIEBAIVP6lrxA2F1ANMZCvHcp66yFQPFH8aeuz1UeXG9Udb8zwJsvgOesWfXemt7MdmZA60BVmOadBXUZCUE5wE8aeRXbZCNp2iz2l2RcQm7VJ5D4cL36MSMpYx8YjRHbR03MJi24IsPRhXBsw39ZB3yZA69kpmEfUrhGjIRDbsd1eugcJPuuZAxVJrT8UHvxejQZBnFTUEDfDm6',
           message: message,
           url: this.IMAGE_PATH[index].url
         };
